@@ -1,35 +1,25 @@
 # Chặng 5 — Observation Focus
 
-> **Người thực hiện:** Phan Duy Thanh · `2A202602930`
-> **Tối đa 5 mục.** Chỉ ghi điều quan sát được, không phán xét option.
+Phan Duy Thanh (2A202602930), nhóm H3201.
 
----
+## 1. Năm điểm cần quan sát
 
-## Năm thứ cần quan sát
+| Điểm | Ghi lại những gì | Áp dụng cho |
+| --- | --- | --- |
+| Hành động đầu tiên | Người test bấm hoặc đọc gì trước tiên, và mất bao lâu | A, B, C |
+| Do dự hoặc hiểu sai | Họ dừng lại, lưỡng lự hoặc hiểu nhầm ở đâu, nhất là quanh slide 7 | A, B, C |
+| Đọc hay bỏ qua căn cứ | Họ có đọc dòng "không suy đoán", nhãn "AI suy đoán", tỷ lệ 37/48 và con số 62% không, hay chỉ nhìn kết luận | B, C |
+| Lấy lại quyền kiểm soát | Họ dùng cách nào để sửa hoặc huỷ, và có tìm thấy cách đó không | A, B, C |
+| Lựa chọn và trade-off | Họ chọn option nào, vì sao, và chấp nhận đánh đổi điều gì | Cả ba, ở phần so sánh |
 
-| # | Mục | Cụ thể cần ghi lại | Neo vào option |
-| - | --- | ------------------ | -------------- |
-| 1 | **First action** | Tester bấm/đọc gì trước tiên khi vừa mở bài? Mất bao lâu? | A, B, C |
-| 2 | **Hesitation / misunderstanding** | Chỗ dừng, do dự, hoặc hiểu sai — đặc biệt quanh slide 7 (RAG) | A, B, C |
-| 3 | **Evidence read / ignored** | Tester có đọc dòng "không suy đoán", nhãn "AI suy đoán", con số 62% không? Hay bỏ qua và chỉ đọc kết luận? | B (37/48 + "không phải về bạn"), C (62% + "có thể sai") |
-| 4 | **Correction / recovery** | Tester lấy lại control bằng đường nào? Có tìm thấy đường đó không? | A (Đã hiểu / xoá đánh dấu), B (Đổi lựa chọn / Bỏ qua), C (công tắc tắt nhận hỗ trợ / tự đánh dấu sau khi bị từ chối) |
-| 5 | **Option được chọn và trade-off** | Chọn A/B/C nào, vì sao, và **phải từ bỏ điều gì** | Cả ba, hỏi ở bước Compare |
+## 2. Ba câu hỏi phụ để phân biệt Pain A và Pain B
 
----
+Người facilitate ghi riêng ba câu này, không tính vào năm điểm ở trên:
 
-## Ba câu hỏi phụ để phân biệt pain A và pain B
+- Người test có biết mình đang mắc ở đâu không?
+- Người test có ngại bị gắn với việc mình đang mắc không?
+- Ở option C, khi AI suy đoán về chính họ, người test thấy nhẹ nhõm hay khó chịu?
 
-Ghi riêng, không tính vào 5 mục trên:
+## 3. Cách ghi chép
 
-- Tester có **biết mình kẹt ở đâu** không? (pain A — *visibility gap*)
-- Tester có **ngại** phải nói ra / bị gắn với việc mình kẹt không? (pain B — *chi phí xã hội*)
-- Với option C, tester phản ứng thế nào khi **AI suy đoán về chính họ** — nhẹ nhõm hay khó chịu?
-
----
-
-## Cách ghi
-
-- **Hành vi trước, diễn giải sau.** "Tester dừng 9 giây ở banner rồi mới bấm" là hành vi; "tester thấy khó chịu" là diễn giải — phải ghi rõ là diễn giải.
-- Ghi **thời điểm** tương đối (phút thứ mấy của phiên) cho mỗi quan sát.
-- Quote nguyên văn nếu có, đặt trong dấu ngoặc kép.
-- Không dùng từ đánh giá option ("rõ ràng", "dễ hiểu", "hay") — chỉ mô tả.
+Ghi hành vi trước, diễn giải sau. Ví dụ, "dừng chín giây ở banner rồi mới bấm" là hành vi, còn "có vẻ khó chịu" là diễn giải và phải được ghi rõ như vậy. Mỗi quan sát kèm thời điểm (phút thứ mấy của phiên). Lời người test nói được trích nguyên văn trong ngoặc kép. Không dùng những từ đánh giá như "dễ hiểu" hay "rõ ràng".

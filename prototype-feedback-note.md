@@ -1,138 +1,64 @@
-# Prototype Feedback Note — phiên do chính người nộp facilitate 🚫
+# Prototype Feedback Note
 
-> **Nhóm:** H3201 · **Track 1** · **Case C — AI Support Radar**
-> Đầu ra của **Chặng 6 — Test với ba người** (GATE 5).
->
-> **Luật bắt buộc:**
-> - Mỗi thành viên **tự facilitate 1 phiên** và **tự viết 1 bản** note ở đây. 🚫 Không dùng AI viết thay.
-> - **Không** tạo quote, observation hoặc feedback không tồn tại.
-> - Tester phải trải nghiệm **cả A/B/C**, không chỉ option của người facilitate.
-> - Ghi **hành vi trước, diễn giải sau**. "Tester chọn B" không đủ nếu thiếu lý do, trade-off và hành vi đi kèm.
-> - Facilitator **không** giải thích, không dẫn dắt, không hỏi "Bạn có thích không?".
+*Mỗi thành viên hoàn thành một bản sau một phiên test thật (~20 phút) với một tester ngoài nhóm. Các ô [điền] chỉ được ghi từ những gì tester thực sự làm/nói.*
 
-**Task dùng chung cho cả ba phiên — phải giống hệt nhau cho A/B/C (relevant context + outcome task):** ✍️
+**Người facilitate:** [điền tên — MHV]
 
----
+**Tester (mã hoá):** [điền, ví dụ T1]
 
-## Phiên 1
+**Bối cảnh tester:** [điền — có tự học slide/track chuyên sâu và từng gặp thuật ngữ chưa hiểu trong 7 ngày gần đây không]
 
-| Mục | Nội dung |
-| --- | --- |
-| Người facilitate | ✍️ *(MHV — Họ tên)* |
-| Tester (mã hoá, ví dụ `T1`) | ✍️ |
-| Thời gian / địa điểm | ✍️ |
-| Option được test | A ⬜ · B ⬜ · C ⬜ *(phải đủ cả ba)* |
-| Thứ tự trình bày A/B/C | ✍️ |
+**Thời gian, địa điểm:** [điền]
 
-**OBSERVED — hành vi quan sát được 🚫**
+**Prototype dùng:** [interactive_micro_prototype_vlearn_option_a_b_c.html](./interactive_micro_prototype_vlearn_option_a_b_c.html)
 
-| # | Thời điểm | Tester làm gì (mô tả hành vi, không suy diễn) | Với option |
-| - | --------- | ------------------------------------------- | ---------- |
-| 1 | | | |
-| 2 | | | |
-| 3 | | | |
+**Thứ tự trình bày:** [điền — phiên 1: A, B, C · phiên 2: B, C, A · phiên 3: C, A, B]
 
-**INTERPRETED — nhóm hiểu là gì 🚫**
+**Task dùng chung cho A/B/C:** "Bạn đang xem lại slide 6 trước khi làm quiz và chưa hiểu rõ thuật ngữ RAG. Hãy dùng từng phương án để đến lúc bạn tự tin trả lời câu quiz bên dưới."
 
-- ✍️
+**Lời mở đầu (đọc nguyên văn):** "Chúng mình đang thử ba cách thiết kế, không phải đang kiểm tra bạn, nên không có câu trả lời đúng hay sai. Bạn cứ tự thao tác và nói to những gì mình đang nghĩ."
 
-**DECIDED — tester chọn gì và đánh đổi gì 🚫**
-
-| Chọn option | Lý do tester nói | Đánh đổi / điều tester phải từ bỏ |
-| --- | --- | --- |
-| | | |
-
-**STILL UNPROVEN — điều phiên này chưa chứng minh được 🚫**
-
-- ✍️
-
-**Quote nguyên văn (nếu có) 🚫**
-
-> "..."
+**Khi tester khựng lại, chỉ dùng:** "Bạn cứ nói to suy nghĩ của mình nhé" · "Bạn sẽ làm gì tiếp theo?" · "Theo bạn, nó nên hoạt động thế nào?"
 
 ---
 
-## Phiên 2
+## Bảng quan sát
 
-| Mục | Nội dung |
-| --- | --- |
-| Người facilitate | ✍️ |
-| Tester (mã hoá) | ✍️ |
-| Thời gian / địa điểm | ✍️ |
-| Option được test | A ⬜ · B ⬜ · C ⬜ |
-| Thứ tự trình bày A/B/C | ✍️ |
+Ghi hành vi trước, diễn giải sau; kèm phút thứ mấy của phiên; lời tester để trong ngoặc kép.
 
-**OBSERVED 🚫**
+| Observation | Note |
+|---|---|
+| **First action** (bấm/đọc gì trước, sau bao lâu — ghi cho từng option) | A: [điền] · B: [điền] · C: [điền] |
+| **Chỗ dừng, do dự hoặc hiểu sai** | [điền] |
+| **Evidence được đọc hay bỏ qua** (B: nguồn slide + nhãn độ chắc chắn · C: "Vì sao mình hỏi?", danh sách tín hiệu) | [điền] |
+| **Cách tester sửa hoặc lấy lại control** (A: sửa/thu hồi · B: "Vẫn chưa hiểu", sửa nháp, "Không gửi" · C: "Để sau", "Đừng gợi ý nữa", tắt) | [điền] |
+| **Option được chọn** | A / B / C — [điền] |
+| **Lý do và trade-off** | [điền] |
+| **Evidence chống lại kỳ vọng của nhóm** | [điền] |
 
-| # | Thời điểm | Tester làm gì | Với option |
-| - | --------- | ------------- | ---------- |
-| 1 | | | |
-| 2 | | | |
-| 3 | | | |
+## Câu hỏi so sánh sau khi dùng đủ ba option
 
-**INTERPRETED 🚫**
+| Câu hỏi | Câu trả lời của tester |
+|---|---|
+| Trong tình huống này, bạn chọn A, B hay C? Vì sao? | [điền] |
+| Bạn muốn tự làm phần nào và giao cho AI phần nào? | [điền] |
+| Ở phương án bạn chọn, điều gì khiến bạn chưa thoải mái? | [điền] |
+| Nếu phải bỏ một phương án, bạn sẽ bỏ cái nào? | [điền] |
 
-- ✍️
+## Câu hỏi phụ (phân biệt Pain A / Pain B)
 
-**DECIDED 🚫**
+| Câu hỏi | Ghi nhận |
+|---|---|
+| Tester có biết mình đang mắc ở đâu không? | [điền] |
+| Tester có ngại bị gắn tên với việc mình đang mắc không? (A/B: chọn ẩn danh hay kèm tên) | [điền] |
+| Ở C, khi AI chủ động hỏi dựa trên hành vi của chính họ, tester phản ứng thế nào? | [điền] |
 
-| Chọn option | Lý do tester nói | Đánh đổi |
-| --- | --- | --- |
-| | | |
+## Trích dẫn nguyên văn
 
-**STILL UNPROVEN 🚫**
+- [điền]
 
-- ✍️
+## Phân tích
 
-**Quote nguyên văn 🚫**
-
-> "..."
-
----
-
-## Phiên 3
-
-| Mục | Nội dung |
-| --- | --- |
-| Người facilitate | ✍️ |
-| Tester (mã hoá) | ✍️ |
-| Thời gian / địa điểm | ✍️ |
-| Option được test | A ⬜ · B ⬜ · C ⬜ |
-| Thứ tự trình bày A/B/C | ✍️ |
-
-**OBSERVED 🚫**
-
-| # | Thời điểm | Tester làm gì | Với option |
-| - | --------- | ------------- | ---------- |
-| 1 | | | |
-| 2 | | | |
-| 3 | | | |
-
-**INTERPRETED 🚫**
-
-- ✍️
-
-**DECIDED 🚫**
-
-| Chọn option | Lý do tester nói | Đánh đổi |
-| --- | --- | --- |
-| | | |
-
-**STILL UNPROVEN 🚫**
-
-- ✍️
-
-**Quote nguyên văn 🚫**
-
-> "..."
-
----
-
-## Ghi chú facilitation (tuỳ chọn)
-
-| # | Điều mình làm tốt khi facilitate | Điều mình vô tình dẫn dắt / cần tránh lần sau |
-| - | -------------------------------- | --------------------------------------------- |
-| 1 | | |
-| 2 | | |
-
-> Sau khi hoàn tất, chuyển pattern sang [group-feedback-synthesis.md](./group-feedback-synthesis.md).
+- **Observed:** [điền]
+- **Interpreted:** [điền — ghi rõ là suy đoán]
+- **Still unproven:** [điền]

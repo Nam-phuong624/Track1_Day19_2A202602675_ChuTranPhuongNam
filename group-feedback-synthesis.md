@@ -1,69 +1,52 @@
-# Group Feedback Synthesis — H3201 · Case C
+# GROUP FEEDBACK SYNTHESIS (TỔNG HỢP PHẢN HỒI CỦA NHÓM H3201)
 
-> **Nhóm:** H3201 · **Track 1** · **Case C — AI Support Radar**
-> Tổng hợp từ **3 Feedback Note độc lập** → đầu ra của **GATE 5**.
-> Nguồn: [prototype-feedback-note.md](./prototype-feedback-note.md)
+**Nhóm:** H3201  
+**Case:** Case C — AI Support Radar (VLearn)  
+**Prototype dùng để test:** [interactive_micro_prototype_vlearn_option_a_b_c.html](./interactive_micro_prototype_vlearn_option_a_b_c.html)
 
----
+> Tổng hợp từ ba Feedback Note độc lập (mẫu: [prototype-feedback-note.md](./prototype-feedback-note.md)). Một hiện tượng chỉ được coi là **pattern** khi ít nhất hai tester cùng gặp. Các ô [điền] chỉ điền sau khi có đủ ba phiên test thật.
 
-## 1. Bảng evidence tổng hợp
-
-| # | Tester | Người facilitate | Hành vi đáng chú ý (OBSERVED) | Chọn option | Lý do / đánh đổi | Điều chưa chứng minh |
-| - | ------ | ---------------- | ----------------------------- | ----------- | ---------------- | -------------------- |
-| 1 | | | | | | |
-| 2 | | | | | | |
-| 3 | | | | | | |
+| Feedback | Người facilitate | Tester | Thứ tự trình bày |
+| :--- | :--- | :--- | :--- |
+| 1 | [điền] | [điền] | A, B, C |
+| 2 | [điền] | [điền] | B, C, A |
+| 3 | [điền] | [điền] | C, A, B |
 
 ---
 
-## 2. Pattern tìm được
+## 1. BẢNG TỔNG HỢP FEEDBACK TỪ BA PHIÊN THỬ NGHIỆM
 
-> Chỉ ghi pattern khi **≥ 2 tester** cho thấy cùng một hành vi / cùng một điểm vướng.
-
-| # | Pattern | Số tester gặp | Bằng chứng (note nào, hành vi nào) | Có phải do feedback hay do lỗi prototype? |
-| - | ------- | ------------- | ---------------------------------- | ---------------------------------------- |
-| 1 | | | | |
-| 2 | | | | |
-
-**Điểm khác biệt giữa các tester (nếu có):** ✍️
-
-**Điều bất ngờ / trái với giả định của nhóm:** ✍️
+| Nội dung | Feedback 1 | Feedback 2 | Feedback 3 | Pattern hoặc khác biệt |
+| :--- | :--- | :--- | :--- | :--- |
+| **First action** | [điền] | [điền] | [điền] | [điền] |
+| **Breakdown chính** | [điền] | [điền] | [điền] | [điền] |
+| **Cách lấy lại control** | [điền] | [điền] | [điền] | [điền] |
+| **Option được chọn** | [điền] | [điền] | [điền] | [điền] |
+| **Trade-off** | [điền] | [điền] | [điền] | [điền] |
 
 ---
 
-## 3. Một Next Change duy nhất
+## 2. KỲ VỌNG CỦA NHÓM SO VỚI THỰC TẾ
 
-> Chọn **1** thay đổi cho iteration tiếp theo. Không liệt kê danh sách dài.
+Kỳ vọng dưới đây lấy từ Practice Notes Day 17 và Design Sheet; cột thực tế chỉ điền từ ba Feedback Note.
 
-| Mục | Nội dung |
-| --- | --- |
-| **Next Change** | ✍️ |
-| Nhắm vào option nào | A / B / C |
-| Nhắm vào nguyên lý nào (Expectation / Role & Agency / Evidence & Uncertainty / Control & Recovery) | ✍️ |
-| Vì sao là thay đổi này mà không phải cái khác | ✍️ |
-| Dấu hiệu sẽ quan sát ở vòng test sau để biết đã cải thiện | ✍️ |
-| Người phụ trách | ✍️ |
+| Option | Nhóm kỳ vọng (trước test) | Căn cứ của kỳ vọng | Thực tế quan sát |
+| :--- | :--- | :--- | :--- |
+| A | Learner tự nhận ra chỗ kẹt ở slide 6 và đánh dấu; chọn ẩn danh. | PN3 ngại hỏi; PN1 lại *không xác định được* mình kẹt ở đâu → có thể A thất bại với người như PN1. | [điền] |
+| B | Learner hỏi trợ lý ngay vì giống thói quen "hỏi AI trước" của PN3; có đọc nhãn độ chắc chắn. | PN3: hỏi AI trước rồi mới Google (~10 phút/thuật ngữ). | [điền] |
+| C | Learner thấy được hỏi trước là dễ chịu, không thấy bị theo dõi. | PN3: "Wow, được giải thoát rồi!" — nhưng đó là phản ứng với *giảng viên hỏi trực tiếp*, chưa phải với AI. | [điền] |
 
 ---
 
-## 4. Một điều Still Unproven
+## 3. ĐÚC KẾT QUYẾT ĐỊNH SAU THỬ NGHIỆM
 
-| Mục | Nội dung |
-| --- | --- |
-| **Still Unproven** | ✍️ |
-| Vì sao 3 phiên vừa rồi chưa trả lời được | ✍️ |
-| Cần test thế nào để trả lời ở vòng sau | ✍️ |
+* **Một Next Change nhóm chốt:**  
+  [điền sau khi có ba feedback]
 
----
+* **Evidence nào dẫn tới quyết định này:**  
+  [điền — trích Feedback số mấy, hành vi gì]
 
-## 5. Kết luận được phép / không được phép
+* **Still Unproven sau ba feedback:**  
+  [điền]
 
-**Được phép:**
-
-> "Với **Hypothesis Problem này**, chúng tôi đã thử **ba cách giải**. Tester đã **làm…**, vì vậy **iteration tiếp theo** chúng tôi sẽ **…**"
-
-**Không được phép:** ~~"User đã xác nhận solution này đúng."~~
-
-- [ ] Không có dòng nào trong file này tuyên bố "validated"
-- [ ] Không dùng 3 feedback để suy ra product value / market demand
-- [ ] 3 Feedback Note là 3 bản độc lập, có đủ OBSERVED / INTERPRETED / DECIDED / STILL UNPROVEN
+> Lưu ý: ba phiên test prototype không đủ để kết luận Problem Hypothesis đã validated hay tester "xác nhận" một option là đúng.

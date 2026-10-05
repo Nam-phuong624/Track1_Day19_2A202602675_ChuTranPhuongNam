@@ -1,171 +1,38 @@
-# Three-Option Design Sheet — Case C · AI Support Radar (VLearn)
+# THREE OPTION DESIGN SHEET & HUMAN-AI DECISION MATRIX
 
-> **Nhóm:** H3201 (4 thành viên, giảng viên đã đồng ý) · **Track 1** · **Case C — AI Support Radar**
-> Nhãn: ⚙️ lấy từ Day 17 · ✍️ nhóm phải xác nhận/chọn · 🧪 bản nháp do AI soạn từ evidence Day 17, **nhóm phải tự đọc lại và chốt** · 🚫 cấm dùng AI
->
-> File này là đầu ra của **Chặng 1 → Chặng 3** (GATE 1, GATE 2, GATE 3).
-> **Trạng thái: ☑ Draft — chờ nhóm review · ☐ Đã review nhóm · ☐ Đã chốt**
+**Nhóm:** H3201  
+**Case:** Case C — AI Support Radar (VLearn)
 
----
-
-## 0. Thông tin chung
-
-| Mục | Nội dung |
-| --- | --- |
-| Hypothesis Problem (tên ngắn) | 🧪 Kẹt ở thuật ngữ khi xem lại slide, tự tra rời rạc, một số người ngại hỏi |
-| Người điều phối điền file | ✍️ Bùi Hải Nam *(đã điều phối Chặng 1–2 ở Day 17 — nhóm xác nhận)* |
-| Ngày chốt | ✍️ |
-
-**Phân công phụ trách chính — 🧪 đề xuất, nhóm tự chốt:**
-
-| # | MHV | Họ và tên | Option phụ trách chính | Việc dùng chung |
-| - | --- | --------- | ---------------------- | --------------- |
-| 1 | `2A202602636` | Bùi Hải Nam | **C** (chính) | Điều phối Chặng 1–3 |
-| 2 | `2A202602675` | Chử Trần Phương Nam | **B** | Soạn canned output của AI (lời giải thích RAG) |
-| 3 | `2A202602585` | Phùng Gia Khánh | **C** (người thứ hai cùng phụ trách) | `prototype/` dùng chung: slide, quiz, nút reset |
-| 4 | `2A202602930` | Phan Duy Thanh | **A** | Soạn canned reply của coach; chốt link/QA |
-
-> 4 người, 3 option → **Option C do 2 người cùng phụ trách** (Nam chịu trách nhiệm chính, Khánh hỗ trợ). Lý do chọn C: option này phức tạp nhất (trigger + gợi ý + xem trước thẻ gửi coach). Nhóm có thể đổi.
+**Dùng chung cho A/B/C:** learner đang xem lại slide 6 "RAG — Retrieval-Augmented Generation" trước khi làm quiz và chưa hiểu thuật ngữ; task là đến lúc tự tin trả lời 1 câu quiz về RAG nằm ngay dưới slide. Cả ba dùng cùng mini-deck 3 slide (5–7), cùng câu quiz, cùng lời giải thích RAG và cùng câu trả lời của coach (nội dung soạn sẵn, không phải dữ liệu thật). Ở cả ba option, learner là người giữ quyền quyết định cuối.
 
 ---
 
-## 1. Hypothesis Problem — GATE 1
+## 1. BẢNG SO SÁNH 3 SOLUTION OPTIONS (A / B / C)
 
-### 1.1. Sửa lại so với README nhóm (errata) 🧪
+| Thành phần | Option A: User-Led (Tự đánh dấu, coach trả lời) | Option B: Co-Creation (AI giải thích khi được hỏi) | Option C: AI-Led (AI chủ động hỏi thăm) |
+| :--- | :--- | :--- | :--- |
+| **Solution Mechanism** | Learner tự đánh dấu chỗ chưa hiểu; hệ thống gắn số slide và gửi cho coach, không suy đoán gì. | Learner hỏi trợ lý; AI giải thích trong phạm vi slide, nói rõ độ chắc chắn; chỉ khi learner còn chưa hiểu mới soạn nháp câu hỏi cho coach. | AI thấy tín hiệu hành vi của chính learner (dừng lâu, quay lại slide) và chủ động hỏi; chỉ khi learner đồng ý mới tạo thẻ gửi coach. |
+| **User làm gì?** | Tự nhận ra chỗ kẹt → chọn loại → mô tả → chọn ẩn danh/kèm tên → gửi. | Chọn thuật ngữ hoặc tự hỏi → đọc và đánh giá lời giải → quyết định có nhờ coach không → sửa nháp. | Phản hồi gợi ý (giải thích / nhờ coach / để sau / tắt) → xem trước và xác nhận thẻ. |
+| **AI làm gì?** | Chỉ gắn số slide vào câu hỏi. | Giải thích dựa trên slide 5–7 kèm nhãn độ chắc chắn và nguồn → hiển thị số bạn khác đánh dấu (ẩn danh) → soạn nháp. | Đo thời gian ở slide và số lần quay lại → hiện gợi ý kèm lý do → soạn bản xem trước thẻ. |
+| **Trigger** | Learner (bấm đánh dấu). | Learner (hỏi trợ lý). | AI (dừng ≥ 20 giây ở slide 6 hoặc rời slide 6 rồi quay lại). |
+| **Trade-off chính** | Ẩn danh giảm ngại hỏi và câu hỏi gắn đúng slide, nhưng learner không nhận ra mình kẹt thì không dùng được và phải chờ coach. | Gỡ nhanh việc tra cứu rời rạc (~10 phút/thuật ngữ), nhưng AI có thể giải thích sai mà learner tin. | Hệ thống biết learner đang kẹt mà learner không phải lên tiếng trước, nhưng gợi ý có thể nhầm thời điểm hoặc khiến learner thấy bị theo dõi. |
 
-Khi đối chiếu README nhóm với 4 file note gốc, mình thấy 5 chỗ nên sửa trước khi chốt:
+**Distance check**
 
-| # | README nhóm đang viết | Đối chiếu với note gốc | Sửa thành |
-| - | --------------------- | ---------------------- | --------- |
-| 1 | "Cả **ba** note đều có mốc *buổi học gần nhất là hôm qua*" | PN1 ("chiều hôm qua") và PN2 ("buổi hôm qua") có. **PN3 (learner của Phương Nam) không nói mốc ngày** | "PN1 và PN2 kể được một buổi học hôm qua; PN3 kể chung về thói quen đọc slide và recap ở nhà" |
-| 2 | Situation: "buổi tối, một mình, không có ai ngồi cạnh" | **Không note nào nói "buổi tối" hay "một mình".** PN3 nói đọc slide ở lớp *và* recap ở nhà | "Đang đọc hoặc xem lại slide" (bỏ "buổi tối, một mình") |
-| 3 | Barrier: "không ai biết họ đang mắc ở đâu **và** bản thân họ cũng không chủ động lên tiếng" | PN2: learner **chủ động** tìm coach/bạn → mâu thuẫn. PN3: ngại nên không hỏi. Hai learner khác nhau ở đúng điểm này | Tách barrier thành 3 thứ có evidence riêng (xem 1.2) |
-| 4 | Phản ứng "Wow, được giải thoát rồi!" được dùng để "chống lại giả định learner không muốn bị chú ý" | PN3 nói câu này về lúc **giảng viên ở lớp code đến hỏi trực tiếp**. Chưa có evidence nào về phản ứng khi **AI** phát hiện và báo | Ghi rõ là *Still Unproven*: chưa biết learner chấp nhận bị AI phát hiện hay không |
-| 5 | File `notes_phuongnam.md` | Đây là note của **Bùi Hải Nam** (phỏng vấn Vũ Quang Tiến), không phải của Phương Nam | Đổi tên thành `notes_buihainam.md` |
-
-Ngoài ra: `notes_khanh.md` (Khánh → Lê Anh Duy) vẫn là template, chỉ có vài dòng thật (ở Lạng Sơn, học Khoa học máy tính, muốn học tốt AI thực chiến, nghe giảng đầy đủ trên lớp; phiên 3 phút). **Chưa dùng làm evidence.** Khánh nên nghe lại bản ghi và điền nốt, hoặc ghi rõ "phiên quá ngắn, không đủ evidence".
-
-### 1.2. Hypothesis Problem 🧪 *(bản đề xuất — nhóm so với bản Day 17 và chọn)*
-
-> Khi **đọc hoặc xem lại slide của track chuyên sâu và gặp một thuật ngữ/định nghĩa chưa hiểu**, **learner** gặp khó khăn trong việc **hiểu đủ để học tiếp và làm quiz** vì **phải tự tra qua nhiều kênh rời rạc, không gắn với đúng chỗ trên slide; một số người ngại hỏi; và người hỗ trợ không biết họ đang kẹt**, dẫn đến **mất thời gian cho mỗi thuật ngữ, lúng túng khi làm quiz và lo lắng vì thấy mình tụt lại**.
-
-| Thành phần | Nội dung | Evidence |
-| --- | --- | --- |
-| **User** | Learner đang học track chuyên sâu (AI Thực Chiến) | PN1, PN2, PN3 đều là learner của khóa |
-| **Situation** | Đọc hoặc xem lại slide/video và gặp thuật ngữ, định nghĩa chưa rõ | PN1 "thuật ngữ tiếng Anh"; PN2 "định nghĩa chưa được làm rõ"; PN3 "RAG" |
-| **Job-to-be-done** | Hiểu đủ để học tiếp và làm được quiz | PN3: vừa recap ở nhà vừa phải làm quiz |
-| **Barrier 1 — tra cứu rời rạc** | Phải xoay qua AI, Google, bạn, coach; không gắn với chỗ trên slide | PN2: search / hỏi bạn / hỏi lab coach. PN3: hỏi AI → Google. PN1: "không tìm được cái nội dung ở đấy luôn" |
-| **Barrier 2 — ngại hỏi** *(chỉ có ở một số người)* | Biết cách hỏi nhưng không hỏi | PN3: "Mình nghĩ là không tại mình cũng hơi ngại". **PN2 ngược lại: chủ động đi tìm coach** |
-| **Barrier 3 — người hỗ trợ không biết** | Coach không chủ động hỏi tình hình | PN2: "các anh cũng không hỏi tình hình của mình mấy". PN3: coach lớp code *có* hỏi thăm → khác nhau giữa các lớp |
-| **Consequence** | Tốn thời gian, lúng túng ở quiz, lo lắng | PN3: ~10 phút/thuật ngữ, quiz "ôi trời ơi không nhớ nó là gì luôn". PN1: "buồn", "lo lắng" khi tụt lại |
-
-**Evidence neo vào (3 Practice Notes Day 17):**
-
-| # | Practice Note | Observation / quote gốc ⚙️ | Chống lưng cho barrier nào |
-| - | ------------- | --------------------------- | -------------------------- |
-| PN1 | Thành → Lê Thanh Tình | "Nói chung là em không tìm được cái nội dung ở đấy luôn." · "Nó sẽ gặp những các thuật ngữ tiếng Anh." · "Thấy buồn ạ." / "Thấy lo lắng." | Barrier 1 (không định vị được chỗ kẹt); Consequence (cảm xúc) |
-| PN2 | Nam → Vũ Quang Tiến | "Khi đấy thì mình tự lên mạng… search thôi, hoặc mình hỏi những cái bạn xung quanh, hoặc là hỏi anh lab coach." · "…chứ các anh cũng… không hỏi tình hình của mình mấy." | Barrier 1 (kênh rời rạc); Barrier 3; **làm yếu Barrier 2** |
-| PN3 | Phương Nam → learner nữ | "Mình nghĩ là không tại mình cũng hơi ngại." · "…mất khoảng 10 phút để tra cứu thêm một thuật ngữ." · "ôi trời ơi không nhớ nó là gì luôn." · "Wow, được giải thoát rồi!" (khi coach lớp code hỏi thăm) | Barrier 1; Barrier 2; Consequence |
-
-**Điều nhóm vẫn CHƯA BIẾT (bắt buộc ≥ 1):**
-
-1. Learner phản ứng thế nào khi **AI** (không phải người) phát hiện họ kẹt và gợi ý/báo — chưa note nào hỏi tới việc này, và "được giải thoát" là phản ứng với **con người**.
-2. Ngại hỏi là chung hay chỉ ở một số người (PN2 và PN3 đi hai hướng).
-3. Hậu quả học tập thật (điểm quiz, deadline) — mới có cảm nhận, chưa có số.
-4. Toàn bộ phía instructor/coach (Day 17 chỉ phỏng vấn learner).
-
-> ✍️ Nếu nhóm giữ nguyên câu Day 17 thì vẫn phải ghi errata ở 1.1, và phải áp dụng **giống nhau** cho cả A/B/C.
+- **A khác B:** ở A lời giải đến từ con người (coach) và hệ thống không suy luận gì; ở B AI tự giải thích ngay, con người chỉ là đường lui khi AI chưa đủ.
+- **B khác C:** ở B learner khởi xướng và AI chỉ nhìn ở cấp nội dung (slide); ở C AI khởi xướng dựa trên hành vi của từng người.
+- **A khác C:** A đòi learner tự lên tiếng trước; C là hệ thống hỏi learner trước.
 
 ---
 
-## 2. Ba Solution Options — GATE 2
+## 2. BẢNG NGUYÊN TẮC THIẾT KẾ HUMAN-AI (DECISION TABLE)
 
-### 2.1. Comparison Contract — giống hệt nhau ở cả 3 option
+| Human-AI Decision | Option A: User-Led | Option B: Co-Creation | Option C: AI-Led |
+| :--- | :--- | :--- | :--- |
+| **1. Phân chia công việc** | Learner tự nhận ra chỗ kẹt, mô tả và chọn cách gửi. AI chỉ gắn số slide; lời giải đến từ coach. | Learner hỏi và đánh giá lời giải. AI giải thích theo slide, soạn nháp câu hỏi cho coach khi learner vẫn chưa hiểu. | AI phát hiện tín hiệu và hỏi trước. Learner chọn cách phản hồi, xem trước và xác nhận thẻ gửi coach. |
+| **2. Act / Ask / Don't Act** | Don't Act: AI không đoán learner chưa hiểu gì, không tự điền mô tả. Hậu quả khi sai thấp, nhưng lợi ích phụ thuộc việc learner tự nhận ra. | Ask: AI chỉ làm khi được hỏi, không gửi coach khi learner chưa bấm. Hậu quả khi sai ở mức vừa (hiểu sai thuật ngữ). | Act: AI khởi xướng nhưng chỉ ở mức hỏi learner, không tự báo coach. Hậu quả khi sai là cảm giác bị theo dõi. |
+| **3. Capability & Limits** | Dòng "Hệ thống không tự đoán bạn đang gặp khó ở đâu" + dòng "Coach sẽ thấy: …" cập nhật theo lựa chọn. | Dòng "Trợ lý chỉ dựa trên slide 5–7 của bài này và có thể trả lời sai". | Panel nêu rõ dữ liệu được dùng / không dùng; nút "Vì sao mình hỏi?"; "Đây chỉ là suy đoán, có thể sai". |
+| **4. Uncertainty & Evidence** | Số slide và loại chỗ vướng do learner tự chọn; không có suy đoán nào của AI. | Nguồn slide ("Slide 7, bước 4") + nhãn Độ chắc chắn Cao/Trung bình/Thấp + cảnh báo khi slide chưa đủ (Top-k: "Slide chưa nói cách chọn k"). | Danh sách tín hiệu đã đo ("Đang ở slide 6 khoảng N giây", "Đã quay lại slide 6 N lần"), gọi rõ là suy đoán. |
+| **5. Control & Recovery** | Sửa mô tả, đổi loại, đổi ẩn danh/kèm tên trước khi gửi; "Sửa câu hỏi" hoặc "Thu hồi" trước khi coach phản hồi; "Hỏi thêm" sau đó. | "Mình hiểu rồi", "Vẫn chưa hiểu", "Hỏi phần khác"; sửa nháp; "Không gửi"; "Thu hồi" sau khi gửi. | "Để sau", "Đừng gợi ý nữa", công tắc Bật/Tắt, tối đa 2 lần gợi ý; xem trước thẻ, "Không gửi", "Thu hồi". |
 
-| Trường | Giá trị dùng chung cho A/B/C |
-| --- | --- |
-| User | **Learner** (cả ba option đều lấy learner làm người dùng chính; coach chỉ xuất hiện ở màn kết quả) |
-| Situation | Đang xem lại slide 6 "RAG — Retrieval-Augmented Generation" trước khi làm quiz, chưa hiểu thuật ngữ |
-| Task tester phải làm | Đến lúc tự tin trả lời 1 câu quiz về RAG nằm ngay dưới slide |
-| Outcome kỳ vọng | Gỡ được chỗ vướng ngay trong lúc học, hoặc chuyển được câu hỏi tới đúng người |
-| Fixture | Cùng mini-deck 3 slide (5–7), cùng câu quiz, cùng lời giải thích RAG, cùng câu trả lời của coach *(synthetic, do nhóm soạn — xem `ai-support-log.md`)* |
-
-> **Vì sao sửa bản nháp trong README nhóm?** Bản nháp đó để Option B gửi digest cho mentor và Option C để **người hỗ trợ** làm user ("learner chỉ nhận thông báo"). Như vậy ba option **không cùng user** → trượt Gate 2. Ở đây learner là user cho cả ba; phía coach chỉ là nơi câu hỏi đến.
-
-### 2.2. Ba option
-
-| | **Option A** | **Option B** | **Option C** |
-| --- | --- | --- | --- |
-| Tên option | Tự đánh dấu, coach trả lời | AI giải thích khi được hỏi | AI chủ động hỏi thăm |
-| Từ Parking Lot | #1 FAQ, #2 checklist, #4 mentor | #5 digest theo slide (không theo người) | #6 Support Queue (đưa quyền quyết định về learner) |
-| Cơ chế (1 câu) | Learner tự đánh dấu chỗ chưa hiểu; hệ thống gắn số slide và gửi cho coach, **không suy đoán gì** | Learner hỏi trợ lý; AI giải thích trong phạm vi slide, nói rõ độ chắc chắn, và chỉ khi learner còn chưa hiểu mới soạn nháp câu hỏi cho coach | AI thấy tín hiệu hành vi của chính learner (dừng lâu/quay lại slide), **chủ động hỏi**, và chỉ khi learner đồng ý mới tạo thẻ gửi coach |
-| Vị trí trên spectrum | User-led / No-inference | User + AI co-create | AI initiate, human decide |
-| User làm gì? | Tự nhận ra chỗ kẹt, chọn loại, mô tả, chọn ẩn danh/kèm tên, gửi | Chọn thuật ngữ hoặc tự hỏi; đọc và đánh giá lời giải; quyết định có nhờ coach không; sửa nháp | Phản hồi gợi ý (giải thích / nhờ coach / để sau / tắt); xem trước và xác nhận thẻ |
-| AI làm gì? | Chỉ gắn slide vào câu hỏi | Giải thích dựa trên slide 5–7, nhãn độ chắc chắn và nguồn; hiển thị số bạn khác đánh dấu (ẩn danh); soạn nháp | Đo thời gian ở slide và số lần quay lại; hiện gợi ý kèm lý do; soạn bản xem trước thẻ |
-| Trigger | Learner | Learner | AI (dừng ≥ 20 giây ở slide 6 hoặc quay lại slide 6 lần 2) |
-| AI Act / Ask / Don't Act | **Don't Act** | **Ask** (chỉ làm khi được hỏi) | **Act** (khởi xướng) nhưng chỉ ở mức *hỏi learner*, không tự báo coach |
-| Ai giữ quyền quyết định cuối? | Learner | Learner | Learner |
-| Chống lại barrier nào? | Barrier 2 (ẩn danh giảm ngại) và Barrier 1 (tự gắn đúng slide) | Barrier 1 (tra rời rạc ~10 phút) và một phần Barrier 2 ("không chỉ mình mình") | Barrier 3 (coach/hệ thống biết learner đang kẹt) |
-| Rủi ro chính nếu sai | Learner không nhận ra mình kẹt thì không dùng được; phải chờ coach | AI giải thích sai mà learner tin | Gợi ý nhầm thời điểm, hoặc learner thấy bị theo dõi |
-| Người phụ trách chính | Phan Duy Thanh | Chử Trần Phương Nam | Bùi Hải Nam (+ Phùng Gia Khánh) |
-
-### 2.3. Distance Check 🚫 *(bản nháp dưới đây là 🧪 — nhóm phải viết lại bằng lời của mình)*
-
-- **A khác B ở chỗ:** ở A lời giải đến từ **con người** (coach) và hệ thống không suy luận gì; ở B **AI tự giải thích ngay** rồi con người chỉ là đường lui khi AI chưa đủ.
-- **B khác C ở chỗ:** ở B **learner khởi xướng** và AI chỉ nhìn ở cấp nội dung (slide); ở C **AI khởi xướng** dựa trên hành vi của *từng người*.
-- **A khác C ở chỗ:** A đòi learner **tự lên tiếng trước**; C là hệ thống **hỏi trước** learner.
-- **Kết luận:** ba option khác nhau ở **mechanism / phân chia quyền** (ai khởi xướng, AI suy luận ở cấp nào, lời giải đến từ đâu), không chỉ khác giao diện ☐ *(nhóm tick sau khi tự đọc lại)*
-
----
-
-## 3. Human–AI Decision Table — GATE 3 🧪
-
-### 3.1. Option A — Tự đánh dấu, coach trả lời
-
-| # | Tình huống | AI **Act** | AI **Ask** | AI **Don't Act** | User hiểu điều gì? | Kiểm soát / phục hồi khi sai |
-| - | ---------- | ---------- | ---------- | ---------------- | ------------------ | ---------------------------- |
-| 1 | Learner bấm đánh dấu chỗ chưa hiểu ở slide đang xem | Tự gắn số slide vào câu hỏi | — | **Không** đoán learner chưa hiểu gì, không tự điền mô tả | "Câu hỏi sẽ gửi tới coach. Hệ thống không tự đoán bạn đang gặp khó ở đâu" | Sửa mô tả, đổi loại, chọn lại slide trước khi gửi |
-| 2 | Chọn cách gửi | — | Hỏi gửi **ẩn danh** hay **kèm tên** (mặc định ẩn danh) | Không tự tiết lộ tên | Dòng "Coach sẽ thấy: …" cập nhật theo lựa chọn | Đổi lại trước khi gửi |
-| 3 | Đã gửi, chờ coach | Hiển thị trạng thái "đã gửi" và phản hồi của coach khi có | — | Không tự tóm tắt hay chỉnh sửa lời coach | "Coach thường phản hồi trong vòng một ngày làm việc" | **Sửa câu hỏi** hoặc **Thu hồi** trước khi có phản hồi; **Hỏi thêm** sau khi có phản hồi |
-
-### 3.2. Option B — AI giải thích khi được hỏi
-
-| # | Tình huống | AI **Act** | AI **Ask** | AI **Don't Act** | User hiểu điều gì? | Kiểm soát / phục hồi |
-| - | ---------- | ---------- | ---------- | ---------------- | ------------------ | -------------------- |
-| 1 | Learner mở panel ở slide đang xem | Hiển thị số bạn khác đánh dấu "chưa hiểu" ở slide này (ẩn danh) | — | Không nêu tên ai; không tự giải thích khi chưa được hỏi; không tự gửi coach | "Trợ lý chỉ dựa trên slide 5–7 và có thể trả lời sai" | Bỏ qua panel, tiếp tục học |
-| 2 | Learner hỏi một thuật ngữ | Giải thích dựa trên slide, kèm nguồn ("Slide 7, bước 4") | — | Không trả lời như thể chắc chắn khi slide không nói | Nhãn **Độ chắc chắn Cao/Trung bình/Thấp** + cảnh báo khi slide chưa đủ (ví dụ Top-k: "slide chưa nói cách chọn k") | "Hỏi phần khác", "Mình hiểu rồi", "Vẫn chưa hiểu" |
-| 3 | Learner vẫn chưa hiểu | Soạn nháp câu hỏi cho coach | Hỏi learner **sửa nháp** và chọn ẩn danh/kèm tên (mặc định ẩn danh) | **Không gửi** khi learner chưa bấm "Gửi cho coach" | "Trợ lý soạn nháp — bạn xem và sửa trước khi gửi" | "Không gửi" (quay lại giải thích), **Thu hồi** sau khi gửi |
-
-### 3.3. Option C — AI chủ động hỏi thăm
-
-| # | Tình huống | AI **Act** | AI **Ask** | AI **Don't Act** | User hiểu điều gì? | Kiểm soát / phục hồi |
-| - | ---------- | ---------- | ---------- | ---------------- | ------------------ | -------------------- |
-| 1 | Learner dừng ≥ 20 giây ở slide 6 hoặc quay lại lần 2 | Hiện gợi ý kèm lý do ("Đang ở slide 6 khoảng N giây"; "Đã quay lại N lần") | "Bạn có cần mình giúp không?" | Không tự báo coach; không đọc ghi chú hay nội dung chat | Panel luôn nói rõ mình dùng dữ liệu gì; nút **"Vì sao mình hỏi?"**; "đây chỉ là suy đoán, có thể sai" | **Để sau**; **Đừng gợi ý nữa**; công tắc Bật/Tắt trong panel; tối đa 2 lần gợi ý |
-| 2 | Learner chọn "Nhờ coach hỗ trợ" | Tạo bản **xem trước thẻ** sẽ vào hàng chờ của coach (learner / nội dung / tín hiệu / gợi ý hành động) | Hỏi **kèm tên** hay **ẩn danh**, rồi xác nhận gửi | **Không gửi** khi learner chưa bấm "Gửi cho coach" | Thấy chính xác coach sẽ nhận được gì, kể cả tín hiệu hệ thống đã đo | "Không gửi"; **Thu hồi** sau khi gửi |
-| 3 | AI gợi ý sai (learner không gặp khó) | — | — | Không lặp lại gợi ý quá 2 lần; không ghi nhận "learner gặp khó" nếu learner từ chối | Gợi ý được gọi rõ là suy đoán | Tắt gợi ý bất kỳ lúc nào; learner vẫn làm quiz bình thường |
-
-### 3.4. Bốn nguyên lý Human–AI Design — đối chiếu
-
-| Nguyên lý | A | B | C |
-| --- | --- | --- | --- |
-| **Expectation** | Câu "Hệ thống không tự đoán bạn đang gặp khó ở đâu" + dòng "Coach sẽ thấy…" | "Chỉ dựa trên slide 5–7, có thể sai" | Panel nêu rõ dữ liệu được dùng / không dùng; "Vì sao mình hỏi?" |
-| **Role & Agency** | Learner làm gần hết; AI **Don't Act** vì hậu quả sai thấp nhưng lợi ích cũng phụ thuộc learner tự nhận ra | AI **Ask** (chỉ làm khi được hỏi); hậu quả sai vừa (hiểu sai thuật ngữ) | AI **Act** nhưng chỉ ở mức hỏi; hậu quả sai là cảm giác bị theo dõi → không tự báo coach |
-| **Evidence & Uncertainty** | Số slide, loại chỗ vướng | Nguồn slide + nhãn Cao/Trung bình/Thấp + cảnh báo | Danh sách tín hiệu đã đo, nêu là suy đoán |
-| **Control & Recovery** | Sửa, đổi ẩn danh, thu hồi, hỏi thêm | Hỏi lại, sửa nháp, không gửi, thu hồi | Để sau, tắt, xem trước, không gửi, thu hồi |
-
-### 3.5. Feedback and data check (cho Option C và phần gửi coach ở A/B)
-
-| Câu hỏi | Trả lời trong prototype 🧪 *(nhóm xác nhận)* |
-| --- | --- |
-| Feedback của learner ảnh hưởng phiên hiện tại, lần sau hay không được ghi nhớ? | Chỉ ảnh hưởng **phiên hiện tại**: "Đừng gợi ý nữa" tắt gợi ý trong phiên; prototype không lưu gì sang phiên sau |
-| Dữ liệu nào được dùng? | Thao tác chuyển slide và thời gian ở mỗi slide trong phiên. **Không** dùng ghi chú, đáp án quiz, nội dung chat |
-| Learner có cách rút quyền không? | Có: công tắc Bật/Tắt, "Đừng gợi ý nữa", "Không gửi", "Thu hồi" |
-| Số liệu "12 bạn khác cũng đánh dấu chưa hiểu" (Option B) | **Số liệu minh hoạ**, đã ghi chú trong giao diện; nhắc lại ở bước debrief |
-
----
-
-## 4. Gate tự kiểm
-- [ ] **GATE 1** — Hypothesis đủ 5 thành phần + ≥ 1 observation Day 17 + ≥ 1 điều chưa biết *(đã có đủ trong §1; cần nhóm chốt câu chữ và sửa errata §1.1)*
-- [ ] **GATE 2** — Cùng user/situation/task/outcome, khác mechanism *(§2.1 + §2.3; cần nhóm viết lại Distance Check bằng lời của mình)*
-- [ ] **GATE 3** — Rõ user/AI làm gì, agency phù hợp hậu quả, có đường kiểm soát/phục hồi *(§3.1–3.4; cần nhóm review)*
-- [ ] Distance Check không nhắc màu / layout / wording
+**Ghi chú dữ liệu:** Option C chỉ dùng thao tác chuyển slide và thời gian ở mỗi slide trong phiên hiện tại; không dùng ghi chú, đáp án quiz hay nội dung chat, và không lưu sang phiên sau. Số "12 bạn khác cũng đánh dấu chưa hiểu" ở Option B là số liệu minh hoạ.

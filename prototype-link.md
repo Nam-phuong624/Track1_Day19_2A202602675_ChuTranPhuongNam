@@ -1,55 +1,40 @@
-# Prototype Link — A/B/C dùng chung của nhóm
+# Prototype Link — Nhóm H3201 (Case C: AI Support Radar)
 
-> **Nhóm:** H3201 · **Track 1** · **Case C — AI Support Radar**
-> Đầu ra của **Chặng 4 — Build ba micro-prototype** (GATE 4).
-> Nếu prototype là file trong repo, ghi đường dẫn tương đối; nếu là link ngoài (Figma/Framer/Netlify/…), ghi URL và đảm bảo **người ngoài nhóm mở được**.
+Tất cả prototype đều là HTML/CSS/JS thuần: mở trực tiếp bằng trình duyệt (double-click), không cần cài đặt, không cần server. Mọi phản hồi "AI" là nội dung soạn sẵn, không gọi mô hình hay API thật.
 
----
+## 1. Phương án được chọn: Option B — Trợ lý giải nghĩa tại chỗ
 
-## 1. Link ba option
+**Tệp:** [interactive_micro_prototype_vlearn_option_a_b_c.html](./interactive_micro_prototype_vlearn_option_a_b_c.html)
 
-| Option | Cơ chế (1 câu) | Người phụ trách | Link / đường dẫn | Trạng thái | Đã test mở trên máy khác? |
-| --- | --- | --- | --- | --- | --- |
-| **A** | User-led / No-inference | ✍️ | ✍️ | ⬜ chưa · ⬜ đang build · ⬜ test-ready | ⬜ |
-| **B** | User + AI co-create | ✍️ | ✍️ | ⬜ chưa · ⬜ đang build · ⬜ test-ready | ⬜ |
-| **C** | AI initiate, Human review | ✍️ | ✍️ | ⬜ chưa · ⬜ đang build · ⬜ test-ready | ⬜ |
+Sau khi so sánh ba phương án A/B/C, nhóm chọn **Option B (User + AI co-create, Ask)**. Giao diện và nội dung dựa trên prototype của Chử Trần Phương Nam. Mini-deck gồm slide 5–7, trong đó slide 6 "RAG — Retrieval-Augmented Generation" có sơ đồ 3 giai đoạn. Câu quiz hỏi về bước Augmentation; câu trả lời của coach là nội dung soạn sẵn.
 
-**Kho context/content dùng chung (~70%):** ✍️ *(đường dẫn tới thư mục `shared/`, file content, fixture, component chung)*
+| Thành phần | Nội dung |
+| --- | --- |
+| Cơ chế | Learner chủ động hỏi; AI giải thích trong phạm vi slide 5–7 kèm độ chắc chắn và dẫn chứng; chỉ khi learner vẫn chưa hiểu mới soạn nháp câu hỏi cho coach. |
+| Critical interaction | Bấm thuật ngữ / bôi đen đoạn văn / chọn câu hỏi nhanh / tự gõ → đọc giải thích 3 lớp (hiểu đơn giản → trong bài này → giới hạn) → "Mình hiểu rồi → làm quiz" hoặc "Vẫn chưa hiểu → nhờ coach" → sửa nháp, chọn ẩn danh/kèm tên → gửi hoặc không gửi; thu hồi được sau khi gửi. |
+| Vì sao chọn B | Nhắm vào việc tra cứu rời rạc (~10 phút/thuật ngữ, PN3) và thói quen "hỏi AI trước" mà learner đã có; learner không phải tự lên tiếng với người khác (ngại hỏi, PN3) nhưng vẫn giữ quyền quyết định có nhờ coach hay không; không cần AI suy đoán về từng người như C. |
+| Rủi ro chính | AI có thể giải thích sai mà learner tin → có nhãn độ chắc chắn, dẫn chứng slide, và không đoán khi câu hỏi nằm ngoài slide. |
 
----
+Nút **"↺ Bắt đầu lại"** đưa prototype về bối cảnh ban đầu (slide 6, chưa hỏi gì, quiz chưa làm). `?log=1` hoặc Shift+L hiện nhật ký thao tác cho người facilitate.
 
-## 2. Cách mở & quay về điểm xuất phát (reset path)
+**Task khi test:** "Bạn đang xem lại slide 6 trước khi làm quiz và chưa hiểu rõ thuật ngữ RAG. Hãy dùng trợ lý để đến lúc bạn tự tin trả lời câu quiz bên dưới."
 
-> Tester phải tự mở được, tự làm hết task, và **quay về được context ban đầu** mà không cần nhóm giải thích.
+## 2. Prototype của từng thành viên
 
-| Option | Cách mở (1–3 bước) | Reset path | Thời gian mở mục tiêu |
-| --- | --- | --- | --- |
-| **A** | | | ≤ 15 giây |
-| **B** | | | ≤ 15 giây |
-| **C** | | | ≤ 15 giây |
+| Thành viên          | Đường dẫn                                                          | Ghi chú                                                                                                                                                                                  |
+| ------------------- | ------------------------------------------------------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Phan Duy Thanh      | [phanduythanh/index.html](./phanduythanh/index.html)               | Hub dẫn tới ba option tách riêng (`options/option-a`, `option-b`, `option-c`), dùng chung `shared/` (deck 11 slide, styles). Mỗi option có nút "Bắt đầu lại"; ghi chú cho facilitator nằm trong `annotation.md`. |
+| Chử Trần Phương Nam | [prototype_phuongnam/index.html](./prototype_phuongnam/index.html) | Một trang gồm A/B/C (`index.html` + `app.js` + `style.css`).                                                                                                                             |
+| Phùng Gia Khánh     | [khanh/](./khanh/)                                                 | Mỗi option một file: `khanh-option-a-prototype.html`, `khanh-option-b-prototype.html`, `khanh-option-c-prototype.html` (các bản `(1)`, `(2)`, `choosing` là phiên bản thử của Option C). |
 
----
+## 3. Repo
 
-## 3. Phạm vi micro-prototype
-
-- [ ] Mỗi option chỉ gồm **2–3 trạng thái** quanh **một** critical interaction
-- [ ] Không build full product, không gọi API/model thật nếu không cần thiết
-- [ ] Cả ba dùng chung context screen, content và visual components
-- [ ] Không cần người của nhóm ngồi cạnh narrate
-- [ ] Có nút/luồng reset rõ ràng
-
----
-
-## 4. QA trước khi mang đi test (10–15 phút cuối sprint)
-
-Mỗi người thử option do **người khác** build, rồi cả nhóm chuẩn hoá A/B/C.
-
-| # | Hạng mục kiểm | A | B | C | Người kiểm |
-| - | ------------- | - | - | - | ---------- |
-| 1 | Mở được trên máy người khác | ⬜ | ⬜ | ⬜ | |
-| 2 | Chạy đủ task end-to-end | ⬜ | ⬜ | ⬜ | |
-| 3 | Reset về context ban đầu OK | ⬜ | ⬜ | ⬜ | |
-| 4 | Không lộ tên/ý đồ của option cho tester | ⬜ | ⬜ | ⬜ | |
-| 5 | Ba option trông cùng "độ hoàn thiện" (không có option nào nhỉnh hơn rõ rệt) | ⬜ | ⬜ | ⬜ | |
-
-**Ghi chú lỗi phát hiện khi QA:** ✍️
+- **Repo GitHub của nhóm:** https://github.com/thanhpd123/Track1_Day19_2A202602930_PhanDuyThanh
+- **Repo GitHub cá nhân (Phan Duy Thanh):** 
+https://github.com/thanhpd123/Track1_Day19_2A202602930_PhanDuyThanh
+- **Repo GitHub cá nhân (Bùi Hải Nam):** 
+https://github.com/thanhpd123/Track1_Day19_2A202602636_BuiHaiNam
+- **Repo GitHub cá nhân (Phùng Gia Khánh):** 
+https://github.com/thanhpd123/Track1_Day19_2A202602585_PhungGiaKhanh
+- **Repo GitHub cá nhân (Chử Trần Phương Nam):** 
+https://github.com/thanhpd123/Track1_Day19_2A202602675_ChuTranPhuongNam

@@ -1,39 +1,31 @@
-# AI Support Log — H3201 · Case C
+# AI SUPPORT LOG — NHÓM H3201
 
-> Khai báo **mọi** cách dùng AI trong quá trình làm lab (luật §4.3 của README).
->
-> **AI KHÔNG được dùng để:**
-> - tạo quote, observation hoặc feedback không tồn tại;
-> - làm sạch / chuẩn hoá evidence đến mức mất tính chân thực giữa lời nói thực tế của tester và nhận định chủ quan của nhóm;
-> - viết thay phần **đóng góp cá nhân** và phần **reflection** sau buổi học.
+*Nhật ký tương tác và phản ánh việc sử dụng AI của các thành viên Nhóm H3201 (Case C — AI Support Radar) trong bài Lab 18.*
 
 ---
 
-## 1. Bảng khai báo
+### AI đã giúp tôi ở đâu?
+- **Cấu trúc hoá README:** AI tổng hợp đề bài Lab 18 thành 6 chặng kèm gate và đưa Hypothesis Problem, ba Practice Notes, Solution Parking Lot từ Day 17 sang.
+- **Nháp ba option A/B/C và Human–AI Decision Table:** AI gợi ý cách map các hướng trong Solution Parking Lot thành ba mechanism dọc spectrum user-led → co-create → AI-initiate.
+- **Tạo khung file nộp:** AI sinh skeleton cho `three-option-design-sheet.md`, `prototype-link.md`, `prototype-feedback-note.md`, `group-feedback-synthesis.md` và `ai-support-log.md`.
+- **Rút gọn bộ file nộp:** AI sắp xếp lại README và các file trên theo cấu trúc ngắn hơn, chỉ dùng nội dung nhóm đã có, không thêm dữ liệu mới.
+- **Chặng 4–6 (Prototype Link, Feedback Note, Synthesis):** AI đọc các prototype của thành viên (bản gộp A/B/C, `phanduythanh/`, `prototype_phuongnam/`, `khanh/`) để viết `prototype-link.md`. AI cũng soạn khung Feedback Note theo task, lời mở đầu và câu hỏi so sánh đã thống nhất, và đưa bảng "kỳ vọng trước test" vào Synthesis, lấy căn cứ từ PN1–PN3.
+- **Chốt bản prototype test chung:** AI so sánh bốn bản prototype và chọn bản của Phương Nam làm nền vì có giao diện, nội dung slide và cơ chế B (giải thích tại chỗ, 3 lớp) tốt nhất. Sau đó AI viết lại `interactive_micro_prototype_vlearn_option_a_b_c.html` thành một file duy nhất. Những gì AI sửa so với bản gốc của Phương Nam: bỏ banner lộ tên người làm và ý đồ thiết kế, bỏ nút "giả lập học viên dừng 25s" (C kích hoạt bằng thời gian dừng thật hoặc khi quay lại slide 6), làm A và C kỹ ngang B, thêm luồng coach phản hồi / sửa / thu hồi, thêm ô "Kèm tín hiệu phiên này" ở C (ý từ bản của Khánh), và giữ nhật ký thao tác cùng tham số URL của bản gộp cũ.
 
-| # | Dùng AI ở đâu | AI đã giúp gì | Điểm sai / hời hợt của AI | Nhóm đã tự sửa thế nào | Người chịu trách nhiệm |
-| - | ------------- | ------------- | ------------------------- | ---------------------- | ---------------------- |
-| 1 | Soạn [README.md](./README.md) (tổng hợp đề bài + carry-over Day 17) | Cấu trúc hoá đề Lab 18 thành 6 chặng + gate; bê Hypothesis Problem, 3 Practice Notes, Parking Lot từ Lab 17 | AI có xu hướng **điền sẵn** cả phần nhóm phải tự làm (Comparison Contract, Human–AI Decision Table) và trình bày như đã chốt | Đánh dấu 🧪 nháp đề xuất; phần reflection/feedback/contribution đánh dấu 🚫; nhóm tự review và tự chốt | Phan Duy Thanh |
-| 2 | 🧪 Nháp 3 option A/B/C từ Solution Parking Lot | Gợi ý map các hướng park thành 3 mechanism dọc spectrum user-led → co-create → AI-initiate | AI chọn hướng theo "đẹp spectrum" chứ chưa chắc theo evidence; có thể tạo option nghe hợp lý nhưng không giải barrier đã thấy | Nhóm tự đối chiếu từng option với PN1/PN2/PN3 ở Chặng 2 và tự viết lại Distance Check bằng lời của nhóm | ✍️ |
-| 3 | 🧪 Tạo skeleton file nộp | Sinh khung `three-option-design-sheet.md`, `prototype-link.md`, `prototype-feedback-note.md`, `group-feedback-synthesis.md`, `ai-support-log.md` | Khung có thể gợi ý sẵn cách diễn đạt, dễ khiến nhóm copy nguyên văn | Mọi mục cần chốt đều để trống ✍️; nhóm tự điền theo evidence thật | ✍️ |
-| 4 | ✍️ | | | | |
-| 5 | ✍️ | | | | |
+### AI sai, hời hợt hoặc làm các options giống nhau ở đâu?
+- **Điền sẵn phần nhóm phải tự làm:** AI điền luôn Comparison Contract và Human–AI Decision Table rồi trình bày như thể đã chốt.
+- **Chọn option theo "đẹp spectrum":** AI chọn hướng cho đủ ba điểm trên spectrum chứ chưa chắc theo evidence, có thể tạo option nghe hợp lý nhưng không giải barrier đã thấy.
+- **Ba option không cùng user:** bản nháp đầu để Option B gửi digest cho mentor và Option C lấy người hỗ trợ làm user ("learner chỉ nhận thông báo"), nên ba option không cùng user và trượt Gate 2.
+- **Lệch so với note gốc:** bản README nháp viết "cả ba note đều có mốc hôm qua" và situation "buổi tối, một mình", trong khi PN3 không nói mốc ngày và không note nào nói "buổi tối" hay "một mình". Câu "Wow, được giải thoát rồi!" cũng bị dùng như bằng chứng learner chấp nhận bị phát hiện, dù đó là phản ứng khi giảng viên lớp code hỏi trực tiếp.
+- **Khung file gợi ý sẵn cách diễn đạt:** dễ khiến nhóm copy nguyên văn.
+- **Nội dung giải thích có số liệu không căn cứ:** bản prototype nguồn có các câu như "giảm 95% ảo giác" và "rẻ hơn hàng trăm lần". Câu trả lời cho thuật ngữ lạ thì lại giả vờ giải thích được. AI đã bỏ các con số này; với thuật ngữ không có trong slide, trợ lý báo độ chắc chắn Thấp và không đoán.
+- **Kỳ vọng dễ bị đọc thành kết quả:** bảng "nhóm kỳ vọng" trong Synthesis do AI soạn dựa trên note Day 17. Nếu không tách rõ thì người đọc dễ hiểu nhầm đó là kết quả test.
+
+### Tôi đã tự sửa hoặc quyết định lại điều gì?
+- **Đưa learner về làm user của cả ba option:** phía coach chỉ là nơi câu hỏi đến; ở Option C, AI chỉ hỏi learner chứ không tự báo coach.
+- **Đối chiếu từng option với PN1/PN2/PN3:** tách barrier thành ba thứ có evidence riêng (tra cứu rời rạc, ngại hỏi, người hỗ trợ không biết) và ghi rõ điều vẫn chưa biết.
+- **Sửa các chỗ lệch với note gốc:** bỏ "buổi tối, một mình", ghi đúng note nào có mốc "hôm qua", và chuyển phản ứng với việc bị AI phát hiện sang mục chưa được chứng minh.
+- **Tách kỳ vọng khỏi thực tế:** cột "Thực tế quan sát" trong Synthesis để riêng, chỉ điền từ Feedback Note thật.
+- **Không dùng AI cho dữ liệu test:** Feedback Note và Group Feedback Synthesis để trống cho tới khi có phiên test thật; nội dung mẫu trong prototype (lời giải thích RAG, câu trả lời của coach, số "12 bạn khác") là nội dung soạn sẵn, không phải dữ liệu thật.
 
 ---
-
-## 2. Kết luận về mức độ tin cậy của phần có AI hỗ trợ
-
-```text
-AI chỉ được dùng để cấu trúc đề bài, gợi ý cơ chế và tạo khung file. AI KHÔNG được dùng để tạo
-interview data, bịa quote, suy diễn chi tiết tester chưa nói, hoặc viết thay phần đóng góp / reflection.
-Mọi nội dung gắn nhãn 🧪 là nháp và phải được nhóm tự rà lại, tự chịu trách nhiệm.
-```
-
----
-
-## 3. Checklist minh bạch
-
-- [ ] Mọi lần dùng AI đều có dòng trong bảng §1 (kể cả dùng để sửa câu chữ)
-- [ ] Không có quote / observation nào do AI sinh
-- [ ] Phần đóng góp cá nhân và reflection do người tự viết 🚫
-- [ ] Người phụ trách từng mục đã ghi rõ

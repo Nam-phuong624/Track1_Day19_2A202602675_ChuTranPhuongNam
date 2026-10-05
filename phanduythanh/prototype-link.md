@@ -1,89 +1,35 @@
-# Chặng 4 — Prototype Link & Definition of testable
+# Chặng 4 — Prototype Link
 
-> **Người thực hiện:** Phan Duy Thanh · `2A202602930` · **Gate:** GATE 4 — Test-ready
-> Ba micro-prototype là HTML/CSS/JS thuần, **không cần cài gì, không cần server, không gọi model/API thật**.
+Phan Duy Thanh (2A202602930), nhóm H3201.
 
----
+Ba micro-prototype được viết bằng HTML, CSS và JavaScript thuần. Chúng chạy trực tiếp trên trình duyệt, không cần cài đặt, không cần server và không gọi mô hình hay API thật nào. Mọi phản hồi "AI" đều là nội dung soạn sẵn.
 
-## 1. Link ba option
+## 1. Đường dẫn
 
-| Option | Cơ chế | Người phụ trách | Đường dẫn | Trạng thái | Đã test mở trên máy khác? |
-| --- | --- | --- | --- | --- | --- |
-| **A** | User-led / no-inference — learner tự khai, AI không suy đoán | `[chốt ở Chặng 2]` | [options/option-a/index.html](./options/option-a/index.html) | test-ready | ✅ đã mở và chạy trọn luồng |
-| **B** | User + AI co-create — tín hiệu cấp nội dung, learner quyết định lộ diện | `[chốt ở Chặng 2]` | [options/option-b/index.html](./options/option-b/index.html) | test-ready | ✅ đã mở và chạy trọn luồng |
-| **C** | AI initiate + human review — Support Queue có mentor duyệt | `[chốt ở Chặng 2]` | [options/option-c/index.html](./options/option-c/index.html) | test-ready | ✅ đã mở và chạy trọn luồng |
-
-**Trang vào chung cho facilitator:** [index.html](./index.html) — liệt kê A/B/C, không lộ annotation.
-
-**Kho dùng chung (~70%):**
-
-| Thành phần | File | Dùng cho |
-| --- | --- | --- |
-| Deck + fixture + tín hiệu | [shared/fixture.js](./shared/fixture.js) | A, B, C |
-| Khung slide + điều hướng | [shared/deck.js](./shared/deck.js) | A, B, C |
-| Visual style + component | [shared/styles.css](./shared/styles.css) | A, B, C |
-
----
-
-## 2. Cách mở và đường reset
-
-| Option | Cách mở | Reset path | Thời gian mở |
+| Option | Cơ chế | Người phụ trách | Đường dẫn |
 | --- | --- | --- | --- |
-| **A** | Double-click `options/option-a/index.html` | Nút **Bắt đầu lại** (góc phải trên) → xoá hết đánh dấu, về slide 1 | ~5 giây |
-| **B** | Double-click `options/option-b/index.html` | Nút **Bắt đầu lại** → xoá trạng thái cảnh báo, về slide 1 | ~5 giây |
-| **C** | Double-click `options/option-c/index.html` | Nút **Bắt đầu lại** → xoá queue, tắt công tắc, về tab Học viên + slide 1 | ~5 giây |
+| A | Người học tự khai, AI không suy luận | Phan Duy Thanh | [options/option-a/index.html](./options/option-a/index.html) |
+| B | Tín hiệu ở cấp nội dung, người học tự quyết có lộ diện không | Chử Trần Phương Nam | [options/option-b/index.html](./options/option-b/index.html) |
+| C | Support Queue, mentor duyệt | Bùi Hải Nam và Phùng Gia Khánh | [options/option-c/index.html](./options/option-c/index.html) |
 
-Không cần cài đặt, không cần mở terminal, không cần kết nối mạng.
+Người facilitate vào từ [index.html](./index.html). Khoảng 70% mã nguồn là phần dùng chung, gồm `shared/fixture.js` (deck, thuật ngữ và tín hiệu giả lập), `shared/deck.js` (khung slide và điều hướng) và `shared/styles.css`. Ba option dùng chung phần này để mức độ hoàn thiện về giao diện ngang nhau, tránh option nào thắng chỉ nhờ trông đẹp hơn.
 
----
+## 2. Phạm vi và critical interaction
 
-## 3. Phạm vi micro-prototype
+Mỗi option chỉ có hai đến ba trạng thái, xoay quanh một critical interaction duy nhất.
 
-- [x] Mỗi option chỉ gồm **2–3 trạng thái** quanh **một** critical interaction
-- [x] Không build full product; không gọi API/model thật (toàn bộ AI output là **canned**)
-- [x] Cả ba dùng chung context screen, content fixture, component và visual style
-- [x] Không cần người của nhóm ngồi cạnh narrate
-- [x] Có **đường reset** rõ ràng ở cả ba
-
-**Critical interaction của từng option:**
-
-| Option | Critical interaction | Trạng thái |
+| Option | Critical interaction | Các trạng thái |
 | --- | --- | --- |
-| A | Learner bấm "Chưa hiểu" → AI chỉ gom lại đúng điều learner đã tự khai | context → đánh dấu → checklist + danh sách |
-| B | Banner cấp nội dung → learner chọn có cần hỗ trợ → chọn nêu tên hay ẩn danh | context → banner → câu hỏi nêu tên → kết quả |
-| C | Phiên kết thúc → AI tạo queue item → mentor chấp nhận/từ chối → learner nhận kết quả | context → queue + thông báo → mentor quyết định → learner thấy kết quả |
+| A | Người học bấm "Chưa hiểu", hệ thống chỉ gom lại đúng những gì họ đã đánh dấu | Bối cảnh ban đầu, đánh dấu, checklist và danh sách |
+| B | Banner cấp nội dung hiện ra, người học chọn có cần hỗ trợ không, rồi chọn nêu tên hay ẩn danh | Bối cảnh ban đầu, banner, câu hỏi nêu tên, kết quả |
+| C | Phiên học kết thúc, AI tạo một mục trong hàng chờ, mentor chấp nhận hoặc từ chối, người học nhận kết quả | Bối cảnh ban đầu, hàng chờ, quyết định của mentor, kết quả phía người học |
 
----
+Ở cả ba option, nút "Bắt đầu lại" đưa prototype về đúng bối cảnh ban đầu. Ở C, nút này còn xoá hàng chờ và tắt công tắc.
 
-## 4. QA trước khi mang đi test
+## 3. Kiểm tra trước khi test
 
-Đổi chéo: mỗi người thử option do **người khác** build.
+Tôi đã mở cả ba option trên Chrome và chạy hết luồng của từng option. Trình duyệt không báo lỗi trong console, và nút "Bắt đầu lại" đưa mỗi option về đúng trạng thái ban đầu. Giao diện không hiển thị nhãn A, B, C hay bất kỳ gợi ý nào về ý đồ thiết kế cho người test. Ghi chú dành riêng cho người facilitate nằm trong `annotation.md` của từng option, không hiển thị trong prototype.
 
-| # | Hạng mục kiểm | A | B | C | Người kiểm |
-| - | ------------- | - | - | - | ---------- |
-| 1 | Mở được trên máy người khác | ✅ | ✅ | ✅ | Phan Duy Thanh (đã chạy trên trình duyệt, không lỗi console) |
-| 2 | Chạy đủ task end-to-end | ✅ | ✅ | ✅ | Phan Duy Thanh |
-| 3 | Reset về context ban đầu OK | ✅ | ✅ | ✅ | Phan Duy Thanh |
-| 4 | Không lộ tên/ý đồ của option cho tester | ✅ | ✅ | ✅ | Không có nhãn A/B/C nào hiện trên giao diện |
-| 5 | Ba option cùng "độ hoàn thiện" | ✅ | ✅ | ✅ | Dùng chung `styles.css`, không option nào được polish hơn |
+## 4. Đối chiếu GATE 4
 
-> Test lại bằng người thứ hai trong nhóm trước phiên test thật (**Chặng 5, phút 65–75**) và ghi người kiểm vào cột cuối.
-
----
-
-## 5. Prototype annotation
-
-Đặt **ngoài frame**, **không hiện cho tester**:
-
-- [options/option-a/annotation.md](./options/option-a/annotation.md)
-- [options/option-b/annotation.md](./options/option-b/annotation.md)
-- [options/option-c/annotation.md](./options/option-c/annotation.md)
-
----
-
-## 6. GATE 4 — Test-ready ✅
-
-- [x] Một người **không build** có thể mở, thực hiện cùng task qua A/B/C
-- [x] Cả ba bắt đầu từ cùng context và cùng task (xem [test/test-prompt.md](./test/test-prompt.md))
-- [x] Không cần giải thích thêm để hiểu giao diện
-- [x] Quay về context ban đầu được bằng nút Bắt đầu lại
+Một người không tham gia build vẫn mở được cả ba option và thực hiện cùng một task. Ba option bắt đầu từ cùng một bối cảnh, người test hiểu được giao diện mà không cần giải thích thêm, và có thể quay lại trạng thái ban đầu bằng một nút.
