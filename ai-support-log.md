@@ -10,6 +10,7 @@
 - **Tạo khung file nộp:** AI sinh skeleton cho `three-option-design-sheet.md`, `prototype-link.md`, `prototype-feedback-note.md`, `group-feedback-synthesis.md` và `ai-support-log.md`.
 - **Rút gọn bộ file nộp:** AI sắp xếp lại README và các file trên theo cấu trúc ngắn hơn, chỉ dùng nội dung nhóm đã có, không thêm dữ liệu mới.
 - **Chặng 4–6 (Prototype Link, Feedback Note, Synthesis):** AI đọc các prototype của thành viên (bản gộp A/B/C, `phanduythanh/`, `prototype_phuongnam/`, `khanh/`) để viết `prototype-link.md`. AI cũng soạn khung Feedback Note theo task, lời mở đầu và câu hỏi so sánh đã thống nhất, và đưa bảng "kỳ vọng trước test" vào Synthesis, lấy căn cứ từ PN1–PN3.
+- **Chốt bản prototype test chung:** AI so sánh bốn bản prototype và chọn bản của Phương Nam làm nền vì có giao diện, nội dung slide và cơ chế B (giải thích tại chỗ, 3 lớp) tốt nhất. Sau đó AI viết lại `interactive_micro_prototype_vlearn_option_a_b_c.html` thành một file duy nhất. Những gì AI sửa so với bản gốc của Phương Nam: bỏ banner lộ tên người làm và ý đồ thiết kế, bỏ nút "giả lập học viên dừng 25s" (C kích hoạt bằng thời gian dừng thật hoặc khi quay lại slide 6), làm A và C kỹ ngang B, thêm luồng coach phản hồi / sửa / thu hồi, thêm ô "Kèm tín hiệu phiên này" ở C (ý từ bản của Khánh), và giữ nhật ký thao tác cùng tham số URL của bản gộp cũ.
 
 ### AI sai, hời hợt hoặc làm các options giống nhau ở đâu?
 - **Điền sẵn phần nhóm phải tự làm:** AI điền luôn Comparison Contract và Human–AI Decision Table rồi trình bày như thể đã chốt.
@@ -17,6 +18,7 @@
 - **Ba option không cùng user:** bản nháp đầu để Option B gửi digest cho mentor và Option C lấy người hỗ trợ làm user ("learner chỉ nhận thông báo"), nên ba option không cùng user và trượt Gate 2.
 - **Lệch so với note gốc:** bản README nháp viết "cả ba note đều có mốc hôm qua" và situation "buổi tối, một mình", trong khi PN3 không nói mốc ngày và không note nào nói "buổi tối" hay "một mình". Câu "Wow, được giải thoát rồi!" cũng bị dùng như bằng chứng learner chấp nhận bị phát hiện, dù đó là phản ứng khi giảng viên lớp code hỏi trực tiếp.
 - **Khung file gợi ý sẵn cách diễn đạt:** dễ khiến nhóm copy nguyên văn.
+- **Nội dung giải thích có số liệu không căn cứ:** bản prototype nguồn có các câu như "giảm 95% ảo giác" và "rẻ hơn hàng trăm lần". Câu trả lời cho thuật ngữ lạ thì lại giả vờ giải thích được. AI đã bỏ các con số này; với thuật ngữ không có trong slide, trợ lý báo độ chắc chắn Thấp và không đoán.
 - **Kỳ vọng dễ bị đọc thành kết quả:** bảng "nhóm kỳ vọng" trong Synthesis do AI soạn dựa trên note Day 17. Nếu không tách rõ thì người đọc dễ hiểu nhầm đó là kết quả test.
 
 ### Tôi đã tự sửa hoặc quyết định lại điều gì?

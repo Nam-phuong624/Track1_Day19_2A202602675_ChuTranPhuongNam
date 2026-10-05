@@ -1,448 +1,618 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="vi">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Ôn tập trước quiz · Prototype A/B/C</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>VLearn StudyHub · Trợ lý giải nghĩa tại chỗ</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<!--
+  Micro-prototype phương án được chọn — Option B: Trợ lý giải nghĩa tại chỗ (User + AI co-create).
+  Nhóm H3201, Case C (AI Support Radar). Giao diện và nội dung dựa trên bản của Chử Trần Phương Nam (prototype_phuongnam/).
+  Learner chủ động hỏi (bấm thuật ngữ, bôi đen đoạn văn, chọn câu hỏi nhanh hoặc tự gõ); AI giải thích trong phạm vi
+  slide 5–7 kèm độ chắc chắn và dẫn chứng; chỉ khi learner vẫn chưa hiểu mới soạn nháp câu hỏi cho coach, learner sửa
+  và tự quyết định gửi (ẩn danh hoặc kèm tên), có thể thu hồi.
+  Mọi phản hồi "AI" và "coach" là nội dung soạn sẵn; không gọi mô hình hay API nào.
+  Tham số URL: ?log=1 hiện nhật ký thao tác (hoặc Shift+L).
+-->
 <style>
 :root{
-  color-scheme: light;
-  --bg:#f4f6fb; --card:#ffffff; --ink:#1b2230; --muted:#5a6477; --line:#dce1ea;
-  --brand:#3652d9; --brand-soft:#e8edff; --ok:#1c7a46; --ok-soft:#e2f4ea;
-  --warn:#8f5200; --warn-soft:#fff2d4; --bad:#b3261e; --bad-soft:#fde7e5;
+  --primary:#2563eb; --primary-hover:#1d4ed8; --primary-light:#eff6ff;
+  --success:#16a34a; --success-light:#f0fdf4; --warning:#d97706; --warning-light:#fffbeb; --danger:#dc2626;
+  --bg-main:#f8fafc; --bg-card:#ffffff; --text-main:#0f172a; --text-muted:#64748b; --border:#e2e8f0;
+  --shadow-sm:0 1px 2px 0 rgb(0 0 0 / .05);
+  --shadow-md:0 4px 6px -1px rgb(0 0 0 / .1),0 2px 4px -2px rgb(0 0 0 / .1);
+  --shadow-lg:0 10px 15px -3px rgb(0 0 0 / .1),0 4px 6px -4px rgb(0 0 0 / .1);
+  --radius:10px; --radius-sm:6px;
+  --font:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;
+  --font-mono:'JetBrains Mono',ui-monospace,Consolas,monospace;
 }
-*{box-sizing:border-box}
-body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.55 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
-button{font:inherit;cursor:pointer}
-.top{display:flex;gap:12px;align-items:center;flex-wrap:wrap;padding:10px 20px;background:var(--card);border-bottom:1px solid var(--line);position:sticky;top:0;z-index:5}
-.brand{font-weight:700}
-.brand span{font-weight:400;color:var(--muted)}
-#seg{display:flex;gap:6px;margin:0 auto}
-.seg{border:1px solid var(--line);background:#fff;border-radius:999px;padding:6px 16px;color:var(--ink)}
-.seg.on{background:var(--brand);border-color:var(--brand);color:#fff}
-.ghost{border:1px solid var(--line);background:#fff;border-radius:8px;padding:6px 12px;color:var(--muted)}
-.task{margin:14px 20px 0;padding:12px 16px;background:var(--brand-soft);border:1px solid #cdd7ff;border-radius:10px}
-.task b{color:var(--brand)}
-.grid{display:grid;grid-template-columns:minmax(0,1.35fr) minmax(0,1fr);gap:16px;padding:16px 20px 60px;align-items:start}
-@media (max-width:900px){.grid{grid-template-columns:1fr}}
-.slide{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:22px 26px;min-height:300px}
-.slide .meta{color:var(--muted);font-size:13px;margin-bottom:6px}
-.slide h1{font-size:22px;margin:0 0 12px}
-.slide ul,.slide ol{margin:6px 0 0;padding-left:20px}
-.slide li{margin:6px 0}
-.flow{display:flex;flex-wrap:wrap;gap:6px;align-items:center;margin:14px 0}
-.flow .st{background:var(--brand-soft);border:1px solid #cdd7ff;border-radius:8px;padding:6px 10px;font-size:14px}
-.flow .ar{color:var(--muted)}
-.navrow{display:flex;justify-content:space-between;margin:10px 0}
-.navrow button{border:1px solid var(--line);background:#fff;border-radius:8px;padding:6px 12px}
-.navrow button:disabled{opacity:.4;cursor:default}
-.quiz,.card,.pcard{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px 18px}
-.quiz h2,.pcard h2{font-size:16px;margin:0 0 8px}
-.opt{display:block;width:100%;text-align:left;border:1px solid var(--line);background:#fff;border-radius:8px;padding:8px 12px;margin:6px 0}
-.opt.sel{border-color:var(--brand);background:var(--brand-soft)}
-.primary{background:var(--brand);color:#fff;border:0;border-radius:8px;padding:8px 16px}
-.primary:disabled{opacity:.45;cursor:default}
-.sec{border:1px solid var(--line);background:#fff;border-radius:8px;padding:7px 12px;margin:4px 6px 4px 0}
-.chip{border:1px solid var(--line);background:#fff;border-radius:999px;padding:5px 12px;margin:4px 6px 4px 0}
-.chip.sel{background:var(--brand-soft);border-color:var(--brand)}
-.muted{color:var(--muted)} .small{font-size:13px}
-.field{margin:12px 0}
-.field>label{display:block;font-weight:600;font-size:13px;margin-bottom:4px}
-textarea,input[type=text]{width:100%;border:1px solid var(--line);border-radius:8px;padding:8px 10px;font:inherit}
-textarea{min-height:76px;resize:vertical}
-.pill{display:inline-block;background:#eef1f7;border-radius:999px;padding:2px 10px;font-size:13px}
-.preview{background:#f1f3f9;border-radius:8px;padding:8px 12px;font-size:13px;margin:10px 0}
-.badge{display:inline-block;border-radius:999px;padding:2px 10px;font-size:12px;font-weight:600;margin-bottom:6px}
-.badge.high{background:var(--ok-soft);color:var(--ok)}
-.badge.mid{background:var(--warn-soft);color:var(--warn)}
-.badge.low{background:var(--bad-soft);color:var(--bad)}
-.caveat{background:var(--warn-soft);border-radius:8px;padding:6px 10px;font-size:13px}
-.src{font-size:13px;color:var(--muted)}
-.signal{background:#f1f3f9;border-radius:8px;padding:8px 12px;font-size:13px;margin:8px 0}
-.ok{border-color:#b5e0c6;background:var(--ok-soft)}
-.bad{border-color:#f1b5b0;background:var(--bad-soft)}
-.coach{border-left:4px solid var(--brand)}
-.link{background:none;border:0;color:var(--brand);text-decoration:underline;padding:0}
-.stack{display:flex;flex-direction:column;gap:12px}
-.nudge{position:fixed;right:20px;bottom:20px;width:min(380px,calc(100vw - 40px));background:#fff;border:1px solid var(--brand);border-radius:12px;padding:14px 16px;box-shadow:0 8px 30px rgba(20,30,70,.18);z-index:20;animation:up .25s ease}
-@keyframes up{from{transform:translateY(12px);opacity:0}to{transform:none;opacity:1}}
-.nudge .why{background:#f1f3f9;border-radius:8px;padding:8px 12px;font-size:13px;margin:8px 0}
-.nudge .why ul{margin:4px 0;padding-left:18px}
-.row{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
-.logp{position:fixed;left:0;right:0;bottom:0;max-height:40vh;overflow:auto;background:#10131c;color:#dfe5f5;font:12px/1.5 ui-monospace,Consolas,monospace;padding:10px 16px;z-index:50}
-.logp button{margin-right:8px}
-.done{margin-top:12px}
+*{box-sizing:border-box;margin:0;padding:0}
+[hidden]{display:none !important}
+body{font-family:var(--font);background:var(--bg-main);color:var(--text-main);line-height:1.5;min-height:100vh}
+button,input,textarea,select{font:inherit}
+button{cursor:pointer}
+button:focus-visible,input:focus-visible,textarea:focus-visible,select:focus-visible{outline:3px solid #93c5fd;outline-offset:2px}
+
+/* NAVBAR */
+.navbar{background:var(--bg-card);border-bottom:1px solid var(--border);padding:10px 24px;display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;position:sticky;top:0;z-index:100;box-shadow:var(--shadow-sm)}
+.nav-left,.nav-right{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.logo{display:flex;align-items:center;gap:6px;font-size:1.05rem;color:var(--primary)}
+.logo-icon{font-size:1.3rem}
+.badge{display:inline-flex;align-items:center;padding:3px 8px;font-size:.75rem;font-weight:600;border-radius:9999px}
+.track-badge{background:#e0e7ff;color:#3730a3}
+.badge-hint{background:#fef3c7;color:#92400e}
+.badge-time{background:#f1f5f9;color:#475569;font-family:var(--font-mono)}
+.divider{color:var(--border)}
+.lesson-title{font-size:.85rem;font-weight:500;color:var(--text-muted)}
+.user-avatar{width:32px;height:32px;border-radius:50%;background:#4338ca;color:#fff;display:flex;align-items:center;justify-content:center;font-size:.75rem;font-weight:700}
+
+/* TASK */
+.task-bar{max-width:1560px;margin:16px auto 0;padding:0 24px}
+.task-inner{background:var(--primary-light);border:1px solid #bfdbfe;border-radius:var(--radius);padding:12px 16px;font-size:.88rem;color:#1e3a8a}
+
+/* LAYOUT */
+.main-layout{display:grid;grid-template-columns:minmax(0,1fr) 390px;gap:20px;padding:16px 24px 40px;max-width:1560px;margin:0 auto}
+.content-area{display:flex;flex-direction:column;gap:20px;min-width:0}
+.card{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius);box-shadow:var(--shadow-sm);overflow:hidden}
+.slide-card{position:relative;overflow:visible}
+
+/* SLIDE */
+.slide-header{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;padding:12px 18px;border-bottom:1px solid var(--border);background:#fafafa;border-radius:var(--radius) var(--radius) 0 0}
+.slide-pagination{display:flex;align-items:center;gap:12px}
+.slide-status-tags{display:flex;gap:8px;flex-wrap:wrap}
+.slide-nav-btn{background:#fff;border:1px solid var(--border);padding:4px 10px;font-size:.8rem;border-radius:var(--radius-sm);font-weight:500}
+.slide-nav-btn:hover:not(:disabled){background:#f1f5f9}
+.slide-nav-btn:disabled{opacity:.4;cursor:default}
+.slide-number{font-size:.85rem;color:var(--text-muted)}
+.slide-canvas{padding:28px 32px;background:linear-gradient(135deg,#fff 0%,#f8fafc 100%);min-height:400px}
+.slide-meta-tag{font-size:.75rem;font-weight:700;color:var(--primary);text-transform:uppercase;letter-spacing:.5px;margin-bottom:4px}
+.slide-title{font-size:1.45rem;font-weight:700;color:#1e293b;margin-bottom:4px}
+.slide-subtitle{font-size:.9rem;color:var(--text-muted);margin-bottom:20px}
+.slide-content-blocks{display:flex;flex-direction:column;gap:16px}
+.content-block{background:#fff;border:1px solid var(--border);border-radius:var(--radius-sm);padding:14px 18px;font-size:.88rem;color:#334155;line-height:1.6}
+.content-block ul{margin:4px 0 0 18px}
+.content-block li{margin:4px 0}
+.block-header{font-size:.82rem;font-weight:700;color:#0f172a;margin-bottom:6px;text-transform:uppercase}
+.callout-block{border-left:4px solid var(--primary);background:#f0f7ff}
+.term{display:inline;border:0;border-bottom:2px dashed #3b82f6;color:#1d4ed8;font-weight:600;padding:0 3px;border-radius:3px;background:rgba(59,130,246,.08);transition:all .2s;cursor:pointer;font-size:inherit;line-height:inherit}
+.term:hover{background:#dbeafe;color:#1e40af;border-bottom-style:solid}
+.term-plain{font-weight:600;color:#1e293b}
+.rag-diagram-grid{display:grid;grid-template-columns:1fr auto 1fr auto 1fr;align-items:center;gap:10px;margin:4px 0}
+.rag-step-box{background:#fff;border:1.5px solid var(--border);border-radius:var(--radius);padding:14px;box-shadow:var(--shadow-sm);height:100%}
+.rag-step-box.highlight-box{border-color:#3b82f6;background:#f0f7ff}
+.step-num{font-size:.72rem;font-weight:700;text-transform:uppercase;color:var(--primary);margin-bottom:4px}
+.step-title{font-size:.92rem;font-weight:700;color:#0f172a;margin-bottom:6px}
+.step-desc{font-size:.8rem;color:#475569;line-height:1.45}
+.rag-arrow{font-size:1.3rem;color:#94a3b8;font-weight:bold;text-align:center}
+.pipeline{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.pipe-step{background:#fff;border:1.5px solid var(--border);border-radius:var(--radius-sm);padding:8px 12px;font-size:.82rem;font-weight:600;color:#1e293b;box-shadow:var(--shadow-sm)}
+.pipe-step b{color:var(--primary);margin-right:4px}
+.pipe-arrow{color:#94a3b8;font-weight:bold}
+
+/* SELECTION POPUP */
+.text-selection-popup{position:absolute;background:#1e293b;border-radius:var(--radius-sm);padding:4px;display:flex;gap:4px;box-shadow:var(--shadow-lg);z-index:50;animation:fadeIn .15s ease-out}
+.btn-selection-action{background:transparent;border:none;color:#fff;font-size:.78rem;font-weight:600;padding:6px 10px;border-radius:4px}
+.btn-selection-action:hover{background:#3b82f6}
+
+/* SLIDE FOOTER */
+.slide-footer-actions{padding:14px 20px;background:#fff;border-top:1px solid var(--border);border-radius:0 0 var(--radius) var(--radius)}
+.action-panel{display:flex;align-items:center;justify-content:space-between;gap:12px 16px;flex-wrap:wrap}
+.action-label{font-size:.85rem;font-weight:600;color:#334155;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.concept-chips{display:flex;gap:8px;flex-wrap:wrap}
+.chip{background:var(--primary-light);border:1px solid #bfdbfe;color:var(--primary);padding:5px 12px;font-size:.8rem;font-weight:600;border-radius:9999px;transition:all .2s}
+.chip:hover{background:#dbeafe;border-color:#93c5fd;transform:translateY(-1px)}
+.chip.sel{background:var(--primary);border-color:var(--primary);color:#fff}
+
+/* QUIZ */
+.quiz-container{padding:20px 24px}
+.quiz-header{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:16px;padding-bottom:12px;border-bottom:1px solid var(--border)}
+.quiz-badge{background:#e2e8f0;color:#475569;font-size:.75rem;font-weight:700;text-transform:uppercase;padding:2px 8px;border-radius:4px;margin-bottom:4px;display:inline-block}
+.quiz-header h3{font-size:1.05rem;color:#0f172a}
+.quiz-status{font-size:.8rem;font-weight:600;color:var(--text-muted)}
+.quiz-status.ok{color:var(--success)} .quiz-status.bad{color:var(--danger)}
+.quiz-question{font-size:.95rem;color:#1e293b;margin-bottom:16px}
+.quiz-options{display:flex;flex-direction:column;gap:10px;margin-bottom:16px}
+.quiz-option{display:flex;align-items:flex-start;gap:12px;width:100%;text-align:left;padding:12px 16px;border:1.5px solid var(--border);border-radius:var(--radius-sm);background:#fff;font-size:.88rem;color:#1e293b;transition:all .2s}
+.quiz-option:hover{border-color:#94a3b8;background:#f8fafc}
+.quiz-option.selected{border-color:var(--primary);background:var(--primary-light)}
+.quiz-option.correct{border-color:var(--success);background:var(--success-light)}
+.quiz-option.incorrect{border-color:var(--danger);background:#fef2f2}
+.quiz-feedback{padding:12px 16px;border-radius:var(--radius-sm);font-size:.88rem;line-height:1.45;margin-top:12px}
+.quiz-feedback.success{background:var(--success-light);border:1px solid #bbf7d0;color:#166534}
+.quiz-feedback.error{background:#fef2f2;border:1px solid #fecaca;color:#991b1b}
+.quiz-footer{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px}
+.done-card{padding:14px 18px;background:var(--success-light);border:1px solid #bbf7d0;color:#166534;font-size:.88rem;border-radius:var(--radius)}
+
+/* SIDEBAR */
+.sidebar-area{position:sticky;top:74px;align-self:start;height:calc(100vh - 96px);min-height:520px}
+.panel{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius);display:flex;flex-direction:column;height:100%;min-height:0;box-shadow:var(--shadow-sm)}
+.drawer-header{padding:14px 18px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;gap:10px;background:#fafafa;border-radius:var(--radius) var(--radius) 0 0}
+.drawer-title{display:flex;align-items:center;gap:10px}
+.bot-icon{font-size:1.5rem}
+.drawer-header h4{font-size:.95rem;font-weight:700;color:#0f172a}
+.drawer-scope{font-size:.72rem;color:var(--text-muted)}
+.drawer-body{flex:1;min-height:0;padding:16px;overflow-y:auto;display:flex;flex-direction:column;gap:14px;background:#fdfdfd}
+.drawer-footer{padding:12px 16px;border-top:1px solid var(--border);background:#fff;border-radius:0 0 var(--radius) var(--radius)}
+.welcome-box{background:#f8fafc;border:1px dashed #cbd5e1;border-radius:var(--radius-sm);padding:14px;font-size:.82rem;color:#475569}
+.welcome-badge{font-weight:700;color:var(--primary);margin-bottom:6px}
+.help-methods{margin:8px 0 10px 16px;display:flex;flex-direction:column;gap:4px}
+.quick-questions{display:flex;flex-direction:column;gap:6px;margin-top:10px}
+.quick-q-btn{text-align:left;background:#fff;border:1px solid var(--border);padding:8px 12px;font-size:.8rem;border-radius:var(--radius-sm);color:#1e293b;font-weight:500;transition:all .2s}
+.quick-q-btn:hover{border-color:var(--primary);background:var(--primary-light);color:var(--primary)}
+.crowd{background:#f1f5f9;border-radius:var(--radius-sm);padding:8px 12px;font-size:.78rem;color:#475569}
+.empty-icon{width:44px;height:44px;background:var(--primary-light);color:var(--primary);border-radius:12px;display:grid;place-items:center;font-size:1.3rem;margin-bottom:10px}
+.panel-h{font-size:1rem;font-weight:700;color:#0f172a;margin-bottom:6px}
+.muted{color:var(--text-muted)} .small{font-size:.8rem}
+.info-box{background:#f8fafc;border:1px solid var(--border);border-radius:var(--radius-sm);padding:10px 12px;font-size:.8rem;color:#475569}
+.warn-box{background:var(--warning-light);border:1px solid #fde68a;border-radius:var(--radius-sm);padding:8px 12px;font-size:.78rem;color:#92400e}
+
+/* CHAT */
+.chat-messages{display:flex;flex-direction:column;gap:16px}
+.user-message{align-self:flex-end;max-width:92%}
+.user-bubble{background:var(--primary);color:#fff;padding:10px 14px;border-radius:12px 12px 2px 12px;font-size:.85rem}
+.bot-message{align-self:stretch}
+.bot-bubble{background:#fff;border:1px solid var(--border);border-radius:12px 12px 12px 2px;padding:14px;font-size:.84rem;color:#1e293b;box-shadow:var(--shadow-sm)}
+.typing{font-size:.8rem;color:var(--text-muted);font-style:italic}
+.uncertainty-tag{display:inline-flex;align-items:center;gap:4px;font-size:.72rem;font-weight:700;padding:2px 8px;border-radius:4px;margin-bottom:8px;border:1px solid}
+.uncertainty-tag.high{background:#ecfdf5;border-color:#a7f3d0;color:#065f46}
+.uncertainty-tag.mid{background:var(--warning-light);border-color:#fde68a;color:#92400e}
+.uncertainty-tag.low{background:#fef2f2;border-color:#fecaca;color:#991b1b}
+.ex-term{font-size:.92rem;font-weight:700;color:#1e293b;margin-bottom:6px}
+.ex-analogy{background:#f8fafc;border-left:3px solid #3b82f6;padding:8px 10px;border-radius:4px;font-size:.82rem;margin-bottom:8px}
+.ex-role{font-size:.83rem;line-height:1.5;color:#334155;margin-bottom:8px}
+.ex-note{font-size:.78rem;color:#b45309;background:#fffbeb;padding:6px 10px;border-radius:4px}
+.grounding-source{display:block;margin-top:8px;padding-top:8px;border-top:1px solid #f1f5f9;font-size:.75rem;color:#64748b}
+.bot-actions-row{display:flex;gap:8px;margin-top:12px;flex-wrap:wrap}
+.chat-input-form{display:flex;gap:8px}
+.chat-input-form input{flex:1;min-width:0;padding:8px 12px;border:1.5px solid var(--border);border-radius:var(--radius-sm);font-size:.85rem;outline:none}
+.chat-input-form input:focus{border-color:var(--primary)}
+
+/* FORMS & TICKETS */
+.form-group{display:flex;flex-direction:column;gap:6px;margin-top:12px}
+.form-group>label,.form-label{font-size:.82rem;font-weight:600;color:#334155}
+.form-control{padding:8px 12px;border:1.5px solid var(--border);border-radius:var(--radius-sm);font-size:.85rem;outline:none;width:100%;background:#fff}
+.form-control:focus{border-color:var(--primary)}
+textarea.form-control{min-height:88px;resize:vertical}
+.radio-label{display:flex;align-items:center;gap:8px;font-size:.82rem;color:#334155;cursor:pointer;font-weight:400}
+.ticket-preview-box{background:#f8fafc;border:1.5px solid #cbd5e1;border-radius:var(--radius-sm);padding:14px}
+.ticket-badge{background:#e0e7ff;color:#3730a3;font-size:.72rem;font-weight:700;padding:2px 8px;border-radius:4px;margin-bottom:8px;display:inline-block}
+.ticket-field{font-size:.82rem;color:#334155;margin-bottom:6px}
+.status-card{border-radius:var(--radius-sm);padding:12px 14px;font-size:.84rem}
+.status-card.sent{background:var(--success-light);border:1px solid #bbf7d0;color:#166534}
+.status-card.coach{background:#fff;border:1px solid var(--border);border-left:4px solid var(--primary);color:#1e293b}
+.row{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
+
+/* BUTTONS */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;padding:8px 16px;font-size:.85rem;font-weight:600;border-radius:var(--radius-sm);border:none;transition:all .2s}
+.btn:disabled{opacity:.45;cursor:default}
+.btn-sm{padding:5px 10px;font-size:.78rem}
+.btn-wide{width:100%}
+.btn-primary{background:var(--primary);color:#fff}.btn-primary:hover:not(:disabled){background:var(--primary-hover)}
+.btn-secondary{background:#e2e8f0;color:#334155}.btn-secondary:hover{background:#cbd5e1}
+.btn-warning{background:var(--warning);color:#fff}.btn-warning:hover{background:#b45309}
+.btn-success{background:var(--success);color:#fff}.btn-success:hover{background:#15803d}
+.btn-outline-secondary{background:transparent;border:1px solid var(--border);color:#475569}.btn-outline-secondary:hover{background:#f1f5f9}
+.btn-ghost{background:transparent;color:#64748b}.btn-ghost:hover{background:#f1f5f9;color:#0f172a}
+.btn-danger-ghost{background:transparent;color:#b91c1c;border:1px solid #fecaca}.btn-danger-ghost:hover{background:#fef2f2}
+.btn-link{background:transparent;border:none;color:var(--primary);font-size:.78rem;text-decoration:underline;padding:0}
+.btn-icon{background:transparent;border:none;font-size:1.05rem;color:#94a3b8;padding:4px}.btn-icon:hover{color:#0f172a}
+
+
+/* LOG */
+.logp{position:fixed;left:0;right:0;bottom:0;max-height:40vh;overflow:auto;background:#10131c;color:#dfe5f5;font:12px/1.5 var(--font-mono);padding:10px 16px;z-index:2000}
+.logp button{margin-right:8px;font-size:12px}
+
+@keyframes fadeIn{from{opacity:0;transform:translateY(-6px)}to{opacity:1;transform:none}}
+
+@media (max-width:1024px){
+  .main-layout{grid-template-columns:minmax(0,1fr)}
+  .sidebar-area{position:static;height:auto;min-height:0}
+  .panel{height:auto}
+  .drawer-body{max-height:none}
+  .rag-diagram-grid{grid-template-columns:minmax(0,1fr)}
+  .rag-arrow{transform:rotate(90deg)}
+}
+@media (max-width:640px){
+  .navbar,.main-layout,.task-bar{padding-left:16px;padding-right:16px}
+  .slide-canvas{padding:20px 16px}
+  .lesson-title,.divider{display:none}
+}
 </style>
 </head>
 <body>
-<header class="top">
-  <div class="brand">VLearn <span>· Ôn tập trước quiz</span></div>
-  <nav id="seg" aria-label="Chọn phương án"></nav>
-  <button class="ghost" data-act="reset">↺ Làm lại từ đầu</button>
+<header class="navbar">
+  <div class="nav-left">
+    <div class="logo"><span class="logo-icon">⚡</span><span>VLearn <strong>StudyHub</strong></span></div>
+    <span class="badge track-badge">AI Thực Chiến · Track chuyên sâu</span>
+    <span class="divider">/</span>
+    <span class="lesson-title">Bài 4: Kiến trúc xử lý tri thức</span>
+  </div>
+  <div class="nav-right">
+    <button class="btn btn-secondary btn-sm" data-act="reset">↺ Bắt đầu lại</button>
+    <div class="user-avatar" title="Học viên">HV</div>
+  </div>
 </header>
 
-<section class="task" id="task"></section>
+<div class="task-bar"><div class="task-inner" id="task"></div></div>
 
-<main class="grid">
-  <section class="stack">
-    <div>
-      <article class="slide" id="slide"></article>
-      <div class="navrow" id="navrow"></div>
+<main class="main-layout">
+  <section class="content-area">
+    <div class="card slide-card">
+      <div class="slide-header">
+        <div class="slide-pagination" id="pager"></div>
+        <div class="slide-status-tags" id="slideTags"></div>
+      </div>
+      <div class="slide-canvas" id="slideCanvas"></div>
+      <div class="text-selection-popup" id="selPopup" hidden></div>
+      <div class="slide-footer-actions" id="slideActions"></div>
     </div>
-    <section class="quiz" id="quiz"></section>
-    <section id="done"></section>
+    <div class="card quiz-container" id="quiz"></div>
+    <div id="done"></div>
   </section>
-  <aside id="panel" aria-live="polite"></aside>
+  <aside class="sidebar-area" id="sidebar" aria-live="polite"></aside>
 </main>
 
-<div id="nudge" class="nudge" hidden></div>
-<div id="logp" class="logp" hidden></div>
+<div class="logp" id="logp" hidden></div>
 
 <script>
-/* ============ Cấu hình (URL): ?t=20 giây dừng ở slide 6 để phương án C gợi ý · ?order=BCA thứ tự nút · ?opt=B mở thẳng · ?log=1 hiện nhật ký ============ */
 const params = new URLSearchParams(location.search);
-const DWELL = Math.max(3, parseInt(params.get('t') || '20', 10) || 20);
-let ORDER = (params.get('order') || 'ABC').toUpperCase().split('');
-if (ORDER.length !== 3 || new Set(ORDER).size !== 3 || ORDER.some(c => !'ABC'.includes(c))) ORDER = ['A','B','C'];
-const START_OPT = 'ABC'.includes((params.get('opt')||'').toUpperCase()) && params.get('opt') ? params.get('opt').toUpperCase() : ORDER[0];
 
-/* ============ Nội dung dùng chung (fixture ~70%) ============ */
+/* ===================== Nội dung dùng chung ===================== */
+// [[key|chữ hiển thị]] = thuật ngữ trên slide; learner bấm vào để trợ lý giải thích.
 const SLIDES = {
-  5: { title:'Giới hạn của LLM', body:`
-      <ul>
-        <li>Kiến thức dừng ở thời điểm huấn luyện, không tự cập nhật.</li>
-        <li>Có thể “bịa” câu trả lời khi thiếu thông tin (hallucination).</li>
-        <li>Không biết dữ liệu nội bộ của tổ chức.</li>
-      </ul>` },
-  6: { title:'RAG — Retrieval-Augmented Generation', body:`
-      <ul>
-        <li>Kết hợp <b>truy xuất</b> (retrieval) và <b>sinh văn bản</b> (generation) để LLM trả lời dựa trên tài liệu bên ngoài.</li>
-        <li>Giảm hallucination; cập nhật tri thức mà không cần huấn luyện lại mô hình.</li>
-        <li>Thành phần: kho tài liệu · vector store · LLM.</li>
-      </ul>` },
-  7: { title:'Pipeline của một hệ thống RAG', body:`
-      <div class="flow">
-        <span class="st">1 Câu hỏi</span><span class="ar">→</span>
-        <span class="st">2 Embedding</span><span class="ar">→</span>
-        <span class="st">3 Vector search</span><span class="ar">→</span>
-        <span class="st">4 Top-k chunks</span><span class="ar">→</span>
-        <span class="st">5 Prompt + LLM</span><span class="ar">→</span>
-        <span class="st">6 Câu trả lời</span>
+  5: {
+    meta: 'Track chuyên sâu · Bài 4: Kiến trúc xử lý tri thức',
+    title: 'Giới hạn của mô hình ngôn ngữ lớn (LLM)',
+    subtitle: 'Vì sao một LLM "giỏi" vẫn có thể trả lời sai về tài liệu của chính tổ chức bạn',
+    body: `
+      <div class="content-block">
+        <div class="block-header">1. Kiến thức bị đóng băng</div>
+        Mỗi LLM chỉ biết dữ liệu đến thời điểm huấn luyện — gọi là [[cutoff|Knowledge Cutoff]]. Thông tin mới hơn mốc này, mô hình không tự biết.
       </div>
-      <ul>
-        <li>Câu hỏi và tài liệu được chuyển thành vector (embedding).</li>
-        <li>Vector search chọn các chunk gần câu hỏi nhất (top-k).</li>
-        <li>Các chunk được ghép vào prompt trước khi LLM sinh câu trả lời.</li>
-      </ul>` }
+      <div class="content-block">
+        <div class="block-header">2. Trả lời tự tin nhưng sai</div>
+        Khi thiếu thông tin, mô hình vẫn có thể sinh ra câu trả lời trôi chảy nhưng không có thật — hiện tượng [[hallu|Hallucination (ảo giác AI)]].
+      </div>
+      <div class="content-block">
+        <div class="block-header">3. Không biết dữ liệu nội bộ</div>
+        Tài liệu nội bộ, chính sách riêng, ghi chú lớp học… không nằm trong dữ liệu huấn luyện. Cách cập nhật truyền thống là [[finetune|Fine-tuning]] — tốn kém và chậm.
+      </div>
+      <div class="content-block callout-block">
+        <strong>📌 Câu hỏi mở:</strong> Làm sao để LLM trả lời đúng theo tài liệu của mình mà không phải huấn luyện lại? → Slide 6.
+      </div>`
+  },
+  6: {
+    meta: 'Track chuyên sâu · Bài 4: Kiến trúc xử lý tri thức',
+    title: 'RAG — Retrieval-Augmented Generation',
+    subtitle: 'Kết nối cơ sở tri thức bên ngoài với mô hình sinh ngôn ngữ để giảm hiện tượng ảo giác',
+    body: `
+      <div class="content-block">
+        <div class="block-header">1. Ý tưởng cốt lõi</div>
+        [[rag|RAG]] không sửa mô hình. Thay vào đó, mỗi lần có câu hỏi, hệ thống <strong>tra tài liệu trước</strong> rồi mới để LLM <strong>trả lời dựa trên tài liệu đó</strong> — khắc phục [[cutoff|Knowledge Cutoff]] và giảm [[hallu|Hallucination]].
+      </div>
+      <div class="rag-diagram-grid">
+        <div class="rag-step-box">
+          <div class="step-num">Giai đoạn 1</div>
+          <div class="step-title">📥 [[retrieval|Retrieval (Truy xuất)]]</div>
+          <div class="step-desc">Tìm trong cơ sở tri thức các đoạn tài liệu có nghĩa gần với câu hỏi nhất, nhờ [[embedding|Vector Embedding]].</div>
+        </div>
+        <div class="rag-arrow">➔</div>
+        <div class="rag-step-box highlight-box">
+          <div class="step-num">Giai đoạn 2</div>
+          <div class="step-title">🧩 [[augment|Augmentation (Bổ sung)]]</div>
+          <div class="step-desc">Ghép các đoạn tài liệu vừa tìm được vào prompt, cùng với câu hỏi gốc, trong giới hạn [[context|Context Window]].</div>
+        </div>
+        <div class="rag-arrow">➔</div>
+        <div class="rag-step-box">
+          <div class="step-num">Giai đoạn 3</div>
+          <div class="step-title">✨ [[generation|Generation (Tạo sinh)]]</div>
+          <div class="step-desc">LLM đọc prompt đã có tài liệu và viết câu trả lời dựa trên các đoạn đó, có thể kèm trích dẫn nguồn.</div>
+        </div>
+      </div>
+      <div class="content-block callout-block">
+        <strong>📌 Điểm mấu chốt:</strong> Thay vì [[finetune|Fine-tuning]] lại mô hình, RAG đưa dữ liệu trực tiếp vào ngữ cảnh tại thời điểm hỏi — cập nhật tài liệu là cập nhật được câu trả lời.
+      </div>`
+  },
+  7: {
+    meta: 'Track chuyên sâu · Bài 4: Kiến trúc xử lý tri thức',
+    title: 'Pipeline của một hệ thống RAG',
+    subtitle: 'Đi từng bước từ câu hỏi của người dùng đến câu trả lời',
+    body: `
+      <div class="pipeline">
+        <span class="pipe-step"><b>1</b>Câu hỏi</span><span class="pipe-arrow">→</span>
+        <span class="pipe-step"><b>2</b>Embedding</span><span class="pipe-arrow">→</span>
+        <span class="pipe-step"><b>3</b>Vector search</span><span class="pipe-arrow">→</span>
+        <span class="pipe-step"><b>4</b>Top-k chunks</span><span class="pipe-arrow">→</span>
+        <span class="pipe-step"><b>5</b>Prompt + LLM</span><span class="pipe-arrow">→</span>
+        <span class="pipe-step"><b>6</b>Câu trả lời</span>
+      </div>
+      <div class="content-block">
+        <ul>
+          <li>Bước 2: câu hỏi và tài liệu được chuyển thành vector ([[embedding|embedding]]).</li>
+          <li>Bước 3–4: vector search chọn ra các đoạn (chunk) gần câu hỏi nhất — [[topk|top-k chunks]].</li>
+          <li>Bước 5: các chunk được ghép vào prompt ([[augment|augmentation]]) trước khi LLM sinh câu trả lời.</li>
+        </ul>
+      </div>
+      <div class="content-block callout-block">
+        <strong>📌 Ghi nhớ:</strong> Chất lượng câu trả lời phụ thuộc nhiều vào việc bước 3–4 có tìm đúng tài liệu hay không.
+      </div>`
+  }
 };
-const CROWD = {5:2, 6:12, 7:5};  // số liệu minh hoạ cho phương án B (không phải dữ liệu thật)
+
+// Ba lớp giải thích: ví dụ đời thường → vai trò trong bài → giới hạn. Nội dung soạn sẵn, không phải dữ liệu thật.
+const CONCEPTS = {
+  rag: { term:'RAG — Retrieval-Augmented Generation', conf:'high', src:'Slide 6 — tiêu đề và sơ đồ 3 giai đoạn',
+    kw:['rag','retrieval-augmented','retrieval augmented'],
+    analogy:'Giống làm bài thi được mở sách: bạn lật đúng trang tài liệu trước, rồi mới viết câu trả lời dựa trên trang đó.',
+    role:'RAG gồm 3 giai đoạn: Retrieval tìm đoạn tài liệu liên quan → Augmentation ghép các đoạn đó vào prompt → Generation để LLM trả lời dựa trên chúng.',
+    note:'💡 Câu quiz bên dưới hỏi về giai đoạn ở giữa (Augmentation).',
+    draft:'Em đã đọc slide 6 nhưng chưa hình dung được ba giai đoạn của RAG nối với nhau thế nào. Nhờ coach cho em một ví dụ cụ thể ạ.' },
+  augment: { term:'Augmentation (Bổ sung ngữ cảnh)', conf:'high', src:'Slide 6 — Giai đoạn 2 · Slide 7 — bước 5',
+    kw:['augment','bổ sung'],
+    analogy:'Trước khi làm bài thi mở, bạn kẹp đúng trang tài liệu tham khảo vào ngay cạnh đề bài.',
+    role:'Hệ thống lấy các đoạn tài liệu tìm được ở bước Retrieval và ghép trực tiếp vào prompt, cùng với câu hỏi gốc, trước khi gửi tới LLM. Mô hình không bị huấn luyện lại.',
+    note:'💡 Đây là mấu chốt để trả lời câu quiz bên dưới.',
+    draft:'Em đã đọc phần Augmentation nhưng chưa hình dung được tài liệu được ghép vào prompt cụ thể trông như thế nào. Nhờ coach cho em ví dụ một prompt thực tế ạ.' },
+  retrieval: { term:'Retrieval (Truy xuất)', conf:'high', src:'Slide 6 — Giai đoạn 1 · Slide 7 — bước 2–4',
+    kw:['retrieval','truy xuất','vector search'],
+    analogy:'Giống thủ thư tìm nhanh vài trang sách liên quan nhất tới câu bạn hỏi, thay vì đưa bạn cả thư viện.',
+    role:'Câu hỏi được chuyển thành vector rồi so với vector của các đoạn tài liệu để chọn ra những đoạn có nghĩa gần nhất.',
+    note:'⚠️ Slide chưa nói cách đo "độ gần" giữa các vector — phần đó mình không tự suy đoán.',
+    draft:'Em chưa rõ bước Retrieval đánh giá độ giống nhau giữa câu hỏi và tài liệu như thế nào. Nhờ coach giải thích thêm ạ.' },
+  generation: { term:'Generation (Tạo sinh có căn cứ)', conf:'high', src:'Slide 6 — Giai đoạn 3',
+    kw:['generation','tạo sinh'],
+    analogy:'Như người phát ngôn chỉ đọc đúng tài liệu được đưa và trả lời theo đó.',
+    role:'LLM nhận prompt đã có sẵn các đoạn tài liệu và viết câu trả lời dựa trên chúng, có thể kèm trích dẫn nguồn.',
+    note:'⚠️ Nếu bước Retrieval lấy nhầm tài liệu, câu trả lời vẫn có thể sai.',
+    draft:'Em muốn hỏi làm sao để LLM chỉ trả lời dựa trên tài liệu được đưa vào mà không dùng kiến thức cũ của nó ạ?' },
+  hallu: { term:'Hallucination (Ảo giác AI)', conf:'high', src:'Slide 5 — mục 2 · Slide 6 — mục 1',
+    kw:['hallu','ảo giác'],
+    analogy:'Như một người trả lời rất tự tin về điều họ thật ra không biết.',
+    role:'Xảy ra khi LLM phải trả lời về thông tin nó không có. RAG giảm hiện tượng này bằng cách đưa tài liệu làm căn cứ vào prompt.',
+    note:'⚠️ RAG giảm chứ không loại bỏ hoàn toàn ảo giác.',
+    draft:'Nhờ coach giải thích vì sao đưa tài liệu vào prompt lại giúp giảm ảo giác của AI ạ?' },
+  embedding: { term:'Vector Embedding', conf:'mid', src:'Slide 6 — Giai đoạn 1 · Slide 7 — bước 2',
+    kw:['embedding','embed','vector'],
+    analogy:'Biến một câu văn thành một "toạ độ" gồm nhiều con số, sao cho các câu có nghĩa giống nhau nằm gần nhau.',
+    role:'Nhờ embedding, máy có thể so khớp câu hỏi với tài liệu theo nghĩa chứ không chỉ theo từ khoá.',
+    note:'⚠️ Slide chưa giải thích embedding được tạo ra thế nào — phần này mình chỉ nói ở mức khái quát.',
+    draft:'Em chưa hiểu vector embedding được tạo ra và lưu trữ như thế nào trong hệ thống ạ.' },
+  topk: { term:'Top-k chunks', conf:'mid', src:'Slide 7 — bước 4',
+    kw:['top-k','top k','topk','chunk'],
+    analogy:'Như chỉ lấy k trang sách liên quan nhất để đọc, thay vì cả cuốn.',
+    role:'Sau vector search, hệ thống giữ lại k đoạn tài liệu (chunk) gần câu hỏi nhất để đưa vào prompt. Ví dụ k = 3 là lấy 3 đoạn.',
+    note:'⚠️ Slide chưa nói cách chọn k. Giá trị k tuỳ từng hệ thống — nên xác nhận với coach.',
+    draft:'Em chưa rõ nên chọn k bao nhiêu khi lấy top-k chunks, và chọn sai thì ảnh hưởng thế nào ạ?' },
+  context: { term:'Context Window (Cửa sổ ngữ cảnh)', conf:'mid', src:'Slide 6 — Giai đoạn 2',
+    kw:['context window','cửa sổ ngữ cảnh','context'],
+    analogy:'Giống bộ nhớ ngắn hạn: mỗi lượt chỉ "đọc" được một lượng chữ nhất định.',
+    role:'Là độ dài tối đa của prompt mà mô hình đọc được trong một lượt, nên bước Augmentation phải chọn lọc tài liệu cho vừa.',
+    note:'⚠️ Slide không nêu con số cụ thể; mỗi mô hình có giới hạn khác nhau.',
+    draft:'Nhờ coach giải thích nếu tài liệu tìm được quá dài, vượt Context Window thì xử lý thế nào ạ?' },
+  finetune: { term:'Fine-tuning (Huấn luyện thêm)', conf:'mid', src:'Slide 5 — mục 3 · Slide 6 — điểm mấu chốt',
+    kw:['fine-tun','fine tun','finetun','huấn luyện lại'],
+    analogy:'Giống học lại cả một khoá chỉ để cập nhật vài thông tin mới.',
+    role:'Fine-tuning cập nhật trọng số của mô hình. RAG thì không đụng vào mô hình, chỉ đưa tài liệu vào ngữ cảnh lúc hỏi.',
+    note:'⚠️ Slide chỉ so sánh ở mức ý tưởng; chi phí thực tế tuỳ từng dự án.',
+    draft:'Nhờ coach so sánh giúp em khi nào nên dùng fine-tuning và khi nào nên dùng RAG ạ?' },
+  cutoff: { term:'Knowledge Cutoff (Mốc đóng băng tri thức)', conf:'high', src:'Slide 5 — mục 1',
+    kw:['cutoff','cut-off','đóng băng'],
+    analogy:'Như một cuốn bách khoa toàn thư in năm ngoái thì không biết chuyện năm nay.',
+    role:'Là thời điểm kết thúc dữ liệu huấn luyện của LLM. RAG giúp vượt qua giới hạn này bằng cách đưa tài liệu mới vào lúc hỏi.',
+    note:'💡 Phần này slide nói khá đầy đủ.',
+    draft:'Em chưa rõ RAG giúp mô hình vượt qua knowledge cutoff như thế nào ạ?' }
+};
+const MATCH_ORDER = ['rag','augment','topk','context','retrieval','embedding','generation','hallu','finetune','cutoff'];
+const CONF = {high:'Cao', mid:'Trung bình', low:'Thấp'};
+const CHIPS = {5:['hallu','cutoff','finetune'], 6:['augment','rag','hallu','embedding'], 7:['topk','embedding','augment']};
+const CROWD = {5:2, 6:12, 7:5}; // số liệu minh hoạ, không phải dữ liệu thật
+
 const QUIZ = {
-  q:'Trong một hệ thống RAG, bước nào diễn ra trước khi LLM viết câu trả lời?',
+  q:'Khi hệ thống RAG thực hiện bước "Augmentation" (Bổ sung), điều gì thực sự diễn ra?',
   opts:[
-    'Huấn luyện lại toàn bộ LLM trên câu hỏi của người dùng',
-    'Tìm các đoạn tài liệu liên quan tới câu hỏi và đưa vào prompt',
-    'Xoá toàn bộ lịch sử hội thoại của người dùng',
-    'Nén mô hình để chạy nhanh hơn'
+    'Huấn luyện lại trọng số của LLM theo dữ liệu mới.',
+    'Đưa các đoạn tài liệu vừa truy xuất vào làm ngữ cảnh bên trong prompt gửi tới LLM.',
+    'Nén cơ sở dữ liệu vector để hệ thống phản hồi nhanh hơn.',
+    'Tự động sửa ngữ pháp và dịch câu trả lời của mô hình.'
   ],
   correct:1
 };
-const TERMS = {
-  rag:{label:'Retrieval-Augmented Generation (RAG)', src:'Slide 6, dòng 1–2', conf:'high',
-    text:'RAG nghĩa là “tra tài liệu trước, rồi mới trả lời”. Thay vì chỉ dựa vào những gì mô hình đã học, hệ thống (1) tìm các đoạn tài liệu liên quan tới câu hỏi, (2) đưa các đoạn đó vào prompt cùng với câu hỏi, (3) để LLM viết câu trả lời dựa trên các đoạn đó. Giống như làm bài thi được mở sách: bạn lật đúng trang trước khi viết đáp án.'},
-  emb:{label:'Embedding / vector search', src:'Slide 7, bước 2–3', conf:'high',
-    text:'Embedding biến một đoạn văn thành một dãy số (vector) sao cho các đoạn có nghĩa gần nhau thì vector cũng gần nhau. Vector search là bước so khoảng cách giữa vector của câu hỏi với vector của các đoạn tài liệu để tìm ra những đoạn gần nhất.'},
-  topk:{label:'Top-k chunks', src:'Slide 7, bước 4', conf:'mid',
-    text:'Top-k chunks là k đoạn tài liệu (chunk) giống câu hỏi nhất sau bước vector search. Ví dụ k = 3 nghĩa là lấy 3 đoạn gần nhất rồi đưa vào prompt.',
-    caveat:'Slide chưa nói cách chọn k. Giá trị k tuỳ từng hệ thống — nên xác nhận với coach.'},
-  none:{label:'', src:'Không tìm thấy trong slide 5–7', conf:'low',
-    text:'Mình chưa tìm thấy phần này trong slide 5–7 nên chưa chắc về câu trả lời. Bạn thử chọn một thuật ngữ gợi ý hoặc nhờ coach.'}
-};
-const CONF = {high:'Cao', mid:'Trung bình', low:'Thấp'};
-const COACH_REPLY = 'Chào bạn, RAG hiểu đơn giản là “cho mô hình mở sách khi trả lời”. Bạn xem lại sơ đồ ở slide 7: câu hỏi → tìm đoạn tài liệu liên quan → đưa vào prompt → LLM trả lời. Nếu còn chỗ nào mơ hồ, bạn nhắn lại mình nhé.';
+const COACH_REPLY = 'Chào bạn! Bạn hình dung RAG như làm bài thi được mở sách: Retrieval là lật đúng trang, Augmentation là kẹp trang đó vào ngay cạnh đề bài (tức là đưa đoạn tài liệu vào prompt), còn Generation là viết câu trả lời dựa trên trang đó. Bạn xem lại sơ đồ ở slide 7, bước 4–5. Còn chỗ nào mơ hồ thì nhắn lại mình nhé.';
 
-/* ============ Trạng thái ============ */
+/* ===================== Trạng thái ===================== */
 const LOG = [];
-const TRIED = new Set();
 let timers = [];
-let S = fresh(START_OPT);
+let S = fresh();
 
-function fresh(opt){
+function fresh(){
   return {
-    opt, t0: Date.now(), slide: 6, visits:{5:0,6:1,7:0}, dwell:0,
+    t0:Date.now(), slide:6, slideSec:0, sel:'',
     q:{pick:null, result:null, conf:null, tries:0},
-    nudgeOn:true, nudgeVisible:false, nudgeShown:0,
-    a:{phase:'form', kind:'', text:'', anon:true},
-    b:{phase:'ask', key:null, query:'', draft:'', anon:true, note:''},
-    c:{phase:'idle', signals:[], why:false, anon:false}
+    b:{phase:'chat', msgs:[], input:'', typing:false, key:null, draft:'', anon:true, scroll:false}
   };
 }
 const $ = s => document.querySelector(s);
 const esc = s => String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-function now(){ return new Date().toLocaleTimeString('vi-VN',{hour12:false}); }
 function log(action, detail=''){
-  LOG.push({clock:now(), t:((Date.now()-S.t0)/1000).toFixed(1), opt:S.opt, action, detail});
+  LOG.push({clock:new Date().toLocaleTimeString('vi-VN',{hour12:false}), t:((Date.now()-S.t0)/1000).toFixed(1), action, detail});
   renderLog();
 }
+function later(fn, ms){ timers.push(setTimeout(fn, ms)); }
 function clearTimers(){ timers.forEach(clearTimeout); timers = []; }
+function matchConcept(text){
+  const s = text.toLowerCase();
+  return MATCH_ORDER.find(k => CONCEPTS[k].kw.some(w => s.includes(w))) || null;
+}
 
-/* ============ Render ============ */
+/* ===================== Render ===================== */
 function render(){
-  $('#seg').innerHTML = ORDER.map(o =>
-    `<button class="seg ${S.opt===o?'on':''}" data-act="opt" data-v="${o}">Phương án ${o}${TRIED.has(o)?' ✓':''}</button>`).join('');
-  $('#task').innerHTML = `<b>Tình huống:</b> Bạn đang xem lại slide 6 trước khi làm quiz và chưa hiểu rõ thuật ngữ RAG. Hãy dùng phương án này để đến lúc bạn tự tin trả lời câu quiz bên dưới. Bạn có thể tự chuyển giữa các phương án ở thanh phía trên.`;
+  $('#task').innerHTML = `<strong>Tình huống:</strong> Bạn đang xem lại slide 6 trước khi làm quiz và chưa hiểu rõ thuật ngữ RAG. Hãy dùng trợ lý bên phải để đến lúc bạn tự tin trả lời câu quiz bên dưới slide.`;
+  renderSlide(); renderActions(); renderQuiz(); renderSidebar();
+  $('#selPopup').hidden = true;
+}
+
+function renderSlide(){
   const sl = SLIDES[S.slide];
-  $('#slide').innerHTML = `<div class="meta">Slide ${S.slide} / 7 · Bài: LLM &amp; RAG</div><h1>${sl.title}</h1>${sl.body}`;
-  $('#navrow').innerHTML =
-    `<button data-act="slide" data-n="${S.slide-1}" ${S.slide<=5?'disabled':''}>‹ Slide trước</button>
-     <button data-act="slide" data-n="${S.slide+1}" ${S.slide>=7?'disabled':''}>Slide sau ›</button>`;
-  renderQuiz();
-  renderPanel();
-  renderNudge();
+  $('#pager').innerHTML = `
+    <button class="slide-nav-btn" data-act="slide" data-n="${S.slide-1}" ${S.slide<=5?'disabled':''}>◀ Slide trước</button>
+    <span class="slide-number">Slide <strong>${S.slide}</strong> / 7</span>
+    <button class="slide-nav-btn" data-act="slide" data-n="${S.slide+1}" ${S.slide>=7?'disabled':''}>Slide tiếp ▶</button>`;
+  renderTags();
+  const body = sl.body.replace(/\[\[(\w+)\|([^\]]+)\]\]/g, (_, k, t) =>
+    `<button class="term" data-act="b_term" data-k="${k}" title="Bấm để trợ lý giải thích">${t}</button>`);
+  $('#slideCanvas').innerHTML = `<div class="slide-meta-tag">${sl.meta}</div>
+    <h2 class="slide-title">${sl.title}</h2><p class="slide-subtitle">${sl.subtitle}</p>
+    <div class="slide-content-blocks">${body}</div>`;
+}
+function renderTags(){
+  const m = String(Math.floor(S.slideSec/60)).padStart(2,'0'), s = String(S.slideSec%60).padStart(2,'0');
+  $('#slideTags').innerHTML = `<span class="badge badge-hint">💡 Bấm thuật ngữ hoặc bôi đen đoạn văn để hỏi trợ lý</span><span class="badge badge-time">⏱️ ${m}:${s}</span>`;
+}
+function renderActions(){
+  $('#slideActions').innerHTML = `<div class="action-panel"><span class="action-label">🤖 Khái niệm hay gặp khó ở slide này:
+    <span class="concept-chips">${CHIPS[S.slide].map(k=>`<button class="chip" data-act="b_term" data-k="${k}">${esc(CONCEPTS[k].term.split(' (')[0].split(' — ')[0])} là gì?</button>`).join('')}</span></span></div>`;
 }
 
 function renderQuiz(){
-  const q = S.q;
-  let h = `<h2>Câu quiz</h2><p>${QUIZ.q}</p>`;
-  h += QUIZ.opts.map((o,i)=>`<button class="opt ${q.pick===i?'sel':''}" data-act="qpick" data-i="${i}"><b>${i+1}.</b> ${esc(o)}</button>`).join('');
-  h += `<div class="row"><button class="primary" data-act="qsubmit" ${q.pick===null?'disabled':''}>Trả lời</button></div>`;
-  if (q.result==='bad') h += `<div class="card bad" style="margin-top:10px">Chưa đúng. Bạn có thể xem lại slide và thử lại.</div>`;
+  const q = S.q, answered = q.result!==null;
+  let h = `<div class="quiz-header"><div><span class="quiz-badge">Kiểm tra mức độ hiểu bài</span><h3>Câu hỏi củng cố (dựa trên slide 6–7)</h3></div>
+    <span class="quiz-status ${q.result==='ok'?'ok':q.result==='bad'?'bad':''}">${q.result==='ok'?'✅ Đúng':q.result==='bad'?'❌ Chưa đúng':'Chưa nộp bài'}</span></div>
+    <p class="quiz-question"><strong>${QUIZ.q}</strong></p><div class="quiz-options">`;
+  h += QUIZ.opts.map((o,i)=>{
+    let cls = q.pick===i ? 'selected' : '';
+    if (answered && q.pick===i) cls = q.result==='ok' ? 'correct' : 'incorrect';
+    return `<button class="quiz-option ${cls}" data-act="qpick" data-i="${i}"><strong>${'ABCD'[i]}.</strong><span>${esc(o)}</span></button>`;
+  }).join('') + `</div>`;
+  if (q.result==='bad') h += `<div class="quiz-feedback error"><strong>Chưa đúng.</strong> Bạn có thể xem lại slide hoặc hỏi trợ lý, rồi chọn lại và kiểm tra lần nữa.</div>`;
   if (q.result==='ok'){
-    h += `<div class="card ok" style="margin-top:10px"><b>Đúng.</b>`;
-    if (q.conf===null){
-      h += `<p style="margin:8px 0 4px">Bạn thấy mình chắc chắn với câu trả lời này đến mức nào?</p>
-        <div class="row"><button class="sec" data-act="conf" data-v="Chắc chắn">Chắc chắn</button>
-        <button class="sec" data-act="conf" data-v="Tạm ổn">Tạm ổn</button>
-        <button class="sec" data-act="conf" data-v="Đoán">Chủ yếu là đoán</button></div>`;
-    } else h += ` <span class="muted">Mức chắc chắn bạn chọn: ${esc(q.conf)}.</span>`;
+    h += `<div class="quiz-feedback success"><strong>🎉 Chính xác!</strong> Augmentation là đưa tài liệu vừa truy xuất vào ngữ cảnh của prompt — mô hình không bị huấn luyện lại.`;
+    h += q.conf===null
+      ? `<p style="margin-top:8px">Bạn chắc chắn với câu trả lời này đến mức nào?</p>
+         <div class="row"><button class="btn btn-sm btn-outline-secondary" data-act="conf" data-v="Chắc chắn">Chắc chắn</button>
+         <button class="btn btn-sm btn-outline-secondary" data-act="conf" data-v="Tạm ổn">Tạm ổn</button>
+         <button class="btn btn-sm btn-outline-secondary" data-act="conf" data-v="Chủ yếu là đoán">Chủ yếu là đoán</button></div>`
+      : ` <span>Mức chắc chắn bạn chọn: <strong>${esc(q.conf)}</strong>.</span>`;
     h += `</div>`;
   }
+  h += `<div class="quiz-footer"><button class="btn btn-success" data-act="qsubmit" ${q.pick===null||q.result==='ok'?'disabled':''}>Kiểm tra câu trả lời</button></div>`;
   $('#quiz').innerHTML = h;
-  if (q.conf!==null){
-    const left = ORDER.filter(o=>!TRIED.has(o));
-    $('#done').innerHTML = `<div class="card done"><b>Bạn đã hoàn thành phương án ${S.opt}.</b><br>${left.length?`Hãy thử tiếp phương án ${left.join(', ')} ở thanh phía trên.`:'Bạn đã thử cả ba phương án.'}</div>`;
-  } else $('#done').innerHTML = '';
+  $('#done').innerHTML = q.conf!==null ? `<div class="done-card"><strong>Bạn đã hoàn thành bài ôn tập.</strong> Bấm "↺ Bắt đầu lại" để thử lại từ đầu.</div>` : '';
 }
 
-function badge(conf){ return `<div class="badge ${conf}">Độ chắc chắn của mình: ${CONF[conf]}</div>`; }
-function explainCard(key, query){
-  const t = TERMS[key];
-  const head = key==='none' ? `<h3 style="margin:0 0 4px;font-size:15px">Câu hỏi: “${esc(query)}”</h3>` : `<h3 style="margin:0 0 4px;font-size:15px">${esc(t.label)}</h3>`;
-  return `<div class="card">${badge(t.conf)}${head}<p style="margin:6px 0">${t.text}</p>
-    ${t.caveat?`<p class="caveat">⚠ ${t.caveat}</p>`:''}
-    <p class="src">Dựa trên: ${t.src}</p>
-    <p class="muted small" style="margin:0">Đây là giải thích tự động, có thể chưa chính xác.</p></div>`;
+/* ----- Sidebar: trợ lý giải nghĩa ----- */
+function explainCard(key, query, actions){
+  if (!key) return `<div class="bot-bubble"><span class="uncertainty-tag low">🛡️ Mức độ chắc chắn: ${CONF.low}</span>
+    <div class="ex-term">Câu hỏi: “${esc(query)}”</div>
+    <p class="ex-role">Mình chưa tìm thấy phần này trong slide 5–7 nên sẽ không đoán. Bạn thử chọn một khái niệm gợi ý, hỏi cách khác, hoặc nhờ coach.</p>
+    <span class="grounding-source">📚 Dẫn chứng: không tìm thấy trong slide 5–7</span>${actions}</div>`;
+  const c = CONCEPTS[key];
+  return `<div class="bot-bubble">
+    <span class="uncertainty-tag ${c.conf}">🛡️ Mức độ chắc chắn: ${CONF[c.conf]}</span>
+    <div class="ex-term">📌 ${esc(c.term)}</div>
+    <div class="ex-analogy"><strong>💡 Hiểu đơn giản:</strong> ${c.analogy}</div>
+    <div class="ex-role"><strong>🎯 Trong bài này:</strong> ${c.role}</div>
+    <div class="ex-note">${c.note}</div>
+    <span class="grounding-source">📚 Dẫn chứng: ${c.src} · Giải thích tự động, có thể chưa chính xác.</span>
+    ${actions}</div>`;
 }
-function sentCard(p, canEdit){
-  return `<div class="card ok"><b>Đã gửi cho coach.</b>
-    <p class="muted small" style="margin:6px 0">Coach thường phản hồi trong vòng một ngày làm việc. Trong prototype, phản hồi hiện sau vài giây.</p>
-    <div class="row">${canEdit?`<button class="sec" data-act="${p}_edit">Sửa câu hỏi</button>`:''}<button class="sec" data-act="${p}_withdraw">Thu hồi</button></div></div>`;
-}
-function replyCard(p, label){
-  return `<div class="card coach"><b>${label}</b><p style="margin:6px 0">${COACH_REPLY}</p>
-    <div class="row"><button class="sec" data-act="${p}_more">Hỏi thêm</button></div></div>`;
-}
+function previewBox(label, html){ return `<div class="ticket-preview-box"><span class="ticket-badge">${label}</span><div class="ticket-field">${html}</div></div>`; }
 
-function renderPanel(){
-  const el = $('#panel');
-  if (S.opt==='A') el.innerHTML = panelA();
-  else if (S.opt==='B') el.innerHTML = panelB();
-  else el.innerHTML = panelC();
-}
-
-/* ----- Phương án A: learner tự đánh dấu, coach trả lời, AI không suy đoán ----- */
-function panelA(){
-  const a = S.a;
-  let h = `<div class="pcard"><h2>Đánh dấu chỗ mình chưa hiểu</h2>
-    <p class="muted small">Câu hỏi sẽ được gửi tới coach. Hệ thống không tự đoán bạn đang gặp khó ở đâu.</p>`;
-  if (a.phase==='form'){
-    const kinds = ['Thuật ngữ','Sơ đồ','Ví dụ','Khác'];
-    h += `<div class="field"><label>Đang gắn với</label><span class="pill">Slide ${S.slide}</span></div>
-      <div class="field"><label>Loại chỗ vướng</label>${kinds.map(k=>`<button class="chip ${a.kind===k?'sel':''}" data-act="a_kind" data-v="${k}">${k}</button>`).join('')}</div>
-      <div class="field"><label for="aText">Mô tả (không bắt buộc)</label><textarea id="aText" placeholder="Bạn muốn hỏi coach điều gì?">${esc(a.text)}</textarea></div>
-      <div class="field"><label>Gửi dưới dạng</label>
-        <button class="chip ${a.anon?'sel':''}" data-act="a_anon" data-v="1">Ẩn danh</button>
-        <button class="chip ${!a.anon?'sel':''}" data-act="a_anon" data-v="0">Kèm tên của tôi</button></div>
-      <div class="preview">Coach sẽ thấy: Slide ${S.slide}${a.kind?` · ${esc(a.kind)}`:''}${a.text?` · “${esc(a.text)}”`:''} · ${a.anon?'Ẩn danh':'Có tên của bạn'}</div>
-      <button class="primary" data-act="a_send">Gửi cho coach</button>`;
-  } else if (a.phase==='sent') h += sentCard('a', true);
-  else h += replyCard('a', 'Coach trả lời:');
-  return h + `</div>`;
-}
-
-/* ----- Phương án B: learner hỏi, AI giải thích ở cấp nội dung ----- */
-function panelB(){
+function renderSidebar(){
   const b = S.b;
-  let h = `<div class="pcard"><h2>Hỏi trợ lý về slide này</h2>
-    <p class="muted small">Trợ lý chỉ dựa trên slide 5–7 của bài này và có thể trả lời sai.</p>
-    <div class="signal">Slide ${S.slide}: ${CROWD[S.slide]} bạn khác cũng đánh dấu “chưa hiểu” (không hiển thị tên · số liệu minh hoạ)</div>`;
-  if (b.phase==='ask'){
-    if (b.note) h += `<p class="muted small">${esc(b.note)}</p>`;
-    h += `<div class="field"><label>Chọn một thuật ngữ</label>
-      <button class="chip" data-act="b_term" data-k="rag">Retrieval-Augmented Generation</button>
-      <button class="chip" data-act="b_term" data-k="emb">Embedding / vector search</button>
-      <button class="chip" data-act="b_term" data-k="topk">Top-k chunks</button></div>
-      <div class="field"><label for="bQ">Hoặc tự hỏi</label>
-      <input type="text" id="bQ" placeholder="Bạn muốn hiểu điều gì trên slide?" value="${esc(b.query)}">
-      <div class="row"><button class="primary" data-act="b_ask">Hỏi</button></div></div>`;
-  } else if (b.phase==='explained'){
-    h += explainCard(b.key, b.query) + `<div class="row">
-      <button class="sec" data-act="b_ok">Mình hiểu rồi</button>
-      <button class="sec" data-act="b_draft">Vẫn chưa hiểu</button>
-      <button class="sec" data-act="b_more">Hỏi phần khác</button></div>`;
-  } else if (b.phase==='draft'){
-    h += `<div class="field"><label for="bDraft">Trợ lý soạn nháp câu hỏi cho coach — bạn xem và sửa trước khi gửi</label>
-      <textarea id="bDraft">${esc(b.draft)}</textarea></div>
-      <div class="field"><label>Gửi dưới dạng</label>
-        <button class="chip ${b.anon?'sel':''}" data-act="b_anon" data-v="1">Ẩn danh</button>
-        <button class="chip ${!b.anon?'sel':''}" data-act="b_anon" data-v="0">Kèm tên của tôi</button></div>
-      <div class="row"><button class="primary" data-act="b_send">Gửi cho coach</button>
-      <button class="sec" data-act="b_cancel">Không gửi</button></div>`;
-  } else if (b.phase==='sent') h += sentCard('b', false);
-  else h += replyCard('b', 'Coach trả lời:');
-  return h + `</div>`;
-}
-
-/* ----- Phương án C: AI chủ động hỏi thăm khi thấy tín hiệu ----- */
-function panelC(){
-  const c = S.c;
-  let h = `<div class="pcard"><h2>Trợ lý học tập</h2>
-    <p class="muted small">Mình chỉ lên tiếng khi thấy bạn có thể đang gặp khó. Mình dùng thao tác chuyển slide và thời gian ở mỗi slide trong phiên này; mình không đọc ghi chú hay nội dung chat của bạn.</p>
-    <div class="row" style="margin:0 0 8px"><span class="pill">Gợi ý chủ động: ${S.nudgeOn?'Bật':'Tắt'}</span>
-    <button class="link" data-act="${S.nudgeOn?'c_off':'c_on'}">${S.nudgeOn?'Tắt':'Bật lại'}</button></div>`;
-  if (c.phase==='idle'){
-    h += `<p class="muted">${S.nudgeOn?'Hiện chưa có gợi ý nào.':'Gợi ý chủ động đang tắt.'}</p>`;
-  } else if (c.phase==='explained'){
-    h += explainCard('rag') + `<div class="row">
-      <button class="sec" data-act="c_ok">Mình hiểu rồi</button>
-      <button class="sec" data-act="c_coach">Vẫn chưa hiểu → nhờ coach</button></div>`;
-  } else if (c.phase==='preview'){
-    h += `<div class="card"><b>Xem trước thẻ sẽ vào hàng chờ hỗ trợ của coach</b>
-      <ul class="small" style="margin:8px 0;padding-left:18px">
-        <li>Learner: ${c.anon?'Ẩn danh':'Bạn (kèm tên)'}</li>
-        <li>Nội dung: Slide 6 — RAG</li>
-        <li>Tín hiệu hệ thống đã thấy: ${c.signals.length?esc(c.signals.join('; ')):'không có'}</li>
-        <li>Gợi ý hành động cho coach: nhắn hỏi bạn chỗ nào ở slide 6 chưa rõ</li></ul>
-      <div class="field" style="margin:8px 0"><label>Gửi dưới dạng</label>
-        <button class="chip ${!c.anon?'sel':''}" data-act="c_anon" data-v="0">Kèm tên của tôi</button>
-        <button class="chip ${c.anon?'sel':''}" data-act="c_anon" data-v="1">Ẩn danh</button></div>
-      <p class="muted small" style="margin:0 0 8px">Thẻ chỉ được gửi khi bạn bấm “Gửi cho coach”.</p>
-      <div class="row"><button class="primary" data-act="c_send">Gửi cho coach</button>
-      <button class="sec" data-act="c_cancel">Không gửi</button></div></div>`;
-  } else if (c.phase==='sent') h += sentCard('c', false);
-  else h += replyCard('c', 'Coach nhắn cho bạn:');
-  return h + `</div>`;
-}
-
-function renderNudge(){
-  const el = $('#nudge');
-  if (S.opt!=='C' || !S.nudgeVisible){ el.hidden = true; el.innerHTML=''; return; }
-  const c = S.c;
-  el.hidden = false;
-  el.innerHTML = `<b>Có vẻ bạn đang gặp khó ở slide 6.</b> Bạn có cần mình giúp không?
-    <div><button class="link small" data-act="c_why">Vì sao mình hỏi?</button></div>
-    ${c.why?`<div class="why">Mình thấy:<ul>${c.signals.map(s=>`<li>${esc(s)}</li>`).join('')}</ul>
-      Mình chỉ dùng thao tác chuyển slide và thời gian ở mỗi slide trong phiên này, và không báo coach nếu bạn chưa đồng ý. Đây chỉ là suy đoán, có thể sai.</div>`:''}
-    <div class="row"><button class="primary" data-act="c_explain">Giải thích giúp mình</button>
-    <button class="sec" data-act="c_coach">Nhờ coach hỗ trợ</button>
-    <button class="sec" data-act="c_later">Để sau</button>
-    <button class="sec" data-act="c_offnudge">Đừng gợi ý nữa</button></div>`;
+  let body = `<div class="crowd">👥 Slide ${S.slide}: ${CROWD[S.slide]} bạn khác cũng đánh dấu "chưa hiểu" (không hiển thị tên · số liệu minh hoạ)</div>`;
+  let footer = '';
+  if (b.phase==='chat'){
+    if (!b.msgs.length) body += `<div class="welcome-box"><div class="welcome-badge">💡 Cách nhận giải thích</div>
+      <p>Bạn chưa hiểu khái niệm nào trên slide? Chọn một cách:</p><ul class="help-methods">
+        <li>👉 <strong>Bấm vào thuật ngữ gạch chân</strong> trên slide.</li>
+        <li>👉 <strong>Bôi đen bất kỳ đoạn văn nào</strong> trên slide.</li>
+        <li>👉 Chọn câu hỏi nhanh hoặc tự gõ câu hỏi bên dưới.</li></ul>
+      <div class="quick-questions">
+        <button class="quick-q-btn" data-act="b_term" data-k="rag">🧭 RAG gồm những bước nào?</button>
+        <button class="quick-q-btn" data-act="b_term" data-k="augment">🧩 Bước Augmentation thực chất làm gì?</button>
+        <button class="quick-q-btn" data-act="b_term" data-k="finetune">🔄 RAG khác gì Fine-tuning?</button></div></div>`;
+    body += `<div class="chat-messages">${b.msgs.map((m,i)=> m.type==='user'
+      ? `<div class="user-message"><div class="user-bubble">❓ ${esc(m.text)}</div></div>`
+      : `<div class="bot-message">${explainCard(m.key, m.query, i===b.msgs.length-1 ? `<div class="bot-actions-row">
+          <button class="btn btn-success btn-sm" data-act="b_ok">✅ Mình hiểu rồi → làm quiz</button>
+          <button class="btn btn-outline-secondary btn-sm" data-act="b_draft">❓ Vẫn chưa hiểu → nhờ coach</button></div>` : '')}</div>`).join('')}
+      ${b.typing?'<div class="typing">Trợ lý đang soạn giải thích…</div>':''}</div>`;
+    footer = `<form class="chat-input-form" data-form="b_ask"><input type="text" id="bQ" placeholder="Nhập thuật ngữ hoặc câu hỏi về slide..." value="${esc(b.input)}" autocomplete="off">
+      <button type="submit" class="btn btn-primary">Giải thích</button></form>`;
+  } else if (b.phase==='ticket'){
+    const k = b.key;
+    body += `<div class="ticket-preview-box"><span class="ticket-badge">Bản nháp do trợ lý soạn — bạn sửa thoải mái</span>
+      <div class="ticket-field"><strong>📍 Vị trí:</strong> Slide ${S.slide} — ${esc(SLIDES[S.slide].title)}</div>
+      <div class="ticket-field"><strong>🎯 Khái niệm:</strong> ${k?esc(CONCEPTS[k].term):'Câu hỏi tự do'}</div>
+      <div class="ticket-field"><strong>🤖 Trạng thái:</strong> Đã đọc giải thích tự động nhưng vẫn chưa rõ.</div>
+      <div class="form-group"><label for="bDraft">Nội dung gửi coach</label><textarea id="bDraft" class="form-control">${esc(b.draft)}</textarea></div></div>
+      <div class="form-group"><span class="form-label">Gửi dưới dạng</span>
+        <label class="radio-label"><input type="radio" name="b_id" data-act="b_anon" data-v="1" ${b.anon?'checked':''}> 🕵️ Ẩn danh — coach không thấy tên bạn</label>
+        <label class="radio-label"><input type="radio" name="b_id" data-act="b_anon" data-v="0" ${!b.anon?'checked':''}> 👤 Kèm tên của tôi</label></div>
+      <p class="muted small" style="margin-top:8px">Câu hỏi chỉ được gửi khi bạn bấm "Gửi cho coach".</p>
+      <div class="row"><button class="btn btn-primary" data-act="b_send">Gửi cho coach</button>
+      <button class="btn btn-ghost" data-act="b_cancel">Không gửi, quay lại trợ lý</button></div>`;
+  } else if (b.phase==='sent'){
+    body += previewBox('Câu hỏi của bạn', esc(b.draft) + `<br>${b.anon?'🕵️ Ẩn danh':'👤 Có tên của bạn'}`) +
+      `<div class="status-card sent"><strong>📤 Đã gửi cho coach.</strong>
+      <p class="small" style="margin-top:4px">Coach thường phản hồi trong vòng một ngày làm việc. Trong bản thử này, phản hồi hiện sau vài giây.</p>
+      <div class="row"><button class="btn btn-sm btn-danger-ghost" data-act="b_withdraw">Thu hồi</button></div></div>`;
+  } else {
+    body += previewBox('Câu hỏi của bạn', esc(b.draft)) +
+      `<div class="status-card coach"><strong>👩‍🏫 Coach trả lời:</strong><p style="margin-top:6px">${COACH_REPLY}</p>
+      <div class="row"><button class="btn btn-sm btn-outline-secondary" data-act="b_more">Hỏi tiếp trợ lý</button>
+      <button class="btn btn-sm btn-primary" data-act="b_ok">Làm quiz</button></div></div>`;
+  }
+  $('#sidebar').innerHTML = `<div class="panel"><div class="drawer-header"><div class="drawer-title"><span class="bot-icon">🤖</span>
+    <div><h4>Trợ lý giải nghĩa tại chỗ</h4><span class="drawer-scope">Chỉ dựa trên slide 5–7 của bài này · có thể trả lời sai</span></div></div></div>
+    <div class="drawer-body" id="drawerBody">${body}</div>${footer?`<div class="drawer-footer">${footer}</div>`:''}</div>`;
+  if (b.scroll){ const d = $('#drawerBody'); if (d) d.scrollTop = d.scrollHeight; b.scroll = false; }
 }
 
 function renderLog(){
   const el = $('#logp');
   if (el.hidden) return;
   el.innerHTML = `<div><button data-act="logcopy">Sao chép nhật ký</button><button data-act="logclose">Đóng (Shift+L)</button>
-    <b>Nhật ký thao tác — chỉ dành cho người điều phối, không thay thế ghi chú quan sát của bạn</b></div>` +
-    LOG.map(e=>`<div>${e.clock} · +${e.t}s · ${e.opt} · ${esc(e.action)} ${esc(e.detail)}</div>`).join('');
+    <b>Nhật ký thao tác — chỉ dành cho người facilitate, không thay thế ghi chú quan sát</b></div>` +
+    LOG.map(e=>`<div>${e.clock} · +${e.t}s · ${esc(e.action)} ${esc(e.detail)}</div>`).join('');
 }
 
-/* ============ Logic ============ */
-function switchOpt(o){
-  if (o===S.opt) return;
-  clearTimers();
-  const prevLog = S.opt;
-  S = fresh(o);
-  log('switch_option', 'từ ' + prevLog);
-  render();
-}
-function gotoSlide(n){
-  if (n<5||n>7||n===S.slide) return;
-  S.slide = n; S.visits[n]++; S.dwell = 0;
-  log('slide', String(n));
-  if (S.opt==='C' && n===6 && S.visits[6]>=2) maybeNudge('revisit');
-  render();
-}
-function maybeNudge(reason){
-  if (S.opt!=='C' || !S.nudgeOn || S.nudgeVisible || S.nudgeShown>=2 || S.c.phase!=='idle') return;
-  const sig = [];
-  if (reason==='dwell') sig.push(`Đang ở slide 6 khoảng ${Math.max(S.dwell,1)} giây`);
-  if (S.visits[6]>=2) sig.push(`Đã quay lại slide 6 ${S.visits[6]-1} lần`);
-  S.c.signals = sig; S.c.why = false;
-  S.nudgeVisible = true; S.nudgeShown++;
-  log('nudge_shown', reason + ': ' + sig.join('; '));
-  renderNudge();
-}
-setInterval(()=>{
-  if (S.opt==='C' && S.slide===6 && !S.nudgeVisible && S.nudgeOn){
-    S.dwell++;
-    if (S.dwell>=DWELL) maybeNudge('dwell');
-  }
-}, 1000);
+/* ===================== Logic ===================== */
+setInterval(()=>{ S.slideSec++; renderTags(); }, 1000);
 
-function startReply(p){
-  const t = setTimeout(()=>{ if (S[p].phase==='sent'){ S[p].phase='replied'; log('coach_reply_shown'); render(); } }, 4000);
-  timers.push(t);
-}
-function answerKey(q){
-  const s = q.toLowerCase();
-  if (/rag|retrieval|augment/.test(s)) return 'rag';
-  if (/embed|vector/.test(s)) return 'emb';
-  if (/top|chunk/.test(s)) return 'topk';
-  return 'none';
+function ask(query, key){
+  if (S.b.phase!=='chat' || S.b.typing) return;
+  S.b.msgs.push({type:'user', text:query});
+  S.b.typing = true; S.b.scroll = true; S.b.input = '';
+  renderSidebar();
+  later(()=>{ S.b.typing=false; S.b.key=key; S.b.msgs.push({type:'bot', key, query}); S.b.scroll=true; renderSidebar(); }, 450);
 }
 
 const ACT = {
-  opt:(d)=>switchOpt(d.v),
-  reset:()=>{ clearTimers(); const o=S.opt; S=fresh(o); log('reset'); render(); },
-  slide:(d)=>gotoSlide(parseInt(d.n,10)),
-  qpick:(d)=>{ S.q.pick=parseInt(d.i,10); S.q.result=null; log('quiz_pick', String(S.q.pick+1)); render(); },
-  qsubmit:()=>{ S.q.tries++; S.q.result = S.q.pick===QUIZ.correct?'ok':'bad'; log('quiz_submit', `đáp án ${S.q.pick+1} → ${S.q.result==='ok'?'đúng':'sai'} (lần ${S.q.tries})`); render(); },
-  conf:(d)=>{ S.q.conf=d.v; TRIED.add(S.opt); log('confidence', d.v); log('option_done'); render(); },
+  reset:()=>{ clearTimers(); S=fresh(); log('reset'); render(); },
+  slide:d=>{ const n=parseInt(d.n,10); if (n<5||n>7||n===S.slide) return; S.slide=n; S.slideSec=0; log('slide', String(n)); render(); },
+  qpick:d=>{ if (S.q.result==='ok') return; S.q.pick=parseInt(d.i,10); S.q.result=null; log('quiz_pick', 'ABCD'[S.q.pick]); renderQuiz(); },
+  qsubmit:()=>{ if (S.q.pick===null) return; S.q.tries++; S.q.result = S.q.pick===QUIZ.correct?'ok':'bad';
+    log('quiz_submit', `${'ABCD'[S.q.pick]} → ${S.q.result==='ok'?'đúng':'sai'} (lần ${S.q.tries})`); renderQuiz(); },
+  conf:d=>{ S.q.conf=d.v; log('confidence', d.v); renderQuiz(); },
 
-  a_kind:(d)=>{ S.a.kind=d.v; log('A_kind', d.v); render(); },
-  a_anon:(d)=>{ S.a.anon=d.v==='1'; log('A_anon', S.a.anon?'ẩn danh':'kèm tên'); render(); },
-  a_send:()=>{ S.a.phase='sent'; log('A_send', `slide ${S.slide}; ${S.a.kind||'-'}; "${S.a.text}"; ${S.a.anon?'ẩn danh':'kèm tên'}`); startReply('a'); render(); },
-  a_edit:()=>{ clearTimers(); S.a.phase='form'; log('A_edit'); render(); },
-  a_withdraw:()=>{ clearTimers(); S.a=fresh('A').a; log('A_withdraw'); render(); },
-  a_more:()=>{ S.a=fresh('A').a; log('A_more'); render(); },
+  b_term:d=>{ const c=CONCEPTS[d.k]; log('term', d.k); ask(`Giải thích giúp mình: ${c.term}`, d.k); },
+  b_sel:()=>{ const t=S.sel; $('#selPopup').hidden=true; const k=matchConcept(t); log('explain_selection', `"${t}" → ${k||'none'}`); ask(`Giải thích đoạn: “${t.length>80?t.slice(0,80)+'…':t}”`, k); },
+  b_ask:()=>{ const v=(S.b.input||'').trim(); if (!v) return; const k=matchConcept(v); log('ask', `"${v}" → ${k||'none'}`); ask(v, k); },
+  b_ok:()=>{ log('to_quiz', S.b.key||'none'); $('#quiz').scrollIntoView({behavior:'smooth', block:'start'}); },
+  b_draft:()=>{ const k=S.b.key; const last=S.b.msgs[S.b.msgs.length-1];
+    S.b.draft = k ? CONCEPTS[k].draft : `Em đang đọc slide ${S.slide} và chưa hiểu: "${last?last.query:''}". Nhờ coach giải thích thêm giúp em ạ.`;
+    S.b.phase='ticket'; log('still_unclear', k||'none'); renderSidebar(); },
+  b_anon:d=>{ S.b.anon=d.v==='1'; log('identity', S.b.anon?'ẩn danh':'kèm tên'); renderSidebar(); },
+  b_send:()=>{ S.b.phase='sent'; log('send_coach', `"${S.b.draft}"; ${S.b.anon?'ẩn danh':'kèm tên'}`);
+    later(()=>{ if (S.b.phase==='sent'){ S.b.phase='replied'; log('coach_reply_shown'); renderSidebar(); } }, 4000); renderSidebar(); },
+  b_cancel:()=>{ S.b.phase='chat'; S.b.scroll=true; log('cancel_send'); renderSidebar(); },
+  b_withdraw:()=>{ clearTimers(); S.b.phase='ticket'; log('withdraw'); renderSidebar(); },
+  b_more:()=>{ S.b.phase='chat'; S.b.scroll=true; log('ask_more'); renderSidebar(); },
 
-  b_term:(d)=>{ S.b.key=d.k; S.b.query=''; S.b.phase='explained'; log('B_term', d.k); render(); },
-  b_ask:()=>{ const v=(S.b.query||'').trim(); if(!v) return; S.b.key=answerKey(v); S.b.phase='explained'; log('B_ask', `"${v}" → ${S.b.key}`); render(); },
-  b_ok:()=>{ S.b.phase='ask'; S.b.query=''; S.b.note='Đã ghi nhận: bạn đã hiểu phần này.'; log('B_understood'); render(); },
-  b_more:()=>{ S.b.phase='ask'; S.b.query=''; S.b.note=''; log('B_ask_other'); render(); },
-  b_draft:()=>{ const lb = S.b.key && S.b.key!=='none' ? TERMS[S.b.key].label : (S.b.query||'phần này');
-    S.b.draft = `Mình chưa hiểu “${lb}” ở slide ${S.slide}. Mình đã đọc phần giải thích tự động nhưng vẫn chưa rõ: [bạn bổ sung chỗ còn vướng].`;
-    S.b.phase='draft'; log('B_still_unclear'); render(); },
-  b_anon:(d)=>{ S.b.anon=d.v==='1'; log('B_anon', S.b.anon?'ẩn danh':'kèm tên'); render(); },
-  b_send:()=>{ S.b.phase='sent'; log('B_send', `"${S.b.draft}"; ${S.b.anon?'ẩn danh':'kèm tên'}`); startReply('b'); render(); },
-  b_cancel:()=>{ S.b.phase='explained'; log('B_cancel_send'); render(); },
-  b_withdraw:()=>{ clearTimers(); S.b.phase='draft'; log('B_withdraw'); render(); },
-
-  c_why:()=>{ S.c.why=!S.c.why; log('C_why', S.c.why?'mở':'đóng'); renderNudge(); },
-  c_explain:()=>{ S.nudgeVisible=false; S.nudgeShown=2; S.c.phase='explained'; log('C_explain'); render(); },
-  c_coach:()=>{ S.nudgeVisible=false; S.nudgeShown=2; S.c.phase='preview'; log('C_to_coach_preview'); render(); },
-  c_later:()=>{ S.nudgeVisible=false; log('C_later'); render(); },
-  c_offnudge:()=>{ S.nudgeOn=false; S.nudgeVisible=false; log('C_dismiss_forever'); render(); },
-  c_off:()=>{ S.nudgeOn=false; S.nudgeVisible=false; log('C_toggle_off'); render(); },
-  c_on:()=>{ S.nudgeOn=true; S.dwell=0; log('C_toggle_on'); render(); },
-  c_ok:()=>{ S.c.phase='idle'; log('C_understood'); render(); },
-  c_anon:(d)=>{ S.c.anon=d.v==='1'; log('C_anon', S.c.anon?'ẩn danh':'kèm tên'); render(); },
-  c_send:()=>{ S.c.phase='sent'; log('C_send', `${S.c.anon?'ẩn danh':'kèm tên'}; ${S.c.signals.join('; ')}`); startReply('c'); render(); },
-  c_cancel:()=>{ S.c.phase='idle'; log('C_cancel_send'); render(); },
-  c_withdraw:()=>{ clearTimers(); S.c.phase='preview'; log('C_withdraw'); render(); },
-  c_more:()=>{ S.c.phase='idle'; log('C_more'); render(); },
-
-  logcopy:()=>{ const txt = LOG.map(e=>`${e.clock}\t+${e.t}s\t${e.opt}\t${e.action}\t${e.detail}`).join('\n'); try{ navigator.clipboard.writeText(txt); }catch(_){} },
+  logcopy:()=>{ const txt = LOG.map(e=>`${e.clock}\t+${e.t}s\t${e.action}\t${e.detail}`).join('\n'); try{ navigator.clipboard.writeText(txt); }catch(_){} },
   logclose:()=>{ $('#logp').hidden=true; }
 };
 
@@ -452,20 +622,42 @@ document.addEventListener('click', e=>{
   const fn = ACT[el.dataset.act];
   if (fn) fn(el.dataset);
 });
+document.addEventListener('submit', e=>{
+  const f = e.target.closest('[data-form]');
+  if (!f) return;
+  e.preventDefault();
+  const fn = ACT[f.dataset.form];
+  if (fn) fn(f.dataset);
+});
 document.addEventListener('input', e=>{
-  if (e.target.id==='aText') S.a.text = e.target.value;
-  if (e.target.id==='bQ') S.b.query = e.target.value;
+  if (e.target.id==='bQ') S.b.input = e.target.value;
   if (e.target.id==='bDraft') S.b.draft = e.target.value;
 });
+
+// Bôi đen đoạn văn trên slide → hỏi trợ lý
+document.addEventListener('mouseup', e=>{
+  const pop = $('#selPopup');
+  if (pop.contains(e.target)) return;
+  setTimeout(()=>{
+    const sel = window.getSelection();
+    const text = sel ? sel.toString().trim().replace(/\s+/g,' ') : '';
+    if (text.length<3 || !sel.rangeCount || !$('#slideCanvas').contains(sel.anchorNode)){ pop.hidden = true; return; }
+    S.sel = text.slice(0, 300);
+    const r = sel.getRangeAt(0).getBoundingClientRect(), box = $('.slide-card').getBoundingClientRect();
+    pop.innerHTML = `<button class="btn-selection-action" data-act="b_sel">🤖 Giải thích đoạn này</button>`;
+    pop.style.top = Math.max(4, r.top - box.top - 42) + 'px';
+    pop.style.left = Math.max(4, Math.min(r.left - box.left, box.width - 180)) + 'px';
+    pop.hidden = false;
+  }, 0);
+});
 document.addEventListener('keydown', e=>{
-  if (e.key==='Enter' && e.target.id==='bQ'){ e.preventDefault(); ACT.b_ask(); }
-  if (e.shiftKey && (e.key==='L' || e.key==='l') && !/INPUT|TEXTAREA/.test(document.activeElement.tagName)){
+  if (e.shiftKey && (e.key==='L' || e.key==='l') && !/INPUT|TEXTAREA|SELECT/.test(document.activeElement.tagName)){
     const el = $('#logp'); el.hidden = !el.hidden; renderLog();
   }
 });
-if (params.get('log')==='1'){ $('#logp').hidden=false; }
+if (params.get('log')==='1') $('#logp').hidden = false;
 
-log('start', `phương án ${S.opt}; ngưỡng dừng ${DWELL}s`);
+log('start');
 render();
 </script>
 </body>
