@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Option B — Tín hiệu cấp nội dung, learner quyết định lộ diện</title>
+<link rel="stylesheet" href="../../shared/styles.css">
+</head>
+<body>
+<div class="app">
+  <header class="topbar">
+    <div class="topbar__brand">VLearn <span>·</span> AI Thực Chiến K4</div>
+    <div class="topbar__right">
+      <span class="topbar__learner" id="learner"></span>
+      <button type="button" class="btn btn--ghost" id="endSession">Kết thúc phiên học</button>
+      <button type="button" class="btn btn--ghost" id="reset">Bắt đầu lại</button>
+    </div>
+  </header>
+
+  <main class="layout">
+    <section id="deck" class="card"></section>
+
+    <aside class="card panel">
+      <h2 class="panel__title">Hỗ trợ</h2>
+      <p class="hint">
+        <span class="badge badge--ai">AI: Ask</span><br><br>
+        Tín hiệu của hệ thống <strong>chỉ ở cấp nội dung</strong> — không bao giờ gắn với tên bạn.
+        Bạn là người quyết định có lộ diện hay không.
+      </p>
+      <div id="flow"></div>
+    </aside>
+  </main>
+</div>
+
+<script src="../../shared/fixture.js"></script>
+<script src="../../shared/deck.js"></script>
+<script>
+(function () {
+  'use strict';
+
+  var data = window.VLEARN_DECK;
+  var sig = data.signals;
+  var HARD_INDEX = data.slides.findIndex(function (s) { return s.hard; });
+  var deck;
+  var flow = document.getElementById('flow');
+
+  // idle -> banner -> askName -> named | anon | self | dismissed
+  var state = { stage: 'idle' };
+
+  document.getElementById('learner').textContent = 'Học viên: ' + data.learner;
+
+  function node(tag, cls, text) {
+    var el = document.createElement(tag);
+    if (cls) el.className = cls;
+    if (text != null) el.textContent = text;
+    return el;
+  }
+
+  function button(cls, text, onClick) {
+    var b = node('button', cls, text);
+    b.type = 'button';
+    b.addEventListener('click', onClick);
+    return b;
+  }
+
+  function render() {
+    flow.textContent = '';
+
+    if (state.stage === 'idle') {
+      var c = node('div', 'callout');
+      c.appendChild(node('p', null, 'Chưa có tín hiệu nào. Khi bạn mở một slide mà nhiều bạn khác phải xem lại, hệ thống sẽ nêu điều đó ở cấp nội dung.'));
+      c.appendChild(node('p', 'meta', 'Số liệu dùng cho prototype: slide 7 được xem lại ' + sig.slide7Revisit + '/' + sig.cohortSize + ' lượt.'));
+      flow.appendChild(c);
+      return;
+    }
+
+    if (state.stage === 'banner') {
+      var b = node('div', 'banner');
+      b.appendChild(node('p', 'banner__title', 'Slide 7 có thể là phần khó'));
+      b.appendChild(node('p', 'banner__text',
+        sig.slide7Revisit + '/' + sig.cohortSize + ' lượt xem lại slide này (số liệu tổng hợp cấp slide, không phải về bạn). ' +
+        'Chúng tôi không biết bạn có đang kẹt hay không — bạn thấy thế nào?'));
+      var acts = node('div', 'banner__actions');
+      acts.appendChild(button('btn btn--primary', 'Cần người hỗ trợ', function () { state.stage = 'askName'; render(); }));
+      acts.appendChild(button('btn', 'Tự xử lý được', function () { state.stage = 'self'; render(); }));
+      acts.appendChild(button('btn btn--ghost', 'Bỏ qua', function () { state.stage = 'dismissed'; render(); }));
+      b.appendChild(acts);
+      flow.appendChild(b);
+      return;
+    }
+
+    if (state.stage === 'askName') {
+      var q = node('div', 'banner');
+      q.appendChild(node('p', 'banner__title', 'Bạn muốn mentor biết là bạn cần hỗ trợ chứ?'));
+      q.appendChild(node('p', 'banner__text', 'Nếu bạn không chọn nêu tên, mentor chỉ biết là “có một learner cần hỗ trợ ở slide 7”.'));
+      var qa = node('div', 'banner__actions');
+      qa.appendChild(button('btn btn--primary', 'Có, nêu tên tôi (' + data.learner + ')', function () { state.stage = 'named'; render(); }));
+      qa.appendChild(button('btn', 'Không, để ẩn danh', function () { state.stage = 'anon'; render(); }));
+      qa.appendChild(button('btn btn--ghost', '← Đổi lựa chọn', function () { state.stage = 'banner'; render(); }));
+      q.appendChild(qa);
+      flow.appendChild(q);
+      return;
+    }
+
+    if (state.stage === 'named') {
+      var n = node('div', 'callout callout--ok');
+      n.appendChild(node('p', null, 'Đã ghi nhận: ' + data.learner + ' cần hỗ trợ ở slide 7 (RAG). Mentor sẽ liên hệ bạn.'));
+      n.appendChild(node('p', 'meta', 'Bạn đã chọn lộ diện — hệ thống không tự lấy tên bạn.'));
+      n.appendChild(button('btn btn--sm btn--ghost', 'Đổi lựa chọn', function () { state.stage = 'askName'; render(); }));
+      flow.appendChild(n);
+      return;
+    }
+
+    if (state.stage === 'anon') {
+      var a = node('div', 'callout callout--ok');
+      a.appendChild(node('p', null, 'Đã ghi nhận: có một learner cần hỗ trợ ở slide 7 (RAG). Bạn vẫn ẩn danh — mentor không biết đó là bạn.'));
+      a.appendChild(node('p', 'meta', 'Mặc định là ẩn danh; không chọn gì cũng không sao.'));
+      a.appendChild(button('btn btn--sm btn--ghost', 'Đổi lựa chọn', function () { state.stage = 'askName'; render(); }));
+      flow.appendChild(a);
+      return;
+    }
+
+    if (state.stage === 'self') {
+      var s = node('div', 'callout');
+      s.appendChild(node('p', null, 'Đã ghi nhận bạn tự xử lý. Cảnh báo này sẽ không hiện lại trong phiên.'));
+      s.appendChild(button('btn btn--sm btn--ghost', 'Đổi lựa chọn', function () { state.stage = 'banner'; render(); }));
+      flow.appendChild(s);
+      return;
+    }
+
+    var d = node('div', 'callout');
+    d.appendChild(node('p', null, 'Bạn đã bỏ qua cảnh báo. Không có gì được gửi đi.'));
+    d.appendChild(button('btn btn--sm btn--ghost', 'Mở lại cảnh báo', function () { state.stage = 'banner'; render(); }));
+    flow.appendChild(d);
+  }
+
+  function trigger() {
+    if (state.stage === 'idle') { state.stage = 'banner'; render(); }
+  }
+
+  document.getElementById('endSession').addEventListener('click', function () {
+    deck.goTo(deck.total - 1);
+    trigger();
+  });
+
+  document.getElementById('reset').addEventListener('click', function () {
+    state.stage = 'idle';
+    deck.reset();
+    render();
+  });
+
+  deck = window.VD.mount(document.getElementById('deck'), {
+    onSlide: function (idx, slide, slotEl) {
+      if (idx === HARD_INDEX) {
+        var chip = node('span', 'badge badge--warn', 'Nhiều bạn xem lại slide này');
+        slotEl.appendChild(chip);
+        trigger();
+      }
+      if (state.stage !== 'idle' && idx !== HARD_INDEX) {
+        var chip2 = node('span', 'badge badge--ai', 'Cảnh báo vẫn đang chờ bạn ở cột phải');
+        slotEl.appendChild(chip2);
+      }
+    }
+  });
+
+  render();
+})();
+</script>
+</body>
+</html>
