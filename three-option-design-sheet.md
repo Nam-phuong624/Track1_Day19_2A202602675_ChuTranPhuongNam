@@ -1,9 +1,10 @@
-# Three-Option Design Sheet — Case C · AI Support Radar (VLearn)
+# Three-Option & Four-Option Design Sheet — Case C · AI Support Radar (VLearn)
 
-> **Nhóm:** H3201 · **Track 1** · **Case C — AI Support Radar**
-> Nhãn: ⚙️ có sẵn từ Day 17 · ✍️ nhóm tự điền · 🧪 nháp do AI soạn, nhóm phải tự chốt · 🚫 cấm dùng AI
+> **Nhóm:** H3201 (4 thành viên) · **Track 1** · **Case C — AI Support Radar**
+> Nhãn: ⚙️ có sẵn từ Day 17 · ✍️ nhóm tự điền · 🧪 nháp do AI soạn, nhóm đã review & chốt · 🚫 cấm dùng AI
 >
 > File này là đầu ra của **Chặng 1 → Chặng 3** (GATE 1, GATE 2, GATE 3).
+> **Trạng thái: ✅ Đã review nhóm · ✅ Đã chốt**
 
 ---
 
@@ -61,6 +62,7 @@
 ### 1.3. Điều nhóm vẫn CHƯA BIẾT (Still Unproven — Bắt buộc $\ge 1$): ✍️
 1. Liệu cơ chế **AI tự động phát hiện và gợi ý can thiệp** có tạo ra cảm giác *“được giải thoát”* như khi con người (coach) hỏi trực tiếp hay sẽ gây cảm giác bị soi mói / phiền hà?
 2. Mức độ thiệt hại định lượng cụ thể (điểm số quiz bị giảm bao nhiêu %, tỷ lệ bỏ dở buổi học) trên quy mô toàn bộ học viên VLearn.
+3. Sự khác biệt tâm lý giữa học viên hướng nội (ngại hỏi - PN3) và học viên chủ động tìm kênh hỗ trợ (PN2) khi đối diện với các cơ chế AI can thiệp.
 
 ---
 
