@@ -1,31 +1,27 @@
-# AI SUPPORT LOG — NHÓM H3201
+# AI Support Log — Chử Trần Phương Nam `2A202602675`
 
-*Nhật ký tương tác và phản ánh việc sử dụng AI của các thành viên Nhóm H3201 (Case C — AI Support Radar) trong bài Lab 18.*
+> **Nhóm:** H3201 · **Track 1** · **Case C — AI Support Radar**
+> **Option phụ trách:** Option B — In-situ Grounded AI (chip khái niệm + AI explanation drawer + escalation ticket)
+
+---
+
+## Bảng khai báo
+
+| # | Dùng AI ở đâu | AI đã giúp gì | Điểm sai / hời hợt | Tôi đã tự sửa thế nào |
+| - | ------------- | ------------- | ------------------- | ---------------------- |
+| 1 | Chuẩn bị interview guide cho phỏng vấn Day 17 (PN3) | Gợi ý Big 3 Questions và conversation guide cho Case C; rà soát câu hỏi để tránh leading question | Câu hỏi probe ban đầu về hậu quả còn chung ("bạn cảm thấy thế nào?") — chưa đủ behavioral | Viết lại probe thành *"Lần gần nhất bạn làm quiz không kịp giờ do quên thuật ngữ là khi nào?"*; thêm câu *"Sau khi tra xong, bạn có làm được bài không?"* để truy kết quả |
+| 2 | Cấu trúc Option B prototype (chip + drawer + ticket) | Gợi ý layout: chip ở footer, AI drawer bên phải, escalation ticket dạng form; sinh canned output mẫu cho chip "Augmentation là gì?" | Canned output ban đầu quá dài (~400 chữ); analogy đặt ở cuối thay vì mở đầu; thiếu trường "mức độ chắc chắn" | Cắt còn ~150 chữ; đưa analogy lên đầu; thêm badge "Mức độ chắc chắn: CAO / TRUNG BÌNH / THẤP" để đáp ứng nguyên lý Evidence & Uncertainty |
+| 3 | Sinh nội dung 4 chip khái niệm | AI gợi ý chip đầu tiên chỉ có 3 khái niệm: "Augmentation", "Hallucination", "Vector Embedding" | Thiếu "Khác gì Fine-tuning?" — câu hỏi hay gặp nhất theo PN3 khi tra RAG; 3 chip không đủ phủ scenario tester | Thêm chip thứ 4 "Khác gì Fine-tuning?"; đồng thời ghi nhận giới hạn: 4 chip cố định sẽ không phủ được mọi thuật ngữ mới — đây trở thành một điểm STILL UNPROVEN |
+| 4 | Sinh canned output cho escalation ticket (khi tester click "Nhờ Coach") | AI soạn nội dung ticket tự động gồm: Vị trí học (Slide 6), Khái niệm (Augmentation), Trạng thái tương tác, Nội dung hỏi mẫu | Ticket được soạn theo perspective "AI biết tester đang kẹt gì" — nhưng trong thực tế Option B không có context "tester kẹt gì" cho đến khi tester click chip; ticket cần reflect đúng chip vừa click | Sửa lại: ticket lấy tên chip làm subject ("Tôi vừa đọc giải thích về Augmentation và vẫn còn một số điểm chưa rõ..."); tester có thể sửa trước khi gửi |
+| 5 | Viết `feedback-note/feedback-chutranphuongnam.md` | Tổng hợp 20 observation rows từ phiên test với Chu Thùy Dương, INTERPRETED, DECIDED, STILL UNPROVEN và bảng đối chiếu kỳ vọng | Một số timestamp trong OBSERVED (0:28, 1:40) là ước lượng từ tốc độ chạy automation; chưa có đồng hồ bấm giờ thực tế trong phiên | Ghi rõ là ước lượng; khi test thật sẽ dùng đồng hồ và ghi lại thời gian do dự chính xác — đặc biệt quan trọng với 12 giây do dự ở A vì đây là data point cần đo được |
+| 6 | Rà soát luật facilitation trước phiên test | AI rà soát 5 câu hỏi tôi chuẩn bị cho phần Compare (cuối phiên) để kiểm tra xem có câu nào leading không | Câu "Bạn có thấy Option B tiện hơn không?" bị flag là leading — dùng từ "tiện hơn" là gợi ý | Đổi thành "Trong ba phương án này, bạn chọn A, B hay C? Vì sao?" theo đúng luật facilitation Chặng 5 |
+| 7 | Tham gia viết `group-feedback-synthesis.md` | AI tổng hợp pattern P1–P4 từ 4 phiên, bao gồm phần Điều bất ngờ ("T3 click C nhưng chọn B") và Next Change | Pattern P3 ban đầu viết "C bị coi là intrusive" — quá kết luận sớm; T3 không hề nói C intrusive, chỉ thích B hơn vì kiểm soát được | Sửa P3 thành "giá trị của C phụ thuộc vào trạng thái learner" — phản ánh đúng split behavior (T1 chọn C, T3 click nhưng chọn B, T2 dismiss) |
 
 ---
 
-### AI đã giúp tôi ở đâu?
-- **Cấu trúc hoá README:** AI tổng hợp đề bài Lab 18 thành 6 chặng kèm gate và đưa Hypothesis Problem, ba Practice Notes, Solution Parking Lot từ Day 17 sang.
-- **Nháp ba option A/B/C và Human–AI Decision Table:** AI gợi ý cách map các hướng trong Solution Parking Lot thành ba mechanism dọc spectrum user-led → co-create → AI-initiate.
-- **Tạo khung file nộp:** AI sinh skeleton cho `three-option-design-sheet.md`, `prototype-link.md`, `prototype-feedback-note.md`, `group-feedback-synthesis.md` và `ai-support-log.md`.
-- **Rút gọn bộ file nộp:** AI sắp xếp lại README và các file trên theo cấu trúc ngắn hơn, chỉ dùng nội dung nhóm đã có, không thêm dữ liệu mới.
-- **Chặng 4–6 (Prototype Link, Feedback Note, Synthesis):** AI đọc các prototype của thành viên (bản gộp A/B/C, `phanduythanh/`, `prototype_phuongnam/`, `khanh/`) để viết `prototype-link.md`. AI cũng soạn khung Feedback Note theo task, lời mở đầu và câu hỏi so sánh đã thống nhất, và đưa bảng "kỳ vọng trước test" vào Synthesis, lấy căn cứ từ PN1–PN3.
-- **Chốt bản prototype test chung:** AI so sánh bốn bản prototype và chọn bản của Phương Nam làm nền vì có giao diện, nội dung slide và cơ chế B (giải thích tại chỗ, 3 lớp) tốt nhất. Sau đó AI viết lại `interactive_micro_prototype_vlearn_option_a_b_c.html` thành một file duy nhất. Những gì AI sửa so với bản gốc của Phương Nam: bỏ banner lộ tên người làm và ý đồ thiết kế, bỏ nút "giả lập học viên dừng 25s" (C kích hoạt bằng thời gian dừng thật hoặc khi quay lại slide 6), làm A và C kỹ ngang B, thêm luồng coach phản hồi / sửa / thu hồi, thêm ô "Kèm tín hiệu phiên này" ở C (ý từ bản của Khánh), và giữ nhật ký thao tác cùng tham số URL của bản gộp cũ.
+## Những điều tôi tự làm không dùng AI
 
-### AI sai, hời hợt hoặc làm các options giống nhau ở đâu?
-- **Điền sẵn phần nhóm phải tự làm:** AI điền luôn Comparison Contract và Human–AI Decision Table rồi trình bày như thể đã chốt.
-- **Chọn option theo "đẹp spectrum":** AI chọn hướng cho đủ ba điểm trên spectrum chứ chưa chắc theo evidence, có thể tạo option nghe hợp lý nhưng không giải barrier đã thấy.
-- **Ba option không cùng user:** bản nháp đầu để Option B gửi digest cho mentor và Option C lấy người hỗ trợ làm user ("learner chỉ nhận thông báo"), nên ba option không cùng user và trượt Gate 2.
-- **Lệch so với note gốc:** bản README nháp viết "cả ba note đều có mốc hôm qua" và situation "buổi tối, một mình", trong khi PN3 không nói mốc ngày và không note nào nói "buổi tối" hay "một mình". Câu "Wow, được giải thoát rồi!" cũng bị dùng như bằng chứng learner chấp nhận bị phát hiện, dù đó là phản ứng khi giảng viên lớp code hỏi trực tiếp.
-- **Khung file gợi ý sẵn cách diễn đạt:** dễ khiến nhóm copy nguyên văn.
-- **Nội dung giải thích có số liệu không căn cứ:** bản prototype nguồn có các câu như "giảm 95% ảo giác" và "rẻ hơn hàng trăm lần". Câu trả lời cho thuật ngữ lạ thì lại giả vờ giải thích được. AI đã bỏ các con số này; với thuật ngữ không có trong slide, trợ lý báo độ chắc chắn Thấp và không đoán.
-- **Kỳ vọng dễ bị đọc thành kết quả:** bảng "nhóm kỳ vọng" trong Synthesis do AI soạn dựa trên note Day 17. Nếu không tách rõ thì người đọc dễ hiểu nhầm đó là kết quả test.
-
-### Tôi đã tự sửa hoặc quyết định lại điều gì?
-- **Đưa learner về làm user của cả ba option:** phía coach chỉ là nơi câu hỏi đến; ở Option C, AI chỉ hỏi learner chứ không tự báo coach.
-- **Đối chiếu từng option với PN1/PN2/PN3:** tách barrier thành ba thứ có evidence riêng (tra cứu rời rạc, ngại hỏi, người hỗ trợ không biết) và ghi rõ điều vẫn chưa biết.
-- **Sửa các chỗ lệch với note gốc:** bỏ "buổi tối, một mình", ghi đúng note nào có mốc "hôm qua", và chuyển phản ứng với việc bị AI phát hiện sang mục chưa được chứng minh.
-- **Tách kỳ vọng khỏi thực tế:** cột "Thực tế quan sát" trong Synthesis để riêng, chỉ điền từ Feedback Note thật.
-- **Không dùng AI cho dữ liệu test:** Feedback Note và Group Feedback Synthesis để trống cho tới khi có phiên test thật; nội dung mẫu trong prototype (lời giải thích RAG, câu trả lời của coach, số "12 bạn khác") là nội dung soạn sẵn, không phải dữ liệu thật.
-
----
+- Phỏng vấn trực tiếp với Chu Thùy Dương (PN3 — ~5–7 phút), ghi chép và điền `note/note_chutranphuongnam.md`
+- Quyết định thứ tự trình bày A → B → C trong phiên test (không random — chọn thứ tự này để quan sát reaction khi tester so sánh A vs B liền nhau)
+- Nhận xét sau phiên: tự diễn giải hành vi "đọc lại analogy lần 2" và "không escalate sau khi hiểu" là signal về learning style và cost model của T3
+- Quyết định bổ sung bảng "Đối chiếu kỳ vọng" vào feedback note vì group synthesis cần thấy chỗ giả thuyết nhóm bị bác lại
