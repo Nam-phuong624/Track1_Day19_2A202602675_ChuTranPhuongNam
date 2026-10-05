@@ -674,7 +674,19 @@ Lab18/
 └── contribution.md               # đóng góp cá nhân vào sản phẩm chung 🚫
 ```
 
-### 13.2. Checklist trước khi nộp
+### 13.2. File nộp kèm (khung làm việc chung của nhóm)
+
+```text
+Track1_Day18_MHV_HoVaTen/
+├── README.md                      # file này — đề bài + cách làm + kết quả
+├── three-option-design-sheet.md   # Chặng 1–3: Hypothesis Problem, A/B/C, Human–AI Decision Table
+├── prototype-link.md              # Chặng 4: link A/B/C, cách mở, reset path, QA
+├── prototype-feedback-note.md     # Chặng 6: mỗi thành viên tự facilitate 1 phiên 🚫
+├── group-feedback-synthesis.md    # Chặng 6: pattern + 1 Next Change + 1 Still Unproven
+└── ai-support-log.md              # khai báo mọi cách dùng AI (Phụ lục A)
+```
+
+### 13.3. Checklist trước khi nộp
 
 - [ ] Hypothesis Problem giữ đúng case Day 17, có đủ user/situation/job/barrier/consequence (GATE 1)
 - [ ] Ba options nêu rõ mechanism khác nhau, cùng một problem (GATE 2)
@@ -688,7 +700,7 @@ Lab18/
 - [ ] Đã khai báo đầy đủ việc dùng AI (Phụ lục A)
 - [ ] Đã ghi rõ phần đóng góp cá nhân của mình
 
-### 13.3. Năm gate đánh giá
+### 13.4. Năm gate đánh giá
 
 | Gate | Nội dung | Trạng thái |
 | ---- | -------- | ---------- |
