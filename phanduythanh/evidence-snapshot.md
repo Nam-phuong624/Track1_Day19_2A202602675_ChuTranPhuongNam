@@ -1,90 +1,66 @@
-# Chặng 1 — Evidence Snapshot & Hypothesis Problem
+# Chặng 1 — Evidence Snapshot và Hypothesis Problem
 
-> **Người thực hiện:** Phan Duy Thanh · `2A202602930`
-> **Nhóm:** H3201 · **Track 1** · **Case C — AI Support Radar (VLearn)**
-> **Nguồn:** carry-over Day 17 — [Lab17 · Day17-Track1-H3201](../../../Lab17/Day17-Track1-H3201/README.md) và bản ghi gốc [`../note/`](../note/)
-> **Gate:** GATE 1 — Evidence continuity
+Phan Duy Thanh (2A202602930), nhóm H3201, Case C: AI Support Radar (VLearn).
+Nguồn: ghi chép phỏng vấn Day 17 trong thư mục [`../note/`](../note/).
 
----
+## 1. Hypothesis Problem
 
-## 1. Hypothesis Problem nhóm tiếp tục ⚙️
+Sau Day 17, nhóm chốt giả thuyết sau và dùng chung cho cả ba option:
 
-```text
-Khi tự học một phần nội dung khó trên VLearn một mình, learner thường mắc lại khá lâu nhưng xử lý
-âm thầm — bằng workaround tốn thời gian hoặc bỏ qua phần đó — vì không ai ở vai trò hỗ trợ biết được
-họ đang mắc ở đâu, và bản thân họ cũng không chủ động lên tiếng. Hậu quả là lỗ hổng kiến thức tích
-luỹ và đà học giảm dần.
-```
+> Khi tự học một phần nội dung khó trên VLearn một mình, người học thường bị mắc khá lâu nhưng tự xoay xở trong im lặng, bằng những cách tốn thời gian hoặc bỏ qua luôn phần đó. Lý do là người hỗ trợ không biết họ đang mắc ở đâu, còn bản thân họ cũng không chủ động lên tiếng. Lâu dần, lỗ hổng kiến thức tích tụ và người học mất đà.
 
-| Thành phần | Nội dung ⚙️ |
-| ---------- | ----------- |
-| **Situation** | Đang tự học một bài/slide khó trên VLearn vào buổi tối, một mình, không có ai ngồi cạnh |
-| **User** | Learner tự học |
-| **Job** | Hiểu đủ nội dung để học tiếp và làm bài tập/quiz đúng hạn |
-| **Barrier** | Không ai ở vai trò hỗ trợ biết họ đang mắc ở đâu **và** bản thân họ cũng không chủ động lên tiếng |
-| **Consequence** | Lỗ hổng kiến thức tích luỹ, đà học giảm dần |
+| Thành phần | Nội dung |
+| --- | --- |
+| Situation | Tự học một bài hoặc slide khó trên VLearn, thường vào buổi tối, không có ai bên cạnh |
+| User | Người học tự học |
+| Job | Hiểu đủ để học tiếp và làm bài tập, quiz đúng hạn |
+| Barrier | Người hỗ trợ không biết người học đang mắc ở đâu, và người học cũng không chủ động lên tiếng |
+| Consequence | Lỗ hổng kiến thức tích tụ, đà học giảm |
 
-**Hai cách giải thích cạnh tranh (đã điều tra ở Day 17):**
+Nhóm đặt ra hai cách giải thích cạnh tranh nhau cho barrier này:
 
-| | Pain hypothesis | Trạng thái sau Day 17 |
-| --- | --- | --- |
-| **A** | *Visibility gap* — learner mắc nhưng **không ai biết**, và learner cũng không chủ động nói | Có dấu hiệu yếu (PN1); **bị làm yếu** bởi PN2 |
-| **B** | *Chi phí xã hội* — learner **biết** mình mắc và **biết** cách hỏi, nhưng chọn im lặng vì ngại | **Có evidence trực tiếp** ở PN3 |
+- Pain A (visibility gap): người học bị mắc nhưng không ai biết, và họ cũng không nói ra.
+- Pain B (chi phí xã hội): người học biết mình mắc ở đâu và biết cách hỏi, nhưng chọn im lặng vì ngại.
 
----
+## 2. Ba Practice Notes
 
-## 2. Ba Practice Notes — facts trước, diễn giải sau ⚙️
+| Note | Phỏng vấn | Người học đã làm hoặc nói gì | Cách nhóm diễn giải |
+| --- | --- | --- | --- |
+| PN1 | Phan Duy Thanh với Lê Thanh Tình | Lần gần nhất là chiều hôm trước. Học đến một đoạn thì không hiểu, gặp thuật ngữ tiếng Anh nhưng không chỉ ra được nội dung đó nằm ở đâu: "Nói chung là em không tìm được cái nội dung ở đấy luôn." Không kể cách xoay xở nào. Cảm thấy "buồn" và "lo lắng". | Người học có thể khó xác định chính xác chỗ mình mắc. Đây mới là suy đoán từ một lần kể. |
+| PN2 | Bùi Hải Nam với một người học K4 | Lần gần nhất là hôm trước. Một số định nghĩa trong video và slide chưa rõ. Tự tìm trên mạng, hỏi bạn, hỏi lab coach: "Thường là mình tự đi chủ động đi tìm các anh lab coach... chứ các anh cũng không hỏi tình hình của mình mấy." | Người học có nhiều kênh hỗ trợ và chủ động dùng. Điều này làm yếu Pain A. |
+| PN3 | Chử Trần Phương Nam với một người học track chuyên sâu | Không nhớ định nghĩa những thuật ngữ như RAG. Hỏi AI trước, chưa ổn thì tìm Google, mất khoảng mười phút cho một thuật ngữ. Không hỏi ai vì "mình cũng hơi ngại". Khi giảng viên chủ động hỏi thăm: "Wow, được giải thoát rồi!" | Đây là bằng chứng trực tiếp cho Pain B. Người học phản ứng tích cực khi được người khác hỏi trước. |
 
-| Practice Note | Interviewer → Participant | User đã thực sự làm / nói gì? | Điều nhóm đang diễn giải |
-| ------------- | ------------------------- | ----------------------------- | ------------------------ |
-| **PN1** | Phan Duy Thanh → `Lê Thanh Tình` (`2A202602449`) | Buổi học gần nhất là **chiều hôm qua**; làm đến một phần thì không hiểu nhưng **không xác định được nội dung trên slide**; gặp thuật ngữ tiếng Anh (`Hi-list`/High list — chưa xác nhận cách viết); *"Nói chung là em không tìm được cái nội dung ở đấy luôn."*; *"Thấy buồn ạ."* / *"Thấy lo lắng."*; **không kể workaround nào** | Learner có thể **khó chỉ ra chính xác điểm nghẽn** — nhưng đây mới là suy đoán từ một lần kể; chưa biết do cách trình bày, vốn từ hay nguyên nhân khác |
-| **PN2** | Bùi Hải Nam → learner `2A202602872` (K4 AI Thực Chiến) | Buổi học gần nhất **là hôm qua**; một số định nghĩa trong video/slide **chưa rõ**, đọc vẫn chưa hiểu; workaround: **tự search mạng, hỏi bạn xung quanh, hỏi lab coach**, tiếp tục tìm hiểu đến khi thấy ổn; *"Thường là mình tự đi chủ động đi tìm các anh lab coach... chứ các anh cũng không hỏi tình hình của mình mấy."* | Learner **có nhiều kênh hỗ trợ và chủ động dùng được** → làm yếu giả định "không ai biết mình đang kẹt". Chưa rõ các kênh đó có luôn hiệu quả không |
-| **PN3** | Chử Trần Phương Nam → learner nữ (track chuyên sâu AI Thực Chiến) | Thuật ngữ chuyên sâu (ví dụ `RAG`) **không nhớ định nghĩa** nên phải dừng tra cứu; workaround: **hỏi AI trước → Google search** nếu AI chưa chuẩn; **~10 phút cho một thuật ngữ**; *"Mình nghĩ là không tại mình cũng hơi ngại"*; quiz mật độ dày, tốc độ nhanh thì *"ôi trời ơi không nhớ nó là gì luôn"*; khi được coach **chủ động hỏi thăm**: *"Wow, được giải thoát rồi!"* | **Pain B có evidence trực tiếp** (chi phí xã hội khi lên tiếng). Phản ứng tích cực khi được hỏi trước **chống lại** giả định "learner không muốn bị chú ý" |
+Note thứ tư (`notes_khanh.md`) mới chỉ có khung trống, chưa ghi nội dung phỏng vấn nào, nên không được dùng làm bằng chứng.
 
-> ⚠️ Có thêm một note ở dạng **template rỗng** (`note/notes_khanh.md` — chưa có cuộc phỏng vấn thật). **Không dùng làm evidence.**
+## 3. Điểm lặp lại và điểm mâu thuẫn
 
----
+Ba điểm lặp lại qua các note. Thứ nhất, cả ba người đều kể về một lần cụ thể xảy ra trong tuần, không nói chung chung. Thứ hai, cả ba đều mắc ở cùng một loại nội dung: thuật ngữ hoặc định nghĩa chưa được giải thích rõ trên slide. Thứ ba, cách xoay xở phổ biến là tự xử lý qua các kênh rời rạc (PN2, PN3).
 
-## 3. Tín hiệu lặp lại và mâu thuẫn
+Các note cũng mâu thuẫn nhau ở một điểm đáng chú ý. Người học ở PN2 chủ động tìm coach, còn người học ở PN3 có sẵn kênh nhưng vẫn không hỏi vì ngại. Phản ứng "được giải thoát" ở PN3 lại cho thấy họ không ngại bị chú ý. Điều họ ngại là phải tự mở lời. Điều này gợi ý một hướng thiết kế: hệ thống hỏi người học trước, nhưng không quyết định thay họ.
 
-**Situation / behavior / workaround xuất hiện nhiều hơn một lần:**
+## 4. Những điều chưa biết
 
-- Cả ba note đều có mốc **"buổi học gần nhất là hôm qua"** — tức sự kiện cụ thể trong tuần, không phải "thường thì mình hay bị".
-- Cả ba đều vướng ở **đúng một loại nội dung**: thuật ngữ / định nghĩa chưa rõ trong slide.
-- Workaround lặp lại là **tự xoay**: search / hỏi AI / hỏi bạn (PN2, PN3).
+- Hậu quả học tập cụ thể (điểm số, trễ hạn) chưa người học nào kể.
+- Chưa biết tình trạng mắc mà không ai hay biết xảy ra thường xuyên đến mức nào.
+- Chưa rõ việc không xác định được chỗ mắc là hiện tượng chung hay chỉ là cách kể của một người (PN1).
+- Cả ba người được phỏng vấn đều học AI Thực Chiến, nên chưa thể suy rộng cho người học khác.
+- Day 17 chưa phỏng vấn mentor hay coach nào.
+- Chưa biết người học sẽ phản ứng thế nào khi chính AI, chứ không phải một người, phát hiện ra họ đang mắc.
 
-**Evidence mâu thuẫn hoặc làm bất ngờ:**
+## 5. Hệ quả cho Chặng 2
 
-| # | Điều bất ngờ | Nó tác động tới giả thuyết nào |
-| - | ------------ | ------------------------------ |
-| 1 | PN2 cho thấy learner **chủ động hỏi được** (search, hỏi bạn, hỏi lab coach) | **Làm yếu Pain A** — không phải "không ai biết" mà là learner có kênh và dùng được |
-| 2 | PN3 cho thấy learner **ngại nên không hỏi dù kênh có sẵn** | **Ủng hộ Pain B** |
-| 3 | PN3 **rất nhẹ nhõm khi được hỏi trước** (*"Wow, được giải thoát rồi!"*) | **Chống lại** giả định "learner không muốn bị chú ý" → hỗ trợ hướng AI chủ động hỏi, nhưng phải **hỏi trước**, không được tự quyết thay learner |
+Nhóm giữ nguyên câu chữ của Hypothesis Problem để ba option cùng giải quyết một vấn đề. Bằng chứng hiện nghiêng về Pain B, nên mỗi option phải trả lời được câu hỏi: cơ chế này giúp người học lên tiếng dễ hơn ở điểm nào, hoặc có còn cần họ phải lên tiếng hay không?
 
----
+## 6. Đối chiếu GATE 1
 
-## 4. Điều vẫn chỉ là suy đoán của nhóm
+Hypothesis Problem có đủ năm thành phần. Bảng ở mục 2 trích ít nhất một quan sát Day 17 kèm lời nguyên văn, và mục 4 nêu những điều còn chưa biết. Nhóm không đổi case và không coi giả thuyết là đã được xác nhận.
 
-- Hậu quả học tập **cụ thể** (điểm, deadline, phải học lại) chưa ai kể.
-- Tần suất "mắc mà không ai biết" chưa đo được.
-- "Không xác định được chỗ vướng" là **đặc điểm chung** hay chỉ do cách kể ở một lượt của PN1?
-- Ba lượt phỏng vấn đều là learner trong cùng môi trường AI Thực Chiến → chưa biết có suy rộng ra được không.
+## Tài liệu tham khảo
 
----
+Bùi, H.N. (2026) *Ghi chép phỏng vấn người học, Day 17*. Tài liệu nội bộ nhóm H3201.
 
-## 5. Chốt cho Chặng 2
+Chử, T.P.N. (2026) *Ghi chép phỏng vấn người học, Day 17*. Tài liệu nội bộ nhóm H3201.
 
-**Hypothesis Problem giữ nguyên câu chữ** để A/B/C cùng giải một problem.
+Fitzpatrick, R. (2013) *The Mom Test: How to talk to customers and learn if your business is a good idea when everyone is lying to you*. CreateSpace Independent Publishing.
 
-**Trọng số điều tra đã dịch từ Pain A sang Pain B** — barrier được evidence ủng hộ hơn là **"ngại / không chủ động lên tiếng"**, còn **"không ai biết"** là barrier nền. Vì vậy cả ba option phải trả lời được câu hỏi:
-
-> *Cơ chế này làm cho việc lên tiếng **dễ hơn** ở chỗ nào — hoặc có cần learner lên tiếng nữa hay không?*
-
----
-
-## 6. GATE 1 — Evidence continuity ✅
-
-- [x] Hypothesis Problem có đủ **user, situation, job, barrier, consequence**
-- [x] Có **ít nhất một observation Day 17**, kèm quote nguyên văn (PN1, PN3)
-- [x] Có **ít nhất một điều vẫn chưa biết** (§4)
-- [x] Không đổi case, không tìm problem mới, không có dòng nào tuyên bố "validated"
+Phan, D.T. (2026) *Ghi chép phỏng vấn người học, Day 17*. Tài liệu nội bộ nhóm H3201.
