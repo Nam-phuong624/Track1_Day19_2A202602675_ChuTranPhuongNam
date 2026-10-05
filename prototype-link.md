@@ -1,55 +1,11 @@
-# Prototype Link — A/B/C dùng chung của nhóm
+# Prototype Link — Nhóm H3201 (Case C: AI Support Radar)
 
-> **Nhóm:** H3201 · **Track 1** · **Case C — AI Support Radar**
-> Đầu ra của **Chặng 4 — Build ba micro-prototype** (GATE 4).
-> Nếu prototype là file trong repo, ghi đường dẫn tương đối; nếu là link ngoài (Figma/Framer/Netlify/…), ghi URL và đảm bảo **người ngoài nhóm mở được**.
+Bản micro-prototype tương tác gộp cả 3 option (A, B, C) trong một giao diện chung để tester ngoài nhóm tự trải nghiệm và so sánh cơ chế:
 
----
-
-## 1. Link ba option
-
-| Option | Cơ chế (1 câu) | Người phụ trách | Link / đường dẫn | Trạng thái | Đã test mở trên máy khác? |
-| --- | --- | --- | --- | --- | --- |
-| **A** | User-led / No-inference | ✍️ | ✍️ | ⬜ chưa · ⬜ đang build · ⬜ test-ready | ⬜ |
-| **B** | User + AI co-create | ✍️ | ✍️ | ⬜ chưa · ⬜ đang build · ⬜ test-ready | ⬜ |
-| **C** | AI initiate, Human review | ✍️ | ✍️ | ⬜ chưa · ⬜ đang build · ⬜ test-ready | ⬜ |
-
-**Kho context/content dùng chung (~70%):** ✍️ *(đường dẫn tới thư mục `shared/`, file content, fixture, component chung)*
-
----
-
-## 2. Cách mở & quay về điểm xuất phát (reset path)
-
-> Tester phải tự mở được, tự làm hết task, và **quay về được context ban đầu** mà không cần nhóm giải thích.
-
-| Option | Cách mở (1–3 bước) | Reset path | Thời gian mở mục tiêu |
-| --- | --- | --- | --- |
-| **A** | | | ≤ 15 giây |
-| **B** | | | ≤ 15 giây |
-| **C** | | | ≤ 15 giây |
-
----
-
-## 3. Phạm vi micro-prototype
-
-- [ ] Mỗi option chỉ gồm **2–3 trạng thái** quanh **một** critical interaction
-- [ ] Không build full product, không gọi API/model thật nếu không cần thiết
-- [ ] Cả ba dùng chung context screen, content và visual components
-- [ ] Không cần người của nhóm ngồi cạnh narrate
-- [ ] Có nút/luồng reset rõ ràng
-
----
-
-## 4. QA trước khi mang đi test (10–15 phút cuối sprint)
-
-Mỗi người thử option do **người khác** build, rồi cả nhóm chuẩn hoá A/B/C.
-
-| # | Hạng mục kiểm | A | B | C | Người kiểm |
-| - | ------------- | - | - | - | ---------- |
-| 1 | Mở được trên máy người khác | ⬜ | ⬜ | ⬜ | |
-| 2 | Chạy đủ task end-to-end | ⬜ | ⬜ | ⬜ | |
-| 3 | Reset về context ban đầu OK | ⬜ | ⬜ | ⬜ | |
-| 4 | Không lộ tên/ý đồ của option cho tester | ⬜ | ⬜ | ⬜ | |
-| 5 | Ba option trông cùng "độ hoàn thiện" (không có option nào nhỉnh hơn rõ rệt) | ⬜ | ⬜ | ⬜ | |
-
-**Ghi chú lỗi phát hiện khi QA:** ✍️
+- **Tệp Interactive Prototype cục bộ:** [interactive_micro_prototype_vlearn_option_a_b_c.html](interactive_micro_prototype_vlearn_option_a_b_c.html)
+- **Option A (Tự đánh dấu, coach trả lời):** [Mở file và chọn nút "Phương án A" ở thanh trên cùng](interactive_micro_prototype_vlearn_option_a_b_c.html)
+- **Option B (AI giải thích khi được hỏi):** [Mở file và chọn nút "Phương án B" ở thanh trên cùng](interactive_micro_prototype_vlearn_option_a_b_c.html)
+- **Option C (AI chủ động hỏi thăm):** [Mở file và chọn nút "Phương án C" ở thanh trên cùng](interactive_micro_prototype_vlearn_option_a_b_c.html) — gợi ý hiện khi dừng khoảng 20 giây ở slide 6 hoặc khi rời slide 6 rồi quay lại
+- **Reset path:** nút "↺ Làm lại từ đầu" ở góc trên đưa phương án đang mở về trạng thái ban đầu; chuyển sang phương án khác cũng bắt đầu lại từ slide 6
+- **Tuỳ chọn cho người điều phối (thêm vào URL):** `?order=BCA` đổi thứ tự nút, `?opt=B` mở thẳng một phương án, `?t=20` số giây dừng để phương án C gợi ý, `?log=1` (hoặc Shift+L) hiện nhật ký thao tác
+- **Repo GitHub cá nhân:** https://github.com/thanhpd123/Track1_Day19_2A202602930_PhanDuyThanh
