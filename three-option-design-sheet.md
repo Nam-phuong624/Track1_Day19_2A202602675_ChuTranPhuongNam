@@ -11,21 +11,21 @@
 
 | Mục | Nội dung |
 | --- | --- |
-| Hypothesis Problem (tên ngắn) | ✍️ |
-| Người điều phối điền file | ✍️ |
-| Ngày chốt | ✍️ |
-| Trạng thái | ⬜ Draft · ⬜ Đã review nhóm · ⬜ Đã chốt |
+| Hypothesis Problem (tên ngắn) | AI Support Radar — Phát hiện và hỗ trợ người học bị kẹt âm thầm khi tự học slide khó |
+| Người điều phối điền file | Phan Duy Thành (2A202602930) |
+| Ngày chốt | 05/10/2026 |
+| Trạng thái | ✅ Đã review nhóm · ✅ Đã chốt |
 
 **Phân công phụ trách chính:**
 
 | # | MHV | Họ và tên | Option phụ trách chính |
 | - | --- | --------- | ---------------------- |
-| 1 | `2A202602636` | Bùi Hải Nam | ✍️ A / B / C |
-| 2 | `2A202602675` | Chử Trần Phương Nam | ✍️ A / B / C |
-| 3 | `2A202602585` | Phùng Gia Khánh | ✍️ A / B / C |
-| 4 | `2A202602930` | Phan Duy Thanh | ✍️ A / B / C |
+| 1 | `2A202602636` | Bùi Hải Nam | Option A (User-led / No-inference) |
+| 2 | `2A202602675` | Chử Trần Phương Nam | Option B (User + AI co-create) |
+| 3 | `2A202602585` | Phùng Gia Khánh | Option C (AI initiate, Human review) |
+| 4 | `2A202602930` | Phan Duy Thành | Option C (AI initiate, Human review — Đồng phụ trách) |
 
-> Nhóm có 4 người nhưng chỉ có 3 option → **một option do 2 người cùng phụ trách**. Ghi rõ ai là người chịu trách nhiệm chính của option đó.
+> Nhóm có 4 người nhưng chỉ có 3 option → **Option C do Phùng Gia Khánh và Phan Duy Thành cùng phụ trách**.
 
 ---
 
@@ -33,23 +33,34 @@
 
 Đủ **5 thành phần**, không đổi case, không tìm problem mới.
 
-| Thành phần | Nội dung ⚙️ |
+| Thành phần | Nội dung chuẩn hóa ⚙️ |
 | --- | --- |
-| **User** | |
-| **Situation** | |
-| **Job-to-be-done** | |
-| **Barrier** | |
-| **Consequence** | |
+| **User** | Learner tự học trên nền tảng VLearn (khóa AI Thực Chiến / track chuyên sâu) |
+| **Situation** | Đang tự học/đọc một slide/nội dung khó trên VLearn vào buổi tối, một mình, không có ai ngồi cạnh |
+| **Job-to-be-done** | Hiểu đủ nội dung/thuật ngữ cốt lõi để tiếp tục bài học và hoàn thành bài tập/quiz đúng hạn |
+| **Barrier** | Không ai ở vai trò hỗ trợ biết họ đang mắc ở đâu **và** bản thân họ ngại/không chủ động lên tiếng hỏi |
+| **Consequence** | Mất thời gian tự xoay xở (~10 phút/từ), không nhớ kiến thức khi làm quiz tốc độ cao, lỗ hổng kiến thức tích luỹ, đà học giảm dần |
 
-**Evidence neo vào (từ 3 Practice Notes Day 17):**
+### 1.1. Bảng tổng hợp Evidence Huddle Chặng 1 (Tổng hợp từ tất cả các Note phỏng vấn)
 
-| # | Practice Note | Observation / quote gốc ⚙️ | Nó chống lưng cho barrier nào |
-| - | ------------- | --------------------------- | ----------------------------- |
-| PN1 | | | |
-| PN2 | | | |
-| PN3 | | | |
+| Nguồn / Thành viên | User đã thực sự làm / nói gì? (Quotes & Facts nguyên văn) | Điều nhóm đang diễn giải (Suy đoán có căn cứ) |
+| :--- | :--- | :--- |
+| **PN1 (Phan Duy Thành)** <br>→ *Learner Lê Thanh Tình* | • Buổi học gần nhất chiều hôm qua.<br>• Làm đến một phần thì không hiểu nhưng không xác định được nội dung trên slide: *"Nói chung là em không tìm được cái nội dung ở đấy luôn."*<br>• Gặp thuật ngữ tiếng Anh: *"Hi-list (High list)?"*<br>• Cảm xúc: Thấy buồn, lo lắng khi nhận ra mình tụt lại phía sau. | • Learner gặp khó khăn trong việc định vị và diễn đạt chính xác điểm nghẽn nhận thức.<br>• Tự ti và lo lắng khi rơi vào trạng thái bị kẹt kiến thức một mình. |
+| **PN2 (Bùi Hải Nam)** <br>→ *Learner 2A202602872 (K4)* | • Buổi học gần nhất là hôm qua; định nghĩa trên video/slide chưa rõ, đọc chưa hiểu.<br>• **Workaround:** Tự lên mạng search, hỏi bạn bè xung quanh hoặc hỏi lab coach; cảm thấy ổn thì mới chuyển phần.<br>• *"Thường là mình tự đi chủ động đi tìm các anh lab coach... chứ các anh cũng không hỏi tình hình của mình mấy."* | • Learner có phản xạ chủ động tìm kiếm các kênh hỗ trợ sẵn có (làm yếu giả định learner hoàn toàn bất lực không biết tìm ai).<br>• Coach đóng vai trò phản ứng thụ động (chờ hỏi mới trả lời), ít chủ động thăm dò. |
+| **PN3 (Chử Trần Phương Nam)** <br>→ *Learner Nữ (Track chuyên sâu)* | • Vừa nghe giảng vừa đọc slide trên lớp, về nhà recap lại toàn bộ slide.<br>• Gặp thuật ngữ khó (ví dụ: `RAG`), không nhớ nên dừng tra cứu: Hỏi AI trước $\rightarrow$ Search Google cấu trúc mô hình (~10 phút/từ).<br>• Hoàn toàn không hỏi mentor/bạn vì **ngại**: *"Mình nghĩ là không tại mình cũng hơi ngại (cười)"*.<br>• Hậu quả làm quiz nhanh: *"ôi trời ơi không nhớ nó là gì luôn"*.<br>• Phản ứng khi được coach hỏi trước: *"Wow, được giải thoát rồi!"* | • **Minh chứng đắt giá cho Pain B (Chi phí xã hội):** Ngại hỏi là rào cản chính khiến learner im lặng tự xoay xở.<br>• Lỗ hổng kiến thức lộ rõ khi làm bài kiểm tra áp lực thời gian.<br>• Sự can thiệp chủ động từ người dạy mang lại sự giải tỏa tâm lý cực lớn. |
+| **PN4 (Phùng Gia Khánh)** <br>→ *Learner AE06 (CS)* | • Học viên Khoa học máy tính, tham gia khóa học với mong muốn nắm chắc kiến thức AI thực chiến.<br>• Đi học, nghe giảng trên lớp đầy đủ; đang trong quá trình củng cố phương pháp tự học. | • Xác nhận động lực học tập nghiêm túc của sinh viên kỹ thuật; cần bổ sung sâu hơn về hành vi tương tác micro-interaction trong các vòng test prototype. |
 
-**Điều nhóm vẫn CHƯA BIẾT (bắt buộc ≥ 1):** ✍️
+### 1.2. Ánh xạ Evidence vào các Barrier cốt lõi
+
+| # | Practice Note | Observation / quote gốc ⚙️ | Chống lưng cho Barrier nào |
+| - | ------------- | --------------------------- | -------------------------- |
+| **PN1** | Thành → Tình | *"Nói chung là em không tìm được cái nội dung ở đấy luôn"* | **Barrier 1:** Không tự chỉ ra được điểm nghẽn để người khác hỗ trợ. |
+| **PN2** | Bùi Nam → K4 | *"các anh cũng không hỏi tình hình của mình mấy"* | **Barrier 2:** Giảng viên/Coach không có radar phát hiện người học đang kẹt. |
+| **PN3** | Phương Nam → Nữ | *"Mình nghĩ là không tại mình cũng hơi ngại"*, *"Wow, được giải thoát rồi!"* | **Barrier 3 (Trọng tâm):** Chi phí xã hội (ngại hỏi) khiến learner tự cô lập; can thiệp chủ động giúp giải tỏa. |
+
+### 1.3. Điều nhóm vẫn CHƯA BIẾT (Still Unproven — Bắt buộc $\ge 1$): ✍️
+1. Liệu cơ chế **AI tự động phát hiện và gợi ý can thiệp** có tạo ra cảm giác *“được giải thoát”* như khi con người (coach) hỏi trực tiếp hay sẽ gây cảm giác bị soi mói / phiền hà?
+2. Mức độ thiệt hại định lượng cụ thể (điểm số quiz bị giảm bao nhiêu %, tỷ lệ bỏ dở buổi học) trên quy mô toàn bộ học viên VLearn.
 
 ---
 
