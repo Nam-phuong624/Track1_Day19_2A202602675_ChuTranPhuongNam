@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Option C — Support Queue (AI initiate, human review)</title>
+<link rel="stylesheet" href="../../shared/styles.css">
+</head>
+<body>
+<div class="app">
+  <header class="topbar">
+    <div class="topbar__brand">VLearn <span>·</span> AI Thực Chiến K4</div>
+    <div class="topbar__right">
+      <span class="topbar__learner" id="learner"></span>
+      <button type="button" class="btn btn--ghost" id="endSession">Kết thúc phiên học</button>
+      <button type="button" class="btn btn--ghost" id="reset">Bắt đầu lại</button>
+    </div>
+  </header>
+
+  <main class="layout">
+    <section id="deck" class="card"></section>
+
+    <aside class="card panel">
+      <h2 class="panel__title">Khu vực hỗ trợ</h2>
+      <div class="tabs">
+        <button type="button" class="tabs__btn is-active" id="tabLearner">Học viên</button>
+        <button type="button" class="tabs__btn" id="tabMentor">Mentor</button>
+      </div>
+      <p class="hint" id="roleHint"></p>
+      <div id="flow"></div>
+    </aside>
+  </main>
+</div>
+
+<script src="../../shared/fixture.js"></script>
+<script src="../../shared/deck.js"></script>
+<script>
+(function () {
+  'use strict';
+
+  var data = window.VLEARN_DECK;
+  var sig = data.signals;
+  var HARD_INDEX = data.slides.findIndex(function (s) { return s.hard; });
+  var TOTAL = data.slides.length;
+  var deck;
+  var flow = document.getElementById('flow');
+  var roleHint = document.getElementById('roleHint');
+  var tabLearner = document.getElementById('tabLearner');
+  var tabMentor = document.getElementById('tabMentor');
+
+  var state = { tab: 'learner', queue: null, optOut: false, selfMarked: false, rejectDraft: false };
+
+  document.getElementById('learner').textContent = 'Học viên: ' + data.learner;
+
+  function node(tag, cls, text) {
+    var el = document.createElement(tag);
+    if (cls) el.className = cls;
+    if (text != null) el.textContent = text;
+    return el;
+  }
+
+  function button(cls, text, onClick) {
+    var b = node('button', cls, text);
+    b.type = 'button';
+    b.addEventListener('click', onClick);
+    return b;
+  }
+
+  function confidenceBar() {
+    var wrap = node('div', 'confidence');
+    wrap.appendChild(node('span', 'meta', Math.round(sig.inferenceConfidence * 100) + '%'));
+    var track = node('div', 'confidence__track');
+    var bar = node('div', 'confidence__bar');
+    bar.style.width = (sig.inferenceConfidence * 100) + '%';
+    track.appendChild(bar);
+    wrap.appendChild(track);
+    wrap.appendChild(node('span', 'meta', 'trung bình'));
+    return wrap;
+  }
+
+  function evidenceList() {
+    var ul = node('ul');
+    ul.appendChild(node('li', null, 'Dừng ' + Math.floor(sig.learnerSlide7DwellSeconds / 60) + ' phút ' +
+      (sig.learnerSlide7DwellSeconds % 60) + ' giây ở slide 7 — lâu hơn hẳn các slide khác.'));
+    ul.appendChild(node('li', null, 'Đổi đáp án quiz câu ' + sig.learnerQuizChangedQuestion + ' ' + sig.learnerQuizChanges + ' lần.'));
+    ul.appendChild(node('li', null, 'Không dùng AI Chat trong phiên này.'));
+    return ul;
+  }
+
+  function renderLearner() {
+    if (!state.queue) {
+      var c = node('div', 'callout');
+      c.appendChild(node('p', null, 'Chưa có gì trong phiên này. Hệ thống chỉ tạo mục sau khi phiên học kết thúc.'));
+      c.appendChild(button('btn btn--sm', 'Kết thúc phiên học', function () { endSession(); }));
+      flow.appendChild(c);
+      return;
+    }
+
+    if (state.optOut) {
+      var o = node('div', 'callout');
+      o.appendChild(node('p', null, 'Bạn đã tắt nhận hỗ trợ. Mục trong queue đã được gỡ.'));
+      o.appendChild(node('p', 'meta', 'Bạn vẫn có thể tự đánh dấu “Chưa hiểu” ở slide 7 nếu muốn.'));
+      flow.appendChild(o);
+      return;
+    }
+
+    if (state.queue.status === 'pending') {
+      var card = node('div', 'banner');
+      card.appendChild(node('p', 'banner__title', 'Hệ thống ghi nhận bạn có thể đang cần hỗ trợ'));
+      var t = node('p', 'banner__text');
+      t.appendChild(node('span', 'badge badge--ai', 'AI suy đoán'));
+      t.appendChild(document.createTextNode(' ở slide 7 (RAG). Đây là suy đoán, có thể sai.'));
+      card.appendChild(t);
+      card.appendChild(confidenceBar());
+      var det = node('div', 'meta');
+      det.appendChild(node('p', null, 'Căn cứ AI dùng:'));
+      det.appendChild(evidenceList());
+      card.appendChild(det);
+      card.appendChild(node('p', 'meta', 'Mentor sẽ xem trước khi liên hệ bạn — AI không tự liên hệ ai.'));
+
+      var sw = node('div', 'switch');
+      var cb = document.createElement('input');
+      cb.type = 'checkbox';
+      cb.id = 'optOut';
+      var lb = node('label', null, 'Không muốn nhận hỗ trợ');
+      lb.setAttribute('for', 'optOut');
+      cb.addEventListener('change', function () {
+        state.optOut = cb.checked;
+        if (cb.checked) state.queue = null;
+        render();
+      });
+      sw.appendChild(cb);
+      sw.appendChild(lb);
+      card.appendChild(sw);
+      flow.appendChild(card);
+      return;
+    }
+
+    if (state.queue.status === 'accepted') {
+      var a = node('div', 'callout callout--ok');
+      a.appendChild(node('p', null, 'Mentor đã xem mục này và sẽ liên hệ bạn để gỡ phần RAG.'));
+      flow.appendChild(a);
+      return;
+    }
+
+    var r = node('div', 'callout callout--danger');
+    r.appendChild(node('p', null, 'Mentor đã từ chối mục này nên hệ thống đã gỡ nó khỏi queue.'));
+    if (state.queue.reason) {
+      r.appendChild(node('p', 'meta', 'Lý do mentor ghi: “' + state.queue.reason + '”'));
+    }
+    if (!state.selfMarked) {
+      r.appendChild(button('btn btn--sm', 'Tự đánh dấu “Chưa hiểu” ở slide 7', function () {
+        state.selfMarked = true;
+        deck.goTo(HARD_INDEX);
+        render();
+      }));
+    } else {
+      r.appendChild(node('p', 'meta', 'Bạn đã tự đánh dấu “Chưa hiểu” — mục queue của bạn không cần AI suy đoán nữa.'));
+    }
+    flow.appendChild(r);
+  }
+
+  function renderMentor() {
+    if (!state.queue || state.optOut) {
+      flow.appendChild(node('div', 'callout', 'Queue trống.'));
+      return;
+    }
+
+    var item = node('div', 'queue__item');
+    var head = node('header');
+    head.appendChild(node('span', 'queue__who', 'Minh Anh · K4 AI Thực Chiến'));
+    head.appendChild(node('span', 'badge badge--warn', state.queue.status === 'pending' ? 'chờ duyệt' :
+      (state.queue.status === 'accepted' ? 'đã chấp nhận' : 'đã từ chối')));
+    item.appendChild(head);
+
+    var reason = node('p', 'queue__reason');
+    reason.appendChild(node('strong', null, 'AI suy đoán: '));
+    reason.appendChild(document.createTextNode('learner có thể đang kẹt ở khái niệm RAG (slide 7).'));
+    item.appendChild(reason);
+
+    item.appendChild(confidenceBar());
+    var det = node('div', 'meta');
+    det.appendChild(node('p', null, 'Căn cứ để mentor kiểm chứng:'));
+    det.appendChild(evidenceList());
+    item.appendChild(det);
+
+    if (state.queue.status === 'pending') {
+      var acts = node('div', 'banner__actions');
+      acts.appendChild(button('btn btn--primary', 'Chấp nhận & liên hệ', function () {
+        state.queue.status = 'accepted';
+        render();
+      }));
+      acts.appendChild(button('btn btn--danger', 'Từ chối', function () {
+        state.rejectDraft = true;
+        render();
+      }));
+      item.appendChild(acts);
+
+      if (state.rejectDraft) {
+        var f = node('div', 'field');
+        f.appendChild(node('span', 'field__label', 'Lý do từ chối (bắt buộc)'));
+        var ta = document.createElement('textarea');
+        ta.rows = 2;
+        ta.placeholder = 'Ví dụ: slide 7 đã có FAQ, không cần liên hệ riêng.';
+        f.appendChild(ta);
+        var confirm = button('btn btn--sm btn--danger', 'Xác nhận từ chối', function () {
+          if (!ta.value.trim()) { ta.focus(); return; }
+          state.queue.status = 'rejected';
+          state.queue.reason = ta.value.trim();
+          state.rejectDraft = false;
+          render();
+        });
+        f.appendChild(confirm);
+        item.appendChild(f);
+        setTimeout(function () { ta.focus(); }, 0);
+      }
+    } else if (state.queue.status === 'rejected' && state.queue.reason) {
+      item.appendChild(node('p', 'meta', 'Lý do đã ghi: “' + state.queue.reason + '”'));
+    } else if (state.queue.status === 'accepted') {
+      item.appendChild(node('p', 'meta', 'Mentor đã chấp nhận; learner đã được thông báo.'));
+    }
+
+    flow.appendChild(item);
+  }
+
+  function render() {
+    tabLearner.classList.toggle('is-active', state.tab === 'learner');
+    tabMentor.classList.toggle('is-active', state.tab === 'mentor');
+    roleHint.textContent = state.tab === 'learner'
+      ? 'Bạn là học viên: bạn chỉ nhận thông báo và có quyền từ chối nhận hỗ trợ.'
+      : 'Bạn là mentor: AI đề xuất, bạn là người quyết định có liên hệ hay không.';
+    flow.textContent = '';
+    if (state.tab === 'learner') renderLearner();
+    else renderMentor();
+  }
+
+  function endSession() {
+    if (!state.queue && !state.optOut) {
+      state.queue = { status: 'pending', reason: '' };
+    }
+    render();
+  }
+
+  tabLearner.addEventListener('click', function () { state.tab = 'learner'; render(); });
+  tabMentor.addEventListener('click', function () { state.tab = 'mentor'; render(); });
+
+  document.getElementById('endSession').addEventListener('click', function () {
+    deck.goTo(TOTAL - 1);
+    endSession();
+  });
+
+  document.getElementById('reset').addEventListener('click', function () {
+    state = { tab: 'learner', queue: null, optOut: false, selfMarked: false, rejectDraft: false };
+    deck.reset();
+    render();
+  });
+
+  deck = window.VD.mount(document.getElementById('deck'), {
+    onSlide: function (idx, slide, slotEl) {
+      if (idx === HARD_INDEX) {
+        slotEl.appendChild(node('span', 'badge badge--user', 'Hệ thống không hiển thị gì cho bạn ở đây'));
+      }
+      if (idx === TOTAL - 1 && !state.queue && !state.optOut) {
+        slotEl.appendChild(node('span', 'badge badge--warn', 'Phiên học đã kết thúc — kiểm tra cột phải'));
+        endSession();
+      }
+    }
+  });
+
+  render();
+})();
+</script>
+</body>
+</html>
