@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VLearn — AI Support Radar Prototype (Case C · Lab 18)</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Top Bar Navigation -->
+    <header class="navbar">
+        <div class="nav-left">
+            <div class="logo">
+                <span class="logo-icon">⚡</span>
+                <span class="logo-text">VLearn <strong>StudyHub</strong></span>
+            </div>
+            <span class="badge track-badge">AI Thực Chiến · Track 1</span>
+            <span class="divider">/</span>
+            <span class="lesson-title">Bài giảng: Xử lý thông tin & Mô hình chuyên sâu</span>
+        </div>
+
+        <div class="nav-center">
+            <!-- Mode Switcher for Lab 18 Testing -->
+            <div class="option-switcher" id="optionSwitcher">
+                <span class="switcher-label">🧪 Cơ chế thử nghiệm:</span>
+                <button class="opt-btn" data-option="A" title="Option A: Tự đánh dấu, gửi Coach">Option A (User-Led)</button>
+                <button class="opt-btn active" data-option="B" title="Option B: AI giải thích điểm khó hiểu khi được hỏi">Option B (In-situ Grounded AI)</button>
+                <button class="opt-btn" data-option="C" title="Option C: AI chủ động phát hiện & hỏi thăm">Option C (Proactive AI)</button>
+            </div>
+        </div>
+
+        <div class="nav-right">
+            <button class="btn btn-secondary btn-sm" id="resetBtn" title="Reset về trạng thái ban đầu trong ≤ 5s">
+                🔄 Reset Prototype
+            </button>
+            <div class="user-avatar" title="Học viên: Phương Nam (Track Chuyên sâu)">
+                <span class="avatar-text">PN</span>
+            </div>
+        </div>
+    </header>
+
+    <!-- Subheader Annotation Banner (Dành cho Facilitator / Reviewer) -->
+    <div class="annotation-banner" id="annotationBanner">
+        <div class="banner-content">
+            <span class="banner-tag" id="currentOptionTag">OPTION B (Chử Trần Phương Nam)</span>
+            <span class="banner-desc" id="currentOptionDesc">
+                <strong>Mục tiêu cơ chế:</strong> Hỗ trợ giải thích tức thì bất kỳ điểm nghẽn/khái niệm khó hiểu nào trên tài liệu khi học viên yêu cầu. Bôi đen văn bản hoặc click vào bất kỳ thuật ngữ nào để AI giải nghĩa đa tầng (Định nghĩa bình dân ➔ Vai trò trong bài ➔ Cảnh báo độ tin cậy ➔ Soạn ticket gửi Coach ẩn danh nếu vẫn chưa thông).
+            </span>
+        </div>
+        <button class="banner-close" id="toggleBannerBtn" title="Ẩn/Hiện ghi chú">Thu gọn</button>
+    </div>
+
+    <!-- Main Container -->
+    <main class="main-layout">
+        <!-- Left / Center: Slide Presentation & Learning Content -->
+        <section class="content-area">
+            <div class="slide-container card">
+                <div class="slide-header">
+                    <div class="slide-pagination">
+                        <button class="slide-nav-btn" id="prevSlideBtn">◀ Slide trước</button>
+                        <span class="slide-number">Slide <strong>6</strong> / 12</span>
+                        <button class="slide-nav-btn" id="nextSlideBtn">Slide tiếp ▶</button>
+                    </div>
+                    <div class="slide-status-tags">
+                        <span class="badge badge-hint">💡 Mẹo: Bôi đen văn bản hoặc click từ khoá bất kỳ để thử giải thích</span>
+                        <span class="badge badge-time" id="slideTimer">⏱️ 00:05</span>
+                    </div>
+                </div>
+
+                <!-- Slide Visual Canvas (Tài liệu học tập tương tác) -->
+                <div class="slide-canvas" id="slideCanvas">
+                    <div class="slide-inner">
+                        <div class="slide-meta-tag">Track Chuyên sâu · Bài 4: Kiến trúc Xử lý Tri thức</div>
+                        <h2 class="slide-title">Kiến trúc Tích hợp Dữ liệu Động & Trí tuệ Nhân tạo</h2>
+                        <p class="slide-subtitle">Phương pháp kết nối cơ sở tri thức ngoài với mô hình sinh ngôn ngữ để loại bỏ hiện tượng ảo giác</p>
+
+                        <!-- Nội dung tài liệu chứa các khái niệm/thuật ngữ tương tác -->
+                        <div class="slide-content-blocks">
+                            <div class="content-block">
+                                <div class="block-header">1. Vấn đề cốt lõi & Giới hạn của mô hình truyền thống</div>
+                                <p class="selectable-text">
+                                    Các mô hình ngôn ngữ lớn (LLM) bị giới hạn bởi <span class="interactive-term" data-term="Knowledge Cutoff" data-scope="Giới hạn thời điểm đóng băng dữ liệu huấn luyện">Knowledge Cutoff</span> (không có thông tin mới nhất) và thường xuyên xảy ra hiện tượng <span class="interactive-term" data-term="Hallucination (Ảo giác AI)" data-scope="Hiện tượng AI tự sinh ra thông tin sai lệch nhưng rất tự tin">Hallucination (Ảo giác AI)</span> khi được hỏi về dữ liệu nội bộ của doanh nghiệp.
+                                </p>
+                            </div>
+
+                            <div class="rag-diagram-grid">
+                                <div class="rag-step-box step-1 interactive-card" data-term="Retrieval (Truy xuất)" data-scope="Quá trình tìm kiếm tài liệu liên quan">
+                                    <div class="step-num">Giai đoạn 1</div>
+                                    <div class="step-title">📥 <span class="interactive-term" data-term="Retrieval (Truy xuất)">Retrieval (Truy xuất)</span></div>
+                                    <div class="step-desc">Truy vấn không gian <span class="interactive-term" data-term="Vector Embedding" data-scope="Biểu diễn ngữ nghĩa văn bản dưới dạng vector số">Vector Embedding</span> trong cơ sở tri thức để tìm các đoạn tài liệu có độ tương đồng ngữ nghĩa cao nhất.</div>
+                                </div>
+                                <div class="rag-arrow">➔</div>
+                                <div class="rag-step-box step-2 highlight-box interactive-card" data-term="Augmentation (Bổ sung ngữ cảnh)" data-scope="Ghép dữ liệu tìm được vào câu hỏi gốc">
+                                    <div class="step-num">Giai đoạn 2</div>
+                                    <div class="step-title">🧩 <span class="interactive-term" data-term="Augmentation (Bổ sung ngữ cảnh)">Augmentation (Bổ sung)</span></div>
+                                    <div class="step-desc">Tự động tổng hợp và ghép các đoạn trích dẫn tìm được vào làm <span class="interactive-term" data-term="Context Window (Cửa sổ ngữ cảnh)" data-scope="Giới hạn số lượng token mà LLM đọc được trong 1 lượt">Context Window</span> của Prompt người dùng.</div>
+                                </div>
+                                <div class="rag-arrow">➔</div>
+                                <div class="rag-step-box step-3 interactive-card" data-term="Generation (Tạo sinh có căn cứ)" data-scope="Mô hình đọc bằng chứng và trả lời">
+                                    <div class="step-num">Giai đoạn 3</div>
+                                    <div class="step-title">✨ <span class="interactive-term" data-term="Generation (Tạo sinh có căn cứ)">Generation (Tạo sinh)</span></div>
+                                    <div class="step-desc">Mô hình tổng hợp thông tin có căn cứ từ dữ liệu được cấp để đưa ra câu trả lời chính xác, kèm trích dẫn nguồn cụ thể.</div>
+                                </div>
+                            </div>
+
+                            <div class="content-block callout-block">
+                                <p class="selectable-text">
+                                    <strong>📌 Điểm mấu chốt:</strong> Thay vì phải <span class="interactive-term" data-term="Fine-tuning" data-scope="Tái huấn luyện cập nhật trọng số toàn bộ mô hình">Fine-tuning</span> lại toàn bộ mô hình với chi phí đắt đỏ, kỹ thuật này đưa dữ liệu trực tiếp vào ngữ cảnh tại thời điểm truy vấn.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Floating Context Menu khi bôi đen văn bản -->
+                <div class="text-selection-popup hidden" id="textSelectionPopup">
+                    <button class="btn-selection-action" id="btnExplainSelection">
+                        🤖 Giải thích đoạn này
+                    </button>
+                    <button class="btn-selection-action" id="btnMarkSelectionA">
+                        🚩 Đánh dấu chưa hiểu
+                    </button>
+                </div>
+
+                <!-- Action Bar underneath Slide depending on Active Option -->
+                <div class="slide-footer-actions" id="slideActions">
+                    <!-- Option A Action Bar -->
+                    <div class="action-panel opt-a-panel hidden" id="optAPanel">
+                        <div class="opt-a-info">
+                            <span>📌 Bạn gặp khó hiểu về một khái niệm hay đoạn nào trên slide?</span>
+                        </div>
+                        <button class="btn btn-warning" id="btnMarkOptionA">
+                            🚩 Đánh dấu chỗ khó hiểu & Gửi Coach
+                        </button>
+                    </div>
+
+                    <!-- Option B Action Bar -->
+                    <div class="action-panel opt-b-panel" id="optBPanel">
+                        <div class="opt-b-prompts">
+                            <span class="prompt-icon">🤖</span>
+                            <span class="prompt-label">Khái niệm thường gặp khó hiểu ở slide này:</span>
+                            <div class="concept-chips" id="conceptChipsContainer">
+                                <button class="chip" data-term="Augmentation (Bổ sung ngữ cảnh)">🧩 Augmentation là gì?</button>
+                                <button class="chip" data-term="Hallucination (Ảo giác AI)">⚠️ Hallucination là gì?</button>
+                                <button class="chip" data-term="Vector Embedding">⚙️ Vector Embedding là gì?</button>
+                                <button class="chip" data-term="Fine-tuning">🔄 Khác gì Fine-tuning?</button>
+                            </div>
+                        </div>
+                        <button class="btn btn-primary" id="btnOpenAssistantB">
+                            💬 Mở Trợ lý Giải nghĩa
+                        </button>
+                    </div>
+
+                    <!-- Option C Action Bar -->
+                    <div class="action-panel opt-c-panel hidden" id="optCPanel">
+                        <div class="opt-c-status">
+                            <span class="radar-dot"></span>
+                            <span class="radar-text">Radar quan sát học tập đang bật (Tự động phát hiện khi bạn dừng lâu > 20s ở đoạn khó)</span>
+                        </div>
+                        <button class="btn btn-outline-secondary btn-sm" id="btnSimulateStuckC">
+                            ⚡ [Giả lập: Học viên dừng 25s]
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Quiz Fixture Section (Dùng chung để kiểm tra mức độ hiểu bài) -->
+            <div class="quiz-container card" id="quizSection">
+                <div class="quiz-header">
+                    <div class="quiz-title-wrap">
+                        <span class="quiz-badge">Kiểm tra mức độ thông hiểu</span>
+                        <h3>Câu hỏi củng cố kiến thức (Dựa trên Slide 6)</h3>
+                    </div>
+                    <span class="quiz-status" id="quizStatus">Chưa nộp bài</span>
+                </div>
+
+                <div class="quiz-body">
+                    <p class="quiz-question">
+                        <strong>Khi hệ thống thực hiện bước "Augmentation" (Bổ sung), thao tác kỹ thuật thực sự diễn ra là gì?</strong>
+                    </p>
+
+                    <div class="quiz-options">
+                        <label class="quiz-option-label">
+                            <input type="radio" name="rag_quiz" value="A">
+                            <span class="opt-text"><strong>A.</strong> Huấn luyện lại trọng số mạng nơ-ron của mô hình LLM theo dữ liệu mới.</span>
+                        </label>
+                        <label class="quiz-option-label" id="correctOptionLabel">
+                            <input type="radio" name="rag_quiz" value="B">
+                            <span class="opt-text"><strong>B.</strong> Đưa các đoạn dữ liệu vừa truy xuất vào làm ngữ cảnh (Context) bên trong Prompt gửi tới LLM.</span>
+                        </label>
+                        <label class="quiz-option-label">
+                            <input type="radio" name="rag_quiz" value="C">
+                            <span class="opt-text"><strong>C.</strong> Thực hiện nén dung lượng vector cơ sở dữ liệu để tăng tốc độ phản hồi.</span>
+                        </label>
+                        <label class="quiz-option-label">
+                            <input type="radio" name="rag_quiz" value="D">
+                            <span class="opt-text"><strong>D.</strong> Tự động sửa lỗi ngữ pháp và dịch câu trả lời của mô hình sang ngôn ngữ khác.</span>
+                        </label>
+                    </div>
+
+                    <div class="quiz-feedback hidden" id="quizFeedback"></div>
+                </div>
+
+                <div class="quiz-footer">
+                    <button class="btn btn-success" id="btnSubmitQuiz">Kiểm tra mức độ hiểu bài</button>
+                    <button class="btn btn-outline-secondary hidden" id="btnRetryQuiz">Làm lại</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Right Side: Interactive Assistant Panels & Modals for Options -->
+        <aside class="sidebar-area" id="sidebarArea">
+            <!-- Option B: Grounded AI Assistant Drawer -->
+            <div class="assistant-drawer" id="assistantDrawerB">
+                <div class="drawer-header">
+                    <div class="drawer-title">
+                        <span class="bot-icon">🤖</span>
+                        <div>
+                            <h4>Trợ lý Giải nghĩa Tại chỗ</h4>
+                            <span class="drawer-scope">Giải thích khái niệm & tháo gỡ điểm nghẽn slide 6</span>
+                        </div>
+                    </div>
+                    <button class="btn-icon" id="btnCloseDrawerB" title="Đóng panel">✕</button>
+                </div>
+
+                <div class="drawer-body" id="chatContainerB">
+                    <!-- Default State: Quick Help Prompts -->
+                    <div class="welcome-box" id="welcomeBoxB">
+                        <div class="welcome-badge">💡 Cách nhận hỗ trợ giải thích</div>
+                        <p>Bạn đang gặp khó hiểu về một khái niệm nào đó trên bài giảng? Hãy chọn một cách:</p>
+                        <ul class="help-methods">
+                            <li>👉 <strong>Click vào từ khoá / sơ đồ</strong> trên slide bài học.</li>
+                            <li>👉 <strong>Bôi đen bất kỳ đoạn văn nào</strong> trên tài liệu.</li>
+                            <li>👉 Chọn các câu hỏi nhanh bên dưới hoặc tự gõ câu hỏi:</li>
+                        </ul>
+                        <div class="quick-questions">
+                            <button class="quick-q-btn" data-term="Augmentation (Bổ sung ngữ cảnh)">
+                                🧩 Bước Augmentation thực chất làm gì?
+                            </button>
+                            <button class="quick-q-btn" data-term="Hallucination (Ảo giác AI)">
+                                ⚠️ Ảo giác AI (Hallucination) là sao?
+                            </button>
+                            <button class="quick-q-btn" data-term="Fine-tuning">
+                                🔄 Vì sao cách này tiết kiệm hơn Fine-tuning?
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Chat Messages List -->
+                    <div class="chat-messages" id="chatMessagesB"></div>
+                </div>
+
+                <!-- Chat Input Box -->
+                <div class="drawer-footer">
+                    <form class="chat-input-form" id="chatFormB">
+                        <input type="text" id="chatInputB" placeholder="Nhập từ khoá hoặc câu hỏi bạn chưa hiểu..." autocomplete="off">
+                        <button type="submit" class="btn btn-primary" id="btnSendB">Giải thích</button>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Option A / General Help Queue Panel (Simulated Coach Response) -->
+            <div class="coach-queue-panel hidden" id="coachQueuePanel">
+                <div class="drawer-header">
+                    <h4>📬 Hàng đợi hỗ trợ từ Coach</h4>
+                </div>
+                <div class="queue-body" id="queueBody">
+                    <p class="empty-queue">Chưa có câu hỏi nào được gửi đến Coach.</p>
+                </div>
+            </div>
+        </aside>
+    </main>
+
+    <!-- MODAL: Option A - Đánh dấu gửi Coach thủ công -->
+    <div class="modal-overlay hidden" id="modalOptionA">
+        <div class="modal-card">
+            <div class="modal-header">
+                <h3>🚩 Đánh dấu vướng mắc ở Slide 6 gửi Coach</h3>
+                <button class="btn-icon modal-close" data-modal="modalOptionA">✕</button>
+            </div>
+            <div class="modal-body">
+                <p class="modal-info-text">Hệ thống sẽ gắn vị trí <strong>Slide 6</strong> và ngữ cảnh bạn đang xem vào câu hỏi để Coach dễ dàng hỗ trợ bạn.</p>
+                
+                <div class="form-group">
+                    <label>Loại nội dung bạn đang gặp khó hiểu:</label>
+                    <select class="form-control" id="optAIssueType">
+                        <option value="terminology">Thuật ngữ / Khái niệm mới khó hiểu</option>
+                        <option value="diagram">Sơ đồ luồng xử lý kỹ thuật</option>
+                        <option value="math">Công thức hoặc giải thuật tính toán</option>
+                        <option value="quiz">Chưa hiểu cách áp dụng vào bài tập / Quiz</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label>Điểm cụ thể bạn chưa hiểu rõ:</label>
+                    <textarea class="form-control" id="optADesc" rows="3" placeholder="Ví dụ: Em đọc phần Augmentation nhưng chưa hình dung được tài liệu được ghép vào prompt như thế nào..."></textarea>
+                </div>
+
+                <div class="form-group radio-group">
+                    <label>Tuỳ chọn danh tính:</label>
+                    <label class="radio-label">
+                        <input type="radio" name="optA_identity" value="anonymous" checked>
+                        <span>🕵️ Gửi ẩn danh (Coach không thấy tên & thông tin cá nhân)</span>
+                    </label>
+                    <label class="radio-label">
+                        <input type="radio" name="optA_identity" value="named">
+                        <span>👤 Gửi kèm tên học viên: <strong>Chử Trần Phương Nam</strong></span>
+                    </label>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary modal-close" data-modal="modalOptionA">Huỷ bỏ</button>
+                <button class="btn btn-warning" id="btnSubmitOptionA">Gửi câu hỏi cho Coach</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL: Option B - Structured Help Ticket Escalation -->
+    <div class="modal-overlay hidden" id="modalEscalationB">
+        <div class="modal-card">
+            <div class="modal-header">
+                <h3>📤 Gửi Structured Help Ticket tới Coach</h3>
+                <button class="btn-icon modal-close" data-modal="modalEscalationB">✕</button>
+            </div>
+            <div class="modal-body">
+                <div class="ticket-preview-box">
+                    <div class="ticket-badge">Bản nháp do AI soạn tự động — Bạn có toàn quyền chỉnh sửa</div>
+                    <div class="ticket-field">
+                        <strong>📍 Vị trí học:</strong> Slide 6 — Kiến trúc Tích hợp Dữ liệu Động
+                    </div>
+                    <div class="ticket-field" id="ticketSubjectB">
+                        <strong>🎯 Khái niệm đang hỏi:</strong> Augmentation (Bổ sung ngữ cảnh)
+                    </div>
+                    <div class="ticket-field">
+                        <strong>🤖 Trạng thái tương tác:</strong> Đã xem lời giải thích cơ bản của AI nhưng vẫn cần Coach làm rõ ví dụ thực tế.
+                    </div>
+                    <div class="form-group" style="margin-top: 10px;">
+                        <label><strong>Nội dung câu hỏi gửi Coach:</strong></label>
+                        <textarea class="form-control" id="ticketQuestionB" rows="4"></textarea>
+                    </div>
+                </div>
+
+                <div class="form-group radio-group" style="margin-top: 15px;">
+                    <label><strong>Chế độ gửi:</strong></label>
+                    <label class="radio-label">
+                        <input type="radio" name="optB_identity" value="anonymous" checked>
+                        <span>🕵️ <strong>Gửi ẩn danh (Mặc định)</strong> — Không hiển thị tên của bạn cho Coach</span>
+                    </label>
+                    <label class="radio-label">
+                        <input type="radio" name="optB_identity" value="named">
+                        <span>👤 Gửi kèm tên: <strong>Chử Trần Phương Nam</strong></span>
+                    </label>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary modal-close" data-modal="modalEscalationB">Quay lại tự học</button>
+                <button class="btn btn-primary" id="btnSubmitTicketB">Xác nhận gửi cho Coach</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- TOAST POPUP: Option C - Proactive AI Intervention -->
+    <div class="proactive-popup hidden" id="proactivePopupC">
+        <div class="popup-header">
+            <span class="popup-icon">💡</span>
+            <div class="popup-title">
+                <strong>AI Support Radar</strong>
+                <span class="popup-subtitle">Phát hiện bạn đang dừng lâu ở phần kiến thức khó</span>
+            </div>
+            <button class="popup-close" id="btnClosePopupC">✕</button>
+        </div>
+        <div class="popup-body">
+            <p>Slide 6 chứa nhiều khái niệm mới về tích hợp dữ liệu. Bạn có cần mình hỗ trợ giải thích nhanh điểm nào để chuẩn bị làm Quiz không?</p>
+        </div>
+        <div class="popup-actions">
+            <button class="btn btn-primary btn-sm" id="btnAcceptPopupC">✨ Giải thích nhanh giúp mình</button>
+            <button class="btn btn-outline-secondary btn-sm" id="btnEscalatePopupC">👨‍🏫 Nhờ Coach hỗ trợ</button>
+            <button class="btn btn-ghost btn-sm" id="btnDismissPopupC">Để sau</button>
+        </div>
+        <div class="popup-footer">
+            <button class="btn-link" id="btnWhyAskC">ℹ️ Vì sao hệ thống hỏi câu này?</button>
+        </div>
+    </div>
+
+    <!-- Toast Notification Container -->
+    <div class="toast-container" id="toastContainer"></div>
+
+    <script src="app.js"></script>
+</body>
+</html>
